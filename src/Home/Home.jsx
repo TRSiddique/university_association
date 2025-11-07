@@ -1,0 +1,695 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import delo from "../assets/delowar.jpg"
+import kaisar from "../assets/kaisar.png"
+const Home = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState({
+    name: "",
+    email: "",
+    comment: "",
+    type: "comment",
+  });
+  const [activeTab, setActiveTab] = useState("about");
+
+  // Sample slides data
+  const slides = [
+    {
+      id: 1,
+      image:
+        "https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y292ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
+      title: "Welcome to CUSAP",
+      description: "Chittagong University Students Association of Pekua",
+    },
+    {
+      id: 2,
+      image:
+        "https://images.unsplash.com/photo-1558376939-7d6cb3025d5c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y292ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
+      title: "Student Development",
+      description:
+        "Empowering students through various programs and initiatives",
+    },
+    {
+      id: 3,
+      image:
+        "https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvdmVyfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
+      title: "Community Engagement",
+      description:
+        "Building strong connections within the university community",
+    },
+  ];
+
+  // Sample committee members
+  const committeeMembers = [
+    {
+      id: 1,
+      name: "Delowar Hossain",
+      position: "President",
+      image:
+        "https://i.ibb.co.com/SDB94qxS/delowar.jpg",
+      speech:
+        "As President, I warmly welcome all members and well-wishers of CUSAP. Together, we aim to create a strong platform for unity, leadership, and service among the students of Pekua at the University of Chittagong.",
+    },
+    {
+      id: 2,
+      name: "Mohammad Kaisar",
+      position: "General Secretary",
+      image:
+        "https://i.ibb.co.com/1YKfnS6N/kaisar.png",
+      speech:
+        "As General Secretary, I believe in teamwork and dedication. Our mission is to strengthen the bond among students and organize impactful programs for academic and personal growth.",
+    },
+  ];
+
+  // Sample events
+  const upcomingEvents = [
+    {
+      id: 1,
+      title: "Publish Full Panel of CUSAP",
+      date: "2024-01-15",
+      time: "2:00 PM - 4:00 PM",
+      location: "Facebook Page",
+      link: "www.facebook.com/profile.php?id=61551649208728",
+    },
+    {
+      id: 2,
+      title: "Publish CUSAP plan of comittee",
+      date: "2024-01-20",
+      time: "10:00 AM - 12:00 PM",
+      location: "Committee Room A",
+      link: "www.facebook.com/profile.php?id=61551649208728",
+    },
+    {
+      id: 3,
+      title: "Publish CUSAP Website",
+      date: "2024-01-25",
+      time: "3:00 PM - 5:00 PM",
+      location: "Student Center",
+      link: "www.facebook.com/profile.php?id=61551649208728",
+    },
+  ];
+
+  // Auto slide functionality
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    if (newComment.name && newComment.comment) {
+      const commentToAdd = {
+        ...newComment,
+        id: Date.now(),
+        date: new Date().toLocaleDateString(),
+        status: "pending",
+      };
+      setComments([commentToAdd, ...comments]);
+      setNewComment({
+        name: "",
+        email: "",
+        comment: "",
+        type: "comment",
+      });
+      alert(
+        "Thank you for your submission! It will be reviewed by the committee."
+      );
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewComment((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-4"></div>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Slider Section */}
+      <section className="relative h-96 overflow-hidden">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {/* Background Image */}
+            <div
+              className="w-full h-full bg-cover bg-center bg-no-repeat relative"
+              style={{
+                backgroundImage: `url(${slide.image})`,
+              }}
+            >
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <h2 className="text-4xl text-black font-bold mb-4">{slide.title}</h2>
+                  <p className="text-xl text-black">{slide.description}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Slider Controls */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition-all"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition-all"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+
+        {/* Slide Indicators */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === currentSlide ? "bg-white" : "bg-white bg-opacity-50"
+              }`}
+            />
+          ))}
+        </div>
+      </section>
+      {/* About Section */}
+      <section id="about" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              About CUSAP
+            </h2>
+            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                The Committee for University Student Affairs and Progress
+                (CUSAP) is dedicated to enhancing the student experience through
+                proactive initiatives, policy development, and community
+                engagement. Our mission is to create an inclusive and supportive
+                environment that fosters academic excellence and personal
+                growth.
+              </p>
+              <div className="grid md:grid-cols-3 gap-8 mt-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="w-8 h-8 text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Student Welfare
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Ensuring the well-being and success of every student
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="w-8 h-8 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Policy Development
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Creating fair and effective student policies
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="w-8 h-8 text-purple-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Community Building
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Fostering a strong, connected university community
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Committee Members Section */}
+      <section id="committee" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          {/* Section Header */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Our Committee
+            </h2>
+            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Meet the leading faces of CUSAP working to build a stronger
+              university community.
+            </p>
+          </div>
+
+          {/* Members */}
+          <div className="grid md:grid-cols-2 gap-8">
+            {committeeMembers.map((member) => (
+              <div
+                key={member.id}
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6 text-center"
+              >
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-40 h-40 mx-auto rounded-full object-cover mb-6 border-4 border-blue-500"
+                />
+                <h3 className="text-2xl font-semibold text-gray-800">
+                  {member.name}
+                </h3>
+                <p className="text-blue-600 font-medium mb-4">
+                  {member.position}
+                </p>
+                <p className="text-gray-700 leading-relaxed">{member.speech}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Events Section */}
+      <section id="events" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Upcoming Events
+            </h2>
+            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-50 rounded-lg p-6">
+              {upcomingEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="flex items-center justify-between py-4 border-b border-gray-200 last:border-b-0"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-blue-100 text-blue-600 rounded-lg p-3 text-center min-w-16">
+                      <div className="font-bold text-lg">
+                        {new Date(event.date).getDate()}
+                      </div>
+                      <div className="text-xs uppercase">
+                        {new Date(event.date).toLocaleString("default", {
+                          month: "short",
+                        })}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-800">
+                        {event.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {event.time} • {event.location}
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href={`https://${event.link}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                      Details
+                    </button>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Comments & Objections Section */}
+      <section id="feedback" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Share Your Feedback
+            </h2>
+            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              We value your input. Share your comments, suggestions, or concerns
+              with the committee.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              {/* Tabs */}
+              <div className="border-b border-gray-200">
+                <div className="flex">
+                  <button
+                    onClick={() => setActiveTab("about")}
+                    className={`flex-1 py-4 px-6 text-center font-medium ${
+                      activeTab === "about"
+                        ? "text-blue-600 border-b-2 border-blue-600"
+                        : "text-gray-600 hover:text-gray-800"
+                    }`}
+                  >
+                    About Feedback
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("form")}
+                    className={`flex-1 py-4 px-6 text-center font-medium ${
+                      activeTab === "form"
+                        ? "text-blue-600 border-b-2 border-blue-600"
+                        : "text-gray-600 hover:text-gray-800"
+                    }`}
+                  >
+                    Submit Feedback
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("comments")}
+                    className={`flex-1 py-4 px-6 text-center font-medium ${
+                      activeTab === "comments"
+                        ? "text-blue-600 border-b-2 border-blue-600"
+                        : "text-gray-600 hover:text-gray-800"
+                    }`}
+                  >
+                    Recent Submissions
+                  </button>
+                </div>
+              </div>
+
+              {/* Tab Content */}
+              <div className="p-6">
+                {activeTab === "about" && (
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">
+                      Feedback Guidelines
+                    </h3>
+                    <div className="space-y-4 text-gray-700">
+                      <p>
+                        The CUSAP committee welcomes constructive feedback from
+                        students, faculty, and staff to help us improve our
+                        services and initiatives.
+                      </p>
+                      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                        <p className="font-medium text-yellow-800">
+                          Please Note:
+                        </p>
+                        <ul className="list-disc list-inside mt-2 text-yellow-700 space-y-1">
+                          <li>All submissions are reviewed by the committee</li>
+                          <li>We aim to respond within 3-5 working days</li>
+                          <li>
+                            Please provide specific and actionable feedback
+                          </li>
+                          <li>
+                            Respectful and professional language is required
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "form" && (
+                  <form onSubmit={handleCommentSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Full Name *
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={newComment.name}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter your full name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Email Address
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={newComment.email}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Enter your email"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Feedback Type *
+                      </label>
+                      <select
+                        name="type"
+                        value={newComment.type}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      >
+                        <option value="comment">General Comment</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="objection">Objection</option>
+                        <option value="complaint">Complaint</option>
+                        <option value="appreciation">Appreciation</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Your Message *
+                      </label>
+                      <textarea
+                        name="comment"
+                        value={newComment.comment}
+                        onChange={handleInputChange}
+                        required
+                        rows={6}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Please share your feedback, comments, or concerns..."
+                      ></textarea>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    >
+                      Submit Feedback
+                    </button>
+                  </form>
+                )}
+
+                {activeTab === "comments" && (
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">
+                      Recent Feedback Submissions
+                    </h3>
+                    {comments.length === 0 ? (
+                      <div className="text-center py-8 text-gray-500">
+                        <svg
+                          className="w-16 h-16 mx-auto text-gray-300 mb-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1}
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                          />
+                        </svg>
+                        <p>
+                          No feedback submissions yet. Be the first to share
+                          your thoughts!
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {comments.map((comment) => (
+                          <div
+                            key={comment.id}
+                            className="border border-gray-200 rounded-lg p-4"
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div>
+                                <span className="font-semibold text-gray-800">
+                                  {comment.name}
+                                </span>
+                                <span
+                                  className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                                    comment.type === "objection"
+                                      ? "bg-red-100 text-red-800"
+                                      : comment.type === "suggestion"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : comment.type === "complaint"
+                                      ? "bg-orange-100 text-orange-800"
+                                      : "bg-green-100 text-green-800"
+                                  }`}
+                                >
+                                  {comment.type.charAt(0).toUpperCase() +
+                                    comment.type.slice(1)}
+                                </span>
+                              </div>
+                              <span className="text-sm text-gray-500">
+                                {comment.date}
+                              </span>
+                            </div>
+                            <p className="text-gray-700">{comment.comment}</p>
+                            <div className="mt-2 text-sm text-gray-500">
+                              Status:{" "}
+                              <span className="font-medium text-yellow-600">
+                                Under Review
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">CUSAP</h3>
+              <p className="text-gray-300">
+                Committee for University Student Affairs and Progress. Dedicated to student welfare and university development.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
+                <li><a href="#committee" className="hover:text-white transition-colors">Committee</a></li>
+                <li><a href="#events" className="hover:text-white transition-colors">Events</a></li>
+                <li><a href="#feedback" className="hover:text-white transition-colors">Feedback</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Contact Info</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li>Email: cusap@university.edu</li>
+                <li>Phone: (555) 123-4567</li>
+                <li>Office: Student Affairs Building, Room 205</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Office Hours</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li>Monday - Friday: 9:00 AM - 5:00 PM</li>
+                <li>Saturday: 10:00 AM - 2:00 PM</li>
+                <li>Sunday: Closed</li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+            <p>&copy; 2024 CUSAP Committee. All rights reserved.</p>
+          </div>
+        </div>
+      </footer> */}
+    </div>
+  );
+};
+
+export default Home;
