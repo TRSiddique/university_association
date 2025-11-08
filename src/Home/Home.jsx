@@ -115,7 +115,7 @@ const handleCommentSubmit = (e) => {
     };
 
     // ✅ Send to database
-    fetch("http://localhost:4000/comment", {
+    fetch("https://university-association-backend-1.onrender.com/comment", {
       method: "POST",
       headers: {
         "content-type": "application/json",

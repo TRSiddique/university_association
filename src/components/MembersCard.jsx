@@ -19,7 +19,7 @@ const MembersCard = ({ member, members, setMembers }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         console.log("delete confirm");
-        fetch(`http://localhost:4000/member/${_id}`, {
+        fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

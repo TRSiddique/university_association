@@ -26,13 +26,13 @@ const router = createBrowserRouter([
       {
         path: "/members",
         element: <Members></Members>,
-        loader: () => fetch("http://localhost:4000/member"),
+        loader: () => fetch("https://university-association-backend-1.onrender.com/member"),
       },
       {
         path: "/members/:id",
         element: <MemberDetails></MemberDetails>,
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:4000/member/${params.id}`);
+          const res = await fetch(`https://university-association-backend-1.onrender.com/member/${params.id}`);
           return res.json();
         },
       },
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         path: "updateMember/:id",
         element: <UpdatedMember></UpdatedMember>,
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:4000/member/${params.id}`);
+          const res = await fetch(`https://university-association-backend-1.onrender.com/member/${params.id}`);
           return res.json();
         },
       },
