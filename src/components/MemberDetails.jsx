@@ -17,7 +17,7 @@ const MemberDetails = () => {
       <h1 className="text-2xl font-bold mb-4">Details of {name} </h1>
 
       <img
-        src="https://i.ibb.co.com/5x1D6gkb/20250421-140027-1.jpg"
+        src={photo}
         alt={name}
         className="w-full h-64 object-cover rounded-lg mb-4"
       />

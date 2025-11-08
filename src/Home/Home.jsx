@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import delo from "../assets/delowar.jpg"
-import kaisar from "../assets/kaisar.png"
+
+
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [comments, setComments] = useState([]);
+   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
     name: "",
     email: "",
@@ -46,8 +46,7 @@ const Home = () => {
       id: 1,
       name: "Delowar Hossain",
       position: "President",
-      image:
-        "https://i.ibb.co.com/SDB94qxS/delowar.jpg",
+      image: "https://i.ibb.co.com/SDB94qxS/delowar.jpg",
       speech:
         "As President, I warmly welcome all members and well-wishers of CUSAP. Together, we aim to create a strong platform for unity, leadership, and service among the students of Pekua at the University of Chittagong.",
     },
@@ -55,8 +54,7 @@ const Home = () => {
       id: 2,
       name: "Mohammad Kaisar",
       position: "General Secretary",
-      image:
-        "https://i.ibb.co.com/1YKfnS6N/kaisar.png",
+      image: "https://i.ibb.co.com/1YKfnS6N/kaisar.png",
       speech:
         "As General Secretary, I believe in teamwork and dedication. Our mission is to strengthen the bond among students and organize impactful programs for academic and personal growth.",
     },
@@ -67,7 +65,7 @@ const Home = () => {
     {
       id: 1,
       title: "Publish Full Panel of CUSAP",
-      date: "2024-01-15",
+      date: "2025-11-11",
       time: "2:00 PM - 4:00 PM",
       location: "Facebook Page",
       link: "www.facebook.com/profile.php?id=61551649208728",
@@ -75,7 +73,7 @@ const Home = () => {
     {
       id: 2,
       title: "Publish CUSAP plan of comittee",
-      date: "2024-01-20",
+      date: "2025-11-20",
       time: "10:00 AM - 12:00 PM",
       location: "Committee Room A",
       link: "www.facebook.com/profile.php?id=61551649208728",
@@ -83,7 +81,7 @@ const Home = () => {
     {
       id: 3,
       title: "Publish CUSAP Website",
-      date: "2024-01-25",
+      date: "2025-12-02",
       time: "3:00 PM - 5:00 PM",
       location: "Student Center",
       link: "www.facebook.com/profile.php?id=61551649208728",
@@ -106,27 +104,45 @@ const Home = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (newComment.name && newComment.comment) {
-      const commentToAdd = {
-        ...newComment,
-        id: Date.now(),
-        date: new Date().toLocaleDateString(),
-        status: "pending",
-      };
-      setComments([commentToAdd, ...comments]);
-      setNewComment({
-        name: "",
-        email: "",
-        comment: "",
-        type: "comment",
-      });
-      alert(
-        "Thank you for your submission! It will be reviewed by the committee."
-      );
-    }
-  };
+const handleCommentSubmit = (e) => {
+  e.preventDefault();
+  if (newComment.name && newComment.comment) {
+    const commentToAdd = {
+      ...newComment,
+      id: Date.now(),
+      date: new Date().toLocaleDateString(),
+      status: "pending",
+    };
+
+    // ✅ Send to database
+    fetch("http://localhost:4000/comment", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(commentToAdd),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Saved to DB:", data);
+        if (data.insertedId) {
+          alert("Thank you! Your comment has been submitted successfully.");
+        }
+      })
+      .catch((err) => console.error("Error saving comment:", err));
+
+    // Reset UI instantly (optional)
+    setComments([commentToAdd, ...comments]);
+    setNewComment({
+      name: "",
+      email: "",
+      mobile: "",
+      comment: "",
+      type: "comment",
+    });
+  }
+};
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -165,7 +181,9 @@ const Home = () => {
             >
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <h2 className="text-4xl text-black font-bold mb-4">{slide.title}</h2>
+                  <h2 className="text-4xl text-black font-bold mb-4">
+                    {slide.title}
+                  </h2>
                   <p className="text-xl text-black">{slide.description}</p>
                 </div>
               </div>
@@ -226,7 +244,7 @@ const Home = () => {
       </section>
       {/* About Section */}
       <section id="about" className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-2 lg:px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
               About CUSAP
@@ -235,14 +253,22 @@ const Home = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                The Committee for University Student Affairs and Progress
-                (CUSAP) is dedicated to enhancing the student experience through
-                proactive initiatives, policy development, and community
-                engagement. Our mission is to create an inclusive and supportive
-                environment that fosters academic excellence and personal
-                growth.
+            <div className="bg-gray-50 rounded-lg p-6 shadow-sm">
+              <p className="text-lg text-gray-700 text-justify leading-relaxed mb-6">
+                Chittagong University Students’ Association of Pekua (CUSAP) is
+                a student-led organization formed by the students of Pekua
+                studying at the University of Chittagong. The association works
+                to create unity among students, provide academic and social
+                support, and strengthen the bond between university life and
+                community service.
+                <br></br>
+                CUSAP regularly organizes various initiatives such as
+                educational seminars, cultural programs, social welfare
+                activities, and guidance sessions for university admission
+                seekers from Pekua. Through teamwork, leadership, and
+                dedication, CUSAP aims to build a strong, cooperative network of
+                students who contribute positively to both campus life and
+                society.
               </p>
               <div className="grid md:grid-cols-3 gap-8 mt-8">
                 <div className="text-center">
@@ -265,7 +291,7 @@ const Home = () => {
                     Student Welfare
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Ensuring the well-being and success of every student
+                   Supports students of Pekua studying at the University of Chittagong through guidance and cooperation.
                   </p>
                 </div>
                 <div className="text-center">
@@ -285,10 +311,10 @@ const Home = () => {
                     </svg>
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-2">
-                    Policy Development
+                    Community Building
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Creating fair and effective student policies
+                   Strengthens the bond among members to create a united and active student network.
                   </p>
                 </div>
                 <div className="text-center">
@@ -308,10 +334,10 @@ const Home = () => {
                     </svg>
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-2">
-                    Community Building
+                    Social Engagement
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Fostering a strong, connected university community
+                    Organizes educational, cultural, and welfare activities for positive social impact.
                   </p>
                 </div>
               </div>
@@ -353,7 +379,7 @@ const Home = () => {
                 <p className="text-blue-600 font-medium mb-4">
                   {member.position}
                 </p>
-                <p className="text-gray-700 leading-relaxed">{member.speech}</p>
+                <p className="text-gray-700 text-justify leading-relaxed">{member.speech}</p>
               </div>
             ))}
           </div>
@@ -452,7 +478,7 @@ const Home = () => {
                   >
                     Submit Feedback
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => setActiveTab("comments")}
                     className={`flex-1 py-4 px-6 text-center font-medium ${
                       activeTab === "comments"
@@ -461,7 +487,7 @@ const Home = () => {
                     }`}
                   >
                     Recent Submissions
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
@@ -516,24 +542,25 @@ const Home = () => {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Address
+                          Phone Number
                         </label>
                         <input
-                          type="email"
-                          name="email"
-                          value={newComment.email}
+                          type="mobile"
+                          name="mobile"
+                          value={newComment.mobile}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Enter your email"
+                          placeholder="Enter your phone Number"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                
+                      {/* <label className="block text-sm font-medium text-gray-700 mb-2">
                         Feedback Type *
-                      </label>
-                      <select
+                      </label> */}
+                      {/* <select
                         name="type"
                         value={newComment.type}
                         onChange={handleInputChange}
@@ -545,7 +572,7 @@ const Home = () => {
                         <option value="objection">Objection</option>
                         <option value="complaint">Complaint</option>
                         <option value="appreciation">Appreciation</option>
-                      </select>
+                      </select> */}
                     </div>
 
                     <div>
@@ -571,123 +598,81 @@ const Home = () => {
                     </button>
                   </form>
                 )}
-
-                {activeTab === "comments" && (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">
-                      Recent Feedback Submissions
-                    </h3>
-                    {comments.length === 0 ? (
-                      <div className="text-center py-8 text-gray-500">
-                        <svg
-                          className="w-16 h-16 mx-auto text-gray-300 mb-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1}
-                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                          />
-                        </svg>
-                        <p>
-                          No feedback submissions yet. Be the first to share
-                          your thoughts!
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {comments.map((comment) => (
-                          <div
-                            key={comment.id}
-                            className="border border-gray-200 rounded-lg p-4"
-                          >
-                            <div className="flex justify-between items-start mb-2">
-                              <div>
-                                <span className="font-semibold text-gray-800">
-                                  {comment.name}
-                                </span>
-                                <span
-                                  className={`ml-2 px-2 py-1 text-xs rounded-full ${
-                                    comment.type === "objection"
-                                      ? "bg-red-100 text-red-800"
-                                      : comment.type === "suggestion"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : comment.type === "complaint"
-                                      ? "bg-orange-100 text-orange-800"
-                                      : "bg-green-100 text-green-800"
-                                  }`}
-                                >
-                                  {comment.type.charAt(0).toUpperCase() +
-                                    comment.type.slice(1)}
-                                </span>
-                              </div>
-                              <span className="text-sm text-gray-500">
-                                {comment.date}
-                              </span>
-                            </div>
-                            <p className="text-gray-700">{comment.comment}</p>
-                            <div className="mt-2 text-sm text-gray-500">
-                              Status:{" "}
-                              <span className="font-medium text-yellow-600">
-                                Under Review
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+{/* <CommentsList></CommentsList> */}
+                {/* {activeTab === "comments" && (
+                  // <div>
+                  //   <h3 className="text-xl font-semibold mb-4">
+                  //     Recent Feedback Submissions
+                  //   </h3>
+                  //   {comments.length === 0 ? (
+                  //     <div className="text-center py-8 text-gray-500">
+                  //       <svg
+                  //         className="w-16 h-16 mx-auto text-gray-300 mb-4"
+                  //         fill="none"
+                  //         stroke="currentColor"
+                  //         viewBox="0 0 24 24"
+                  //       >
+                  //         <path
+                  //           strokeLinecap="round"
+                  //           strokeLinejoin="round"
+                  //           strokeWidth={1}
+                  //           d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                  //         />
+                  //       </svg>
+                  //       <p>
+                  //         No feedback submissions yet. Be the first to share
+                  //         your thoughts!
+                  //       </p>
+                  //     </div>
+                  //   ) : (
+                  //     <div className="space-y-4">
+                  //       {comments.map((comment) => (
+                  //         <div
+                  //           key={comment.id}
+                  //           className="border border-gray-200 rounded-lg p-4"
+                  //         >
+                  //           <div className="flex justify-between items-start mb-2">
+                  //             <div>
+                  //               <span className="font-semibold text-gray-800">
+                  //                 {comment.name}
+                  //               </span>
+                  //               <span
+                  //                 className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                  //                   comment.type === "objection"
+                  //                     ? "bg-red-100 text-red-800"
+                  //                     : comment.type === "suggestion"
+                  //                     ? "bg-blue-100 text-blue-800"
+                  //                     : comment.type === "complaint"
+                  //                     ? "bg-orange-100 text-orange-800"
+                  //                     : "bg-green-100 text-green-800"
+                  //                 }`}
+                  //               >
+                  //                 {comment.type.charAt(0).toUpperCase() +
+                  //                   comment.type.slice(1)}
+                  //               </span>
+                  //             </div>
+                  //             <span className="text-sm text-gray-500">
+                  //               {comment.date}
+                  //             </span>
+                  //           </div>
+                  //           <p className="text-gray-700">{comment.comment}</p>
+                  //           <div className="mt-2 text-sm text-gray-500">
+                  //             Status:{" "}
+                  //             <span className="font-medium text-yellow-600">
+                  //               Under Review
+                  //             </span>
+                  //           </div>
+                  //         </div>
+                  //       ))}
+                  //     </div>
+                  //   )}
+                  // </div>
+                )} */}
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Footer
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">CUSAP</h3>
-              <p className="text-gray-300">
-                Committee for University Student Affairs and Progress. Dedicated to student welfare and university development.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
-                <li><a href="#committee" className="hover:text-white transition-colors">Committee</a></li>
-                <li><a href="#events" className="hover:text-white transition-colors">Events</a></li>
-                <li><a href="#feedback" className="hover:text-white transition-colors">Feedback</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Contact Info</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li>Email: cusap@university.edu</li>
-                <li>Phone: (555) 123-4567</li>
-                <li>Office: Student Affairs Building, Room 205</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Office Hours</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li>Monday - Friday: 9:00 AM - 5:00 PM</li>
-                <li>Saturday: 10:00 AM - 2:00 PM</li>
-                <li>Sunday: Closed</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-            <p>&copy; 2024 CUSAP Committee. All rights reserved.</p>
-          </div>
-        </div>
-      </footer> */}
     </div>
   );
 };
