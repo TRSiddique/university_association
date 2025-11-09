@@ -1,5 +1,4 @@
-import React from "react";
-import { FaTrash, FaEdit, FaEye } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 

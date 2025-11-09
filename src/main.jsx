@@ -1,14 +1,17 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "./App.jsx";
 import AddMember from "./components/AddMember";
-import Members from "./components/Members";
 import MemberDetails from "./components/MemberDetails";
-import UpdatedMember from "./components/UpdatedMember";
+import Members from "./components/Members";
 import NotFound from "./components/NotFound";
-import Home from './Home/Home';
+import UpdatedMember from "./components/UpdatedMember";
+import Home from "./Home/Home";
+import "./index.css";
+import AddNews from "./News/AddNews";
+import News from "./News/News";
+import NewsDetail from "./News/NewsDetail";
 
 const router = createBrowserRouter([
   {
@@ -19,20 +22,23 @@ const router = createBrowserRouter([
         path: "/addMember",
         element: <AddMember></AddMember>,
       },
-       {
+      {
         path: "/",
         element: <Home></Home>,
       },
       {
         path: "/members",
         element: <Members></Members>,
-        loader: () => fetch("https://university-association-backend-1.onrender.com/member"),
+        loader: () =>
+          fetch("https://university-association-backend-1.onrender.com/member"),
       },
       {
         path: "/members/:id",
         element: <MemberDetails></MemberDetails>,
         loader: async ({ params }) => {
-          const res = await fetch(`https://university-association-backend-1.onrender.com/member/${params.id}`);
+          const res = await fetch(
+            `https://university-association-backend-1.onrender.com/member/${params.id}`
+          );
           return res.json();
         },
       },
@@ -40,9 +46,24 @@ const router = createBrowserRouter([
         path: "updateMember/:id",
         element: <UpdatedMember></UpdatedMember>,
         loader: async ({ params }) => {
-          const res = await fetch(`https://university-association-backend-1.onrender.com/member/${params.id}`);
+          const res = await fetch(
+            `https://university-association-backend-1.onrender.com/member/${params.id}`
+          );
           return res.json();
         },
+      },
+      {
+        path: "/news",
+        element: <News></News>,
+      },
+      {
+        path: "/news/:id",
+        element: <NewsDetail></NewsDetail>,
+      },
+      {
+        path:"/addnews" ,
+        element:<AddNews></AddNews>
+
       },
       {
         path: "*",

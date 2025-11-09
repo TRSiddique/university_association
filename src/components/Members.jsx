@@ -2,7 +2,7 @@ import React from 'react';
 import { useLoaderData, useNavigate } from "react-router-dom";
 import MembersCard from './MembersCard';
 import { FaPlus, FaFilter, FaSearch } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // ========== ADD: useEffect import ==========
 
 const Members = () => {
   const loadedMembers = useLoaderData();
@@ -16,6 +16,17 @@ const Members = () => {
     session: ''
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // ========== ADD: Loading state ==========
+
+  // ========== ADD: useEffect to handle loading state ==========
+  useEffect(() => {
+    // Simulate loading delay to show loading state
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1 second loading delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Get unique values for filter dropdowns
   const bloodGroups = [...new Set(loadedMembers.map(member => member.blood).filter(Boolean))];
@@ -64,6 +75,27 @@ const Members = () => {
   };
 
   const hasActiveFilters = filters.blood || filters.union || filters.department || filters.session || searchTerm;
+
+  // ========== ADD: Loading Component ==========
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 lg:p-6">
+        <div className="text-center">
+          {/* Loading Spinner */}
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          
+          {/* Loading Text */}
+          <h2 className="text-xl font-semibold text-gray-700 mb-2">Loading Members</h2>
+          <p className="text-gray-500">Please wait while we fetch the member data...</p>
+          
+          {/* Optional: Loading Progress Bar */}
+          <div className="w-64 h-2 bg-gray-200 rounded-full mt-4 mx-auto overflow-hidden">
+            <div className="h-full bg-blue-600 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 lg:p-6">

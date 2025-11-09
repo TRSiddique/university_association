@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-   const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
     name: "",
     email: "",
@@ -104,45 +102,44 @@ const Home = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-const handleCommentSubmit = (e) => {
-  e.preventDefault();
-  if (newComment.name && newComment.comment) {
-    const commentToAdd = {
-      ...newComment,
-      id: Date.now(),
-      date: new Date().toLocaleDateString(),
-      status: "pending",
-    };
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    if (newComment.name && newComment.comment) {
+      const commentToAdd = {
+        ...newComment,
+        id: Date.now(),
+        date: new Date().toLocaleDateString(),
+        status: "pending",
+      };
 
-    // ✅ Send to database
-    fetch("https://university-association-backend-1.onrender.com/comment", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(commentToAdd),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Saved to DB:", data);
-        if (data.insertedId) {
-          alert("Thank you! Your comment has been submitted successfully.");
-        }
+      // ✅ Send to database
+      fetch("https://university-association-backend-1.onrender.com/comment", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(commentToAdd),
       })
-      .catch((err) => console.error("Error saving comment:", err));
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Saved to DB:", data);
+          if (data.insertedId) {
+            alert("Thank you! Your comment has been submitted successfully.");
+          }
+        })
+        .catch((err) => console.error("Error saving comment:", err));
 
-    // Reset UI instantly (optional)
-    setComments([commentToAdd, ...comments]);
-    setNewComment({
-      name: "",
-      email: "",
-      mobile: "",
-      comment: "",
-      type: "comment",
-    });
-  }
-};
-
+      // Reset UI instantly (optional)
+      setComments([commentToAdd, ...comments]);
+      setNewComment({
+        name: "",
+        email: "",
+        mobile: "",
+        comment: "",
+        type: "comment",
+      });
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -164,7 +161,7 @@ const handleCommentSubmit = (e) => {
       </header>
 
       {/* Hero Slider Section */}
-      <section className="relative h-96 overflow-hidden">
+      <section className="relative h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] overflow-hidden">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -180,11 +177,13 @@ const handleCommentSubmit = (e) => {
               }}
             >
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <h2 className="text-4xl text-black font-bold mb-4">
+                <div className="text-center text-white px-4 sm:px-6 max-w-4xl mx-auto">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 text-white drop-shadow-lg">
                     {slide.title}
                   </h2>
-                  <p className="text-xl text-black">{slide.description}</p>
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white drop-shadow-md max-w-2xl mx-auto">
+                    {slide.description}
+                  </p>
                 </div>
               </div>
             </div>
@@ -194,10 +193,11 @@ const handleCommentSubmit = (e) => {
         {/* Slider Controls */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition-all"
+          className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-1 sm:p-2 transition-all"
+          aria-label="Previous slide"
         >
           <svg
-            className="w-6 h-6"
+            className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -212,10 +212,11 @@ const handleCommentSubmit = (e) => {
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition-all"
+          className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-1 sm:p-2 transition-all"
+          aria-label="Next slide"
         >
           <svg
-            className="w-6 h-6"
+            className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -230,14 +231,15 @@ const handleCommentSubmit = (e) => {
         </button>
 
         {/* Slide Indicators */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 sm:space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all ${
                 index === currentSlide ? "bg-white" : "bg-white bg-opacity-50"
               }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
@@ -291,7 +293,8 @@ const handleCommentSubmit = (e) => {
                     Student Welfare
                   </h3>
                   <p className="text-sm text-gray-600">
-                   Supports students of Pekua studying at the University of Chittagong through guidance and cooperation.
+                    Supports students of Pekua studying at the University of
+                    Chittagong through guidance and cooperation.
                   </p>
                 </div>
                 <div className="text-center">
@@ -314,7 +317,8 @@ const handleCommentSubmit = (e) => {
                     Community Building
                   </h3>
                   <p className="text-sm text-gray-600">
-                   Strengthens the bond among members to create a united and active student network.
+                    Strengthens the bond among members to create a united and
+                    active student network.
                   </p>
                 </div>
                 <div className="text-center">
@@ -337,7 +341,8 @@ const handleCommentSubmit = (e) => {
                     Social Engagement
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Organizes educational, cultural, and welfare activities for positive social impact.
+                    Organizes educational, cultural, and welfare activities for
+                    positive social impact.
                   </p>
                 </div>
               </div>
@@ -379,7 +384,9 @@ const handleCommentSubmit = (e) => {
                 <p className="text-blue-600 font-medium mb-4">
                   {member.position}
                 </p>
-                <p className="text-gray-700 text-justify leading-relaxed">{member.speech}</p>
+                <p className="text-gray-700 text-justify leading-relaxed">
+                  {member.speech}
+                </p>
               </div>
             ))}
           </div>
@@ -556,7 +563,6 @@ const handleCommentSubmit = (e) => {
                     </div>
 
                     <div>
-                
                       {/* <label className="block text-sm font-medium text-gray-700 mb-2">
                         Feedback Type *
                       </label> */}
@@ -598,7 +604,7 @@ const handleCommentSubmit = (e) => {
                     </button>
                   </form>
                 )}
-{/* <CommentsList></CommentsList> */}
+                {/* <CommentsList></CommentsList> */}
                 {/* {activeTab === "comments" && (
                   // <div>
                   //   <h3 className="text-xl font-semibold mb-4">
