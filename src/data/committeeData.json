@@ -1,0 +1,339 @@
+{
+  "currentCommittee": {
+    "academicYear": "2024-2025",
+    "members": [
+      {
+        "id": 1,
+        "name": "Mohammad Abdullah",
+        "position": "President",
+        "department": "Computer Science",
+        "session": "2020-21",
+        "mobile": "017XXXXXXXX",
+        "image": "/images/committee/president.jpg",
+        "priority": 1
+      },
+      {
+        "id": 2,
+        "name": "Fatima Begum",
+        "position": "Vice President",
+        "department": "Economics",
+        "session": "2020-21",
+        "mobile": "018XXXXXXXX",
+        "image": "/images/committee/vice-president.jpg",
+        "priority": 2
+      },
+      {
+        "id": 3,
+        "name": "Rahim Khan",
+        "position": "General Secretary",
+        "department": "Physics",
+        "session": "2021-22",
+        "mobile": "019XXXXXXXX",
+        "image": "/images/committee/secretary.jpg",
+        "priority": 3
+      },
+      {
+        "id": 4,
+        "name": "Ayesha Siddiqua",
+        "position": "Joint Secretary",
+        "department": "Chemistry",
+        "session": "2021-22",
+        "mobile": "017XXXXXXXX",
+        "image": "/images/committee/joint-secretary.jpg",
+        "priority": 4
+      },
+      {
+        "id": 5,
+        "name": "Kamal Hossain",
+        "position": "Treasurer",
+        "department": "Mathematics",
+        "session": "2020-21",
+        "mobile": "018XXXXXXXX",
+        "image": "/images/committee/treasurer.jpg",
+        "priority": 5
+      },
+      {
+        "id": 6,
+        "name": "Sabrina Akter",
+        "position": "Cultural Secretary",
+        "department": "English",
+        "session": "2022-23",
+        "mobile": "019XXXXXXXX",
+        "image": "/images/committee/cultural.jpg",
+        "priority": 6
+      },
+      {
+        "id": 7,
+        "name": "Imran Hasan",
+        "position": "Sports Secretary",
+        "department": "Physical Education",
+        "session": "2021-22",
+        "mobile": "017XXXXXXXX",
+        "image": "/images/committee/sports.jpg",
+        "priority": 7
+      },
+      {
+        "id": 8,
+        "name": "Nusrat Jahan",
+        "position": "Women's Affairs Secretary",
+        "department": "Sociology",
+        "session": "2022-23",
+        "mobile": "018XXXXXXXX",
+        "image": "/images/committee/womens-affairs.jpg",
+        "priority": 8
+      },
+      {
+        "id": 9,
+        "name": "Sohel Rana",
+        "position": "Publicity Secretary",
+        "department": "Mass Communication",
+        "session": "2021-22",
+        "mobile": "019XXXXXXXX",
+        "image": "/images/committee/publicity.jpg",
+        "priority": 9
+      },
+      {
+        "id": 10,
+        "name": "Tania Ahmed",
+        "position": "Academic Secretary",
+        "department": "Biology",
+        "session": "2020-21",
+        "mobile": "017XXXXXXXX",
+        "image": "/images/committee/academic.jpg",
+        "priority": 10
+      },
+      {
+  "id": 11,
+  "name": "Rafiq Hossain",
+  "position": "Cultural Secretary",
+  "department": "English",
+  "session": "2021-22",
+  "mobile": "018XXXXXXXX",
+  "image": "/images/committee/cultural.jpg",
+  "priority": 11
+},
+{
+  "id": 12,
+  "name": "Nusrat Jahan",
+  "position": "Sports Secretary",
+  "department": "Physical Education",
+  "session": "2022-23",
+  "mobile": "019XXXXXXXX",
+  "image": "/images/committee/sports.jpg",
+  "priority": 12
+},
+{
+  "id": 13,
+  "name": "Kamal Uddin",
+  "position": "Executive Member",
+  "department": "Economics",
+  "session": "2021-22",
+  "mobile": "017XXXXXXXX",
+  "image": "/images/committee/exec1.jpg",
+  "priority": 13
+},
+{
+  "id": 14,
+  "name": "Fatema Akter",
+  "position": "Executive Member",
+  "department": "Mathematics",
+  "session": "2020-21",
+  "mobile": "016XXXXXXXX",
+  "image": "/images/committee/exec2.jpg",
+  "priority": 14
+},
+{
+  "id": 15,
+  "name": "Arif Rahman",
+  "position": "Executive Member",
+  "department": "Physics",
+  "session": "2022-23",
+  "mobile": "018XXXXXXXX",
+  "image": "/images/committee/exec3.jpg",
+  "priority": 15
+},
+{
+  "id": 16,
+  "name": "Sultana Begum",
+  "position": "Executive Member",
+  "department": "Chemistry",
+  "session": "2021-22",
+  "mobile": "019XXXXXXXX",
+  "image": "/images/committee/exec4.jpg",
+  "priority": 16
+},
+{
+  "id": 17,
+  "name": "Hasan Mahmud",
+  "position": "Executive Member",
+  "department": "Computer Science",
+  "session": "2022-23",
+  "mobile": "017XXXXXXXX",
+  "image": "/images/committee/exec5.jpg",
+  "priority": 17
+},
+{
+  "id": 18,
+  "name": "Shirin Akhter",
+  "position": "Executive Member",
+  "department": "Sociology",
+  "session": "2020-21",
+  "mobile": "016XXXXXXXX",
+  "image": "/images/committee/exec6.jpg",
+  "priority": 18
+},
+{
+  "id": 19,
+  "name": "Alamgir Kabir",
+  "position": "Executive Member",
+  "department": "Political Science",
+  "session": "2021-22",
+  "mobile": "018XXXXXXXX",
+  "image": "/images/committee/exec7.jpg",
+  "priority": 19
+},
+{
+  "id": 20,
+  "name": "Rumana Islam",
+  "position": "Executive Member",
+  "department": "History",
+  "session": "2022-23",
+  "mobile": "019XXXXXXXX",
+  "image": "/images/committee/exec8.jpg",
+  "priority": 20
+},
+{
+  "id": 21,
+  "name": "Jahangir Alam",
+  "position": "Executive Member",
+  "department": "Bangla",
+  "session": "2021-22",
+  "mobile": "017XXXXXXXX",
+  "image": "/images/committee/exec9.jpg",
+  "priority": 21
+},
+{
+  "id": 22,
+  "name": "Nasima Khatun",
+  "position": "Executive Member",
+  "department": "Philosophy",
+  "session": "2020-21",
+  "mobile": "016XXXXXXXX",
+  "image": "/images/committee/exec10.jpg",
+  "priority": 22
+},
+{
+  "id": 23,
+  "name": "Rubel Miah",
+  "position": "Executive Member",
+  "department": "Geography",
+  "session": "2022-23",
+  "mobile": "018XXXXXXXX",
+  "image": "/images/committee/exec11.jpg",
+  "priority": 23
+},
+{
+  "id": 24,
+  "name": "Shahida Parvin",
+  "position": "Executive Member",
+  "department": "Statistics",
+  "session": "2021-22",
+  "mobile": "019XXXXXXXX",
+  "image": "/images/committee/exec12.jpg",
+  "priority": 24
+},
+{
+  "id": 25,
+  "name": "Zakir Hossain",
+  "position": "Executive Member",
+  "department": "Management",
+  "session": "2022-23",
+  "mobile": "017XXXXXXXX",
+  "image": "/images/committee/exec13.jpg",
+  "priority": 25
+},
+{
+  "id": 26,
+  "name": "Sabina Yasmin",
+  "position": "Executive Member",
+  "department": "Accounting",
+  "session": "2020-21",
+  "mobile": "016XXXXXXXX",
+  "image": "/images/committee/exec14.jpg",
+  "priority": 26
+},
+{
+  "id": 27,
+  "name": "Monir Hossain",
+  "position": "Executive Member",
+  "department": "Marketing",
+  "session": "2021-22",
+  "mobile": "018XXXXXXXX",
+  "image": "/images/committee/exec15.jpg",
+  "priority": 27
+},
+{
+  "id": 28,
+  "name": "Farida Akter",
+  "position": "Executive Member",
+  "department": "Finance",
+  "session": "2022-23",
+  "mobile": "019XXXXXXXX",
+  "image": "/images/committee/exec16.jpg",
+  "priority": 28
+},
+{
+  "id": 29,
+  "name": "Shahin Ahmed",
+  "position": "Executive Member",
+  "department": "Law",
+  "session": "2021-22",
+  "mobile": "017XXXXXXXX",
+  "image": "/images/committee/exec17.jpg",
+  "priority": 29
+},
+{
+  "id": 30,
+  "name": "Anjuman Ara",
+  "position": "Executive Member",
+  "department": "Islamic Studies",
+  "session": "2020-21",
+  "mobile": "016XXXXXXXX",
+  "image": "/images/committee/exec18.jpg",
+  "priority": 30
+}
+    ]
+  },
+  "previousCommittees": [
+    {
+      "academicYear": "2023-2024",
+      "president": "Abdul Karim",
+      "generalSecretary": "Moriom Begum",
+      "totalMembers": 35
+    },
+    {
+      "academicYear": "2022-2023",
+      "president": "Rafiq Islam",
+      "generalSecretary": "Shamima Akter",
+      "totalMembers": 32
+    },
+    {
+      "academicYear": "2021-2022",
+      "president": "Salam Khan",
+      "generalSecretary": "Jhorna Begum",
+      "totalMembers": 30
+    },
+    {
+      "academicYear": "2020-2021",
+      "president": "Farid Ahmed",
+      "generalSecretary": "Nasrin Sultana",
+      "totalMembers": 28
+    },
+    {
+      "academicYear": "2019-2020",
+      "president": "Jahangir Alam",
+      "generalSecretary": "Rokeya Khatun",
+      "totalMembers": 25
+    }
+  ]
+}

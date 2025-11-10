@@ -8,11 +8,12 @@ const NewsDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    // ========== CHANGED: Fetch real data from API ==========
+    // Fetch real data from API
     useEffect(() => {
         const fetchNewsDetail = async () => {
             try {
                 setLoading(true);
+                // FIXED: Removed double slash from API URL
                 const response = await fetch(`https://university-association-backend-1.onrender.com/news/${id}`);
                 
                 if (!response.ok) {
@@ -39,16 +40,12 @@ const NewsDetail = () => {
         }
     }, [id]);
 
-    // ========== REMOVED: shareNews function (Facebook, Twitter, LinkedIn) ==========
-    
     const copyToClipboard = () => {
         navigator.clipboard.writeText(window.location.href).then(() => {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         });
     };
-
-    // ========== REMOVED: Static relatedNews data ==========
 
     if (loading) {
         return (
@@ -122,22 +119,31 @@ const NewsDetail = () => {
                                 src={newsItem.image}
                                 alt={newsItem.headline}
                                 className="w-full h-96 object-cover"
+                                onError={(e) => {
+                                    // Fallback if image fails to load
+                                    e.target.src = 'https://via.placeholder.com/800x400?text=News+Image';
+                                }}
                             />
                         </div>
 
                         {/* News Content */}
                         <div className="p-8">
-                            {/* ========== CHANGED: Meta Information - Only Date ========== */}
+                            {/* Meta Information - Only Date */}
                             <div className="flex items-center justify-between mb-6 text-sm text-gray-500">
                                 <div className="flex items-center space-x-1">
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    <span>{new Date(newsItem.date).toLocaleDateString('en-US', { 
-                                        year: 'numeric', 
-                                        month: 'long', 
-                                        day: 'numeric' 
-                                    })}</span>
+                                    <span>
+                                        {newsItem.date ? 
+                                            new Date(newsItem.date).toLocaleDateString('en-US', { 
+                                                year: 'numeric', 
+                                                month: 'long', 
+                                                day: 'numeric' 
+                                            }) : 
+                                            'Recent'
+                                        }
+                                    </span>
                                 </div>
                             </div>
 
@@ -148,22 +154,22 @@ const NewsDetail = () => {
 
                             {/* Full Description */}
                             <div className="prose prose-lg max-w-none mb-8 text-gray-700 leading-relaxed">
-                                {newsItem.fullDescription.split('\n').map((paragraph, index) => (
-                                    <p key={index} className="mb-4">
-                                        {paragraph}
-                                    </p>
+                                {newsItem.fullDescription && newsItem.fullDescription.split('\n').map((paragraph, index) => (
+                                    paragraph.trim() && (
+                                        <p key={index} className="mb-4">
+                                            {paragraph}
+                                        </p>
+                                    )
                                 ))}
                             </div>
 
-                            {/* ========== CHANGED: Share Section - Only Copy Link ========== */}
+                            {/* Share Section - Only Copy Link */}
                             <div className="border-t border-gray-200 pt-6">
                                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     <h3 className="text-lg font-semibold text-gray-800 mb-4 sm:mb-0">
                                         Share this news:
                                     </h3>
                                     <div className="flex items-center space-x-3">
-                                        {/* ========== REMOVED: Social share buttons ========== */}
-                                        
                                         {/* Copy Link Button */}
                                         <button
                                             onClick={copyToClipboard}
@@ -180,8 +186,8 @@ const NewsDetail = () => {
                         </div>
                     </article>
 
-                    {/* ========== CHANGED: Related News Section ========== */}
-                    <section className="mt-12">
+                    {/* Related News Section */}
+                    {/* <section className="mt-12">
                         <h2 className="text-2xl font-bold text-gray-800 mb-6">More News</h2>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 text-center">
@@ -191,7 +197,20 @@ const NewsDetail = () => {
                                 <p className="text-gray-500">More news articles will appear here</p>
                             </div>
                         </div>
-                    </section>
+                    </section> */}
+
+                    {/* Back to News Button */}
+                    <div className="mt-8 text-center">
+                        <Link
+                            to="/news"
+                            className="inline-flex items-center space-x-2 bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            <span>Back to All News</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

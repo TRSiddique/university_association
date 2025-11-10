@@ -81,20 +81,7 @@ const News = () => {
                     </p>
                 </div>
 
-                {/* Action Bar - Only Add News Button */}
-                <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <div className="flex justify-end">
-                        <Link
-                            to="/addnews"
-                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-2"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span>Add News</span>
-                        </Link>
-                    </div>
-                </div>
+               
 
                 {/* News Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -134,7 +121,20 @@ const News = () => {
                         </Link>
                     ))}
                 </div>
-
+ {/* Action Bar - Only Add News Button */}
+                <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <div className="flex justify-end">
+                        <Link
+                            to="/addnews"
+                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-2"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>Add News</span>
+                        </Link>
+                    </div>
+                </div>
                 {/* Empty State */}
                 {news.length === 0 && (
                     <div className="text-center py-12">

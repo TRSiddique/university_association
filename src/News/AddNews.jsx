@@ -7,12 +7,15 @@ const AddNews = () => {
         headline: '',
         shortDescription: '',
         fullDescription: '',
-        image: '' // ========== CHANGE: This will now store URL string, not base64 ==========
+        image: ''
     });
     const [imagePreview, setImagePreview] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
-    const [selectedFile, setSelectedFile] = useState(null); // ========== ADD: Store file object ==========
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    // ImageBB API Key
+    const IMGBB_API_KEY = '32006f2a50e2265ea475805d6b074bf3';
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -51,10 +54,10 @@ const AddNews = () => {
                 return;
             }
 
-            // ========== CHANGE: Create preview without storing base64 ==========
+            // Create preview
             const previewUrl = URL.createObjectURL(file);
             setImagePreview(previewUrl);
-            setSelectedFile(file); // Store the file for later upload
+            setSelectedFile(file);
 
             // Clear image error
             if (errors.image) {
@@ -87,7 +90,7 @@ const AddNews = () => {
             newErrors.fullDescription = 'Full description should be at least 50 characters long';
         }
 
-        if (!selectedFile) { // ========== CHANGE: Check selectedFile instead of formData.image ==========
+        if (!selectedFile) {
             newErrors.image = 'Please select an image';
         }
 
@@ -95,7 +98,6 @@ const AddNews = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    // ========== CHANGE: COMPLETELY REPLACE handleSubmit function ==========
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -108,35 +110,42 @@ const AddNews = () => {
         try {
             let imageUrl = '';
 
-            // Step 1: Upload image file if selected
+            // Step 1: Upload image to ImageBB if selected
             if (selectedFile) {
-                const uploadFormData = new FormData();
-                uploadFormData.append('file', selectedFile);
+                const imageBBFormData = new FormData();
+                imageBBFormData.append('image', selectedFile);
 
-                const uploadResponse = await fetch('https://university-association-backend-1.onrender.com/upload', {
+                console.log('Uploading to ImageBB...');
+
+                const imageBBResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
                     method: 'POST',
-                    body: uploadFormData, // No headers for FormData
+                    body: imageBBFormData,
                 });
 
-                const uploadResult = await uploadResponse.json();
+                const imageBBResult = await imageBBResponse.json();
                 
-                if (!uploadResponse.ok) {
-                    throw new Error(uploadResult.message || 'Image upload failed');
+                console.log('ImageBB Response:', imageBBResult);
+
+                if (!imageBBResponse.ok || !imageBBResult.success) {
+                    throw new Error(imageBBResult.error?.message || 'Image upload to ImageBB failed');
                 }
 
-                imageUrl = uploadResult.imageUrl;
+                // Get the URL from ImageBB response
+                imageUrl = imageBBResult.data.url;
+                console.log('Image uploaded to ImageBB:', imageUrl);
             }
 
-            // Step 2: Prepare and save news data with image URL
+            // Step 2: Prepare and save news data with ImageBB URL
             const newsData = {
                 headline: formData.headline,
                 shortDescription: formData.shortDescription,
                 fullDescription: formData.fullDescription,
-                image: imageUrl // ========== CHANGE: Store URL string, not base64 ==========
+                image: imageUrl
             };
 
-            console.log('Saving news with image URL:', newsData);
+            console.log('Saving news with ImageBB URL:', newsData);
 
+            // Step 3: Save news to your backend (fixed double slash)
             const response = await fetch('https://university-association-backend-1.onrender.com/news', {
                 method: 'POST',
                 headers: {
@@ -152,7 +161,7 @@ const AddNews = () => {
             }
 
             if (result.success) {
-                alert('News added successfully!');
+                alert('News added successfully with ImageBB hosting!');
                 navigate('/news');
             } else {
                 throw new Error(result.message || 'Failed to save news');
@@ -167,10 +176,24 @@ const AddNews = () => {
     };
 
     const handleCancel = () => {
+        // Clean up the object URL to prevent memory leaks
+        if (imagePreview) {
+            URL.revokeObjectURL(imagePreview);
+        }
+        
         if (window.confirm('Are you sure you want to cancel? All unsaved changes will be lost.')) {
             navigate('/news');
         }
     };
+
+    // Clean up object URL when component unmounts
+    useState(() => {
+        return () => {
+            if (imagePreview) {
+                URL.revokeObjectURL(imagePreview);
+            }
+        };
+    }, [imagePreview]);
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -182,8 +205,6 @@ const AddNews = () => {
 
                 <div className="max-w-4xl mx-auto">
                     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
-                        {/* Headline, Short Description, Full Description fields remain SAME */}
-                        
                         {/* Headline */}
                         <div className="mb-6">
                             <label htmlFor="headline" className="block text-sm font-medium text-gray-700 mb-2">
@@ -247,7 +268,7 @@ const AddNews = () => {
                             )}
                         </div>
 
-                        {/* Image Upload - NO CHANGES needed in JSX */}
+                        {/* Image Upload */}
                         <div className="mb-6">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 News Image *
@@ -271,6 +292,7 @@ const AddNews = () => {
                                             </svg>
                                             <span className="text-blue-600 font-medium">Click to upload image</span>
                                             <p className="text-sm text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
+                                            {/* <p className="text-xs text-green-600 mt-1">Images will be hosted on ImageBB</p> */}
                                         </label>
                                     </div>
                                     {errors.image && (
@@ -294,7 +316,7 @@ const AddNews = () => {
                             </div>
                         </div>
 
-                        {/* Form Actions - NO CHANGES */}
+                        {/* Form Actions */}
                         <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
                             <button
                                 type="button"

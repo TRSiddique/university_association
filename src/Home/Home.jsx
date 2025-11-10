@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -10,7 +12,7 @@ const Home = () => {
     type: "comment",
   });
   const [activeTab, setActiveTab] = useState("about");
-
+  const navigate = useNavigate();
   // Sample slides data
   const slides = [
     {
@@ -113,7 +115,7 @@ const Home = () => {
       };
 
       // ✅ Send to database
-      fetch("https://university-association-backend-1.onrender.com/comment", {
+      fetch("https://university-association-backend-1.onrender.com//comment", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -350,7 +352,15 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+{/* Join With Us Button after About Section */}
+<div className="text-center py-8 bg-white">
+  <button
+    onClick={() => navigate('/addMember')}
+    className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
+  >
+    Join With CUSAP
+  </button>
+</div>
       {/* Committee Members Section */}
       <section id="committee" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -392,7 +402,15 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+{/* See Executive Committee Button after Committee Section */}
+<div className="text-center py-8 bg-gray-50">
+  <button
+    onClick={() => navigate('/committee')}
+    className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
+  >
+    See Executive Committee
+  </button>
+</div>
       {/* Events Section */}
       <section id="events" className="py-16 bg-white">
         <div className="container mx-auto px-4">

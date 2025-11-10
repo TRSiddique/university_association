@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
+import Committee from "./Committee/Committee.jsx";
 import AddMember from "./components/AddMember";
 import MemberDetails from "./components/MemberDetails";
 import Members from "./components/Members";
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
         path:"/addnews" ,
         element:<AddNews></AddNews>
 
+      },
+      {
+        path:"/committee",
+        element:<Committee></Committee>
       },
       {
         path: "*",
