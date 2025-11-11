@@ -1,0 +1,146 @@
+{
+  "photoAlbums": [
+    {
+      "id": 1,
+      "title": "CUSAP Foundation Day 2024",
+      "date": "2024-01-15",
+      "description": "Celebrating the establishment of CUSAP with cultural programs and member gatherings",
+      "coverImage": "https://images.unsplash.com/photo-1761839257046-84e95464cc52?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=600",
+      "totalPhotos": 24,
+      "photos": [
+        "https://images.unsplash.com/photo-1761839258671-6495fdc188b3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyOXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=600",
+        "https://plus.unsplash.com/premium_photo-1759139845043-68e6cf57f66f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzMXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=600",
+        "https://images.unsplash.com/photo-1761839257287-3030c9300ece?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNnx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=600",
+        "https://images.unsplash.com/photo-1761839257287-3030c9300ece?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNnx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=600",
+        "https://images.unsplash.com/photo-1761839257287-3030c9300ece?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNnx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=600"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Annual Picnic 2023",
+      "date": "2023-12-20",
+      "description": "Fun-filled day at the beach with games, food, and team activities",
+      "coverImage": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      "totalPhotos": 18,
+      "photos": [
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=400&h=300&fit=crop"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Blood Donation Camp",
+      "date": "2023-11-10",
+      "description": "Successful blood donation drive in collaboration with local hospital",
+      "coverImage": "https://images.unsplash.com/photo-1584467735871-8db9ac8d0286?w=400&h=300&fit=crop",
+      "totalPhotos": 15,
+      "photos": [
+        "https://images.unsplash.com/photo-1584467735871-8db9ac8d0286?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Sports Competition 2023",
+      "date": "2023-10-05",
+      "description": "Annual sports event featuring cricket, football, and athletics",
+      "coverImage": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=300&fit=crop",
+      "totalPhotos": 32,
+      "photos": [
+        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Freshers Welcome 2023",
+      "date": "2023-09-01",
+      "description": "Warm welcome to new students with cultural performances and orientation",
+      "coverImage": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop",
+      "totalPhotos": 28,
+      "photos": [
+        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400&h=300&fit=crop"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Academic Seminar 2023",
+      "date": "2023-08-15",
+      "description": "Educational seminar on career opportunities and higher studies",
+      "coverImage": "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=400&h=300&fit=crop",
+      "totalPhotos": 12,
+      "photos": [
+        "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=300&fit=crop"
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "id": 1,
+      "title": "CUSAP Foundation Day Highlights",
+      "description": "Watch the memorable moments from our foundation day celebration",
+      "youtubeId": "dQw4w9WgXcQ",
+      "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+      "duration": "2:45",
+      "views": "1.2K",
+      "uploadDate": "2024-01-20"
+    },
+    {
+      "id": 2,
+      "title": "Annual Picnic 2023 - Fun Moments",
+      "description": "Relive the exciting moments from our annual picnic",
+      "youtubeId": "dQw4w9WgXcQ",
+      "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+      "duration": "3:15",
+      "views": "2.1K",
+      "uploadDate": "2023-12-25"
+    },
+    {
+      "id": 3,
+      "title": "Blood Donation Camp Documentary",
+      "description": "Documentary showcasing our successful blood donation initiative",
+      "youtubeId": "dQw4w9WgXcQ",
+      "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+      "duration": "5:30",
+      "views": "3.4K",
+      "uploadDate": "2023-11-15"
+    },
+    {
+      "id": 4,
+      "title": "Sports Competition Final Match",
+      "description": "Highlights from the thrilling final match of our sports competition",
+      "youtubeId": "dQw4w9WgXcQ",
+      "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+      "duration": "4:20",
+      "views": "1.8K",
+      "uploadDate": "2023-10-10"
+    },
+    {
+      "id": 5,
+      "title": "Freshers Welcome Cultural Night",
+      "description": "Cultural performances from our freshers welcome program",
+      "youtubeId": "dQw4w9WgXcQ",
+      "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+      "duration": "6:45",
+      "views": "2.5K",
+      "uploadDate": "2023-09-05"
+    },
+    {
+      "id": 6,
+      "title": "Academic Seminar Keynote Speech",
+      "description": "Keynote speech from our guest speaker at the academic seminar",
+      "youtubeId": "I9esQ0DZh9LCNxwQ",
+      "thumbnail": "https://images.unsplash.com/photo-1761839257287-3030c9300ece?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNnx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=600",
+      "duration": "15:30",
+      "views": "4.2K",
+      "uploadDate": "2023-08-20"
+    }
+  ]
+}

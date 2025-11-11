@@ -8,6 +8,7 @@ import MemberDetails from "./components/MemberDetails";
 import Members from "./components/Members";
 import NotFound from "./components/NotFound";
 import UpdatedMember from "./components/UpdatedMember";
+import Gallery from "./Gallery/Gallery.jsx";
 import Home from "./Home/Home";
 import "./index.css";
 import AddNews from "./News/AddNews";
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
         path:"/committee",
         element:<Committee></Committee>
       },
+      {
+    path: "/gallery",
+    element: <Gallery></Gallery>,
+},
       {
         path: "*",
         element: <NotFound></NotFound>,

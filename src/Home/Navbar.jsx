@@ -11,7 +11,7 @@ const Navbar = () => {
     { path: "/members", label: "Members" },
     { path: "/news", label: "News" },
     { path: "/committee", label: "Committee" },
-    { path: "/about", label: "About Us" },
+    { path: "/gallery", label: "Gallery" },
   ];
 
   return (
@@ -22,12 +22,17 @@ const Navbar = () => {
 
       <div className="w-[90%] mx-auto flex justify-between items-center py-4">
       <Link
-  to="/"
-  className="flex items-center gap-2 text-2xl font-bold text-white drop-shadow-md hover:scale-105 transition-transform"
->
-  <img src={logo} alt="CUSAP Logo" className="w-10 h-10" />
-  <p>CUSAP</p>
-</Link>
+    to="/"
+    className="flex items-center gap-2 hover:scale-105 transition-transform"
+  >
+    <img src={logo} alt="CUSAP Logo" className="w-10 h-10" />
+    <div className="flex flex-col">
+      <p className="text-2xl font-bold text-white drop-shadow-md">CUSAP</p>
+      <p className="text-xs text-white drop-shadow-md">
+        Chittagong University Students Association of Pekua
+      </p>
+    </div>
+  </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6 text-white font-medium">
