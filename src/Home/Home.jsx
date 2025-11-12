@@ -18,14 +18,14 @@ const Home = () => {
     {
       id: 1,
       image:
-        "https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y292ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
+        "https://i.ibb.co.com/LzhmhYmk/472098526-122182541246054973-4624950372467519375-n.jpg",
       title: "Welcome to CUSAP",
       description: "Chittagong University Students Association of Pekua",
     },
     {
       id: 2,
       image:
-        "https://images.unsplash.com/photo-1558376939-7d6cb3025d5c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y292ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
+        "https://i.ibb.co.com/zhvyD0xk/471780972-122182121474054973-4391574690028891321-n.jpg",
       title: "Student Development",
       description:
         "Empowering students through various programs and initiatives",
@@ -33,7 +33,7 @@ const Home = () => {
     {
       id: 3,
       image:
-        "https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvdmVyfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
+        "https://i.ibb.co.com/35GpxcCV/496307778-122198842970054973-5902264986160171843-n.jpg",
       title: "Community Engagement",
       description:
         "Building strong connections within the university community",

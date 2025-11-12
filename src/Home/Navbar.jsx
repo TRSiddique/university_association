@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -12,6 +13,7 @@ const Navbar = () => {
     { path: "/news", label: "News" },
     { path: "/committee", label: "Committee" },
     { path: "/gallery", label: "Gallery" },
+    { path: "/publications", label: "Publications" },
   ];
 
   return (
@@ -79,6 +81,7 @@ const Navbar = () => {
           ))}
         </div>
       )}
+      
     </nav>
   );
 };

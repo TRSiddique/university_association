@@ -1,77 +1,66 @@
-import React, { useState } from 'react';
-import { X, Play } from 'lucide-react';
+import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState('photos');
+  const [photos, setPhotos] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const API_URL = 'https://university-association-backend-1.onrender.com'; // Your backend URL
 
-  // Sample data - replace with your actual image links and video IDs
-  const photos = [
-    {
-      id: 1,
-      url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800',
-      title: 'Annual Cultural Program 2024',
-      date: 'March 15, 2024'
-    },
-    {
-      id: 2,
-      url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800',
-      title: 'Sports Day Tournament',
-      date: 'February 20, 2024'
-    },
-    {
-      id: 3,
-      url: 'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=800',
-      title: 'Freshers Welcome',
-      date: 'January 10, 2024'
-    },
-    {
-      id: 4,
-      url: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800',
-      title: 'Study Workshop',
-      date: 'December 5, 2023'
-    },
-    {
-      id: 5,
-      url: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800',
-      title: 'Community Service',
-      date: 'November 18, 2023'
-    },
-    {
-      id: 6,
-      url: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800',
-      title: 'Independence Day Celebration',
-      date: 'March 26, 2024'
-    }
-  ];
+  // Fetch photos from backend
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        const response = await fetch(`${API_URL}/photos`);
+        if (!response.ok) throw new Error('Failed to fetch photos');
+        const data = await response.json();
+        setPhotos(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching photos:', err);
+      }
+    };
 
-  // YouTube video IDs - replace with your actual video IDs
-  const videos = [
-    {
-      id: 1,
-      videoId: 'fjOeJssZX_Q',
-      title: 'CUSAP Annual Program Highlights 2024',
-      date: 'March 20, 2024'
-    },
-    {
-      id: 2,
-      videoId: 'jNQXAC9IVRw',
-      title: 'Sports Day Full Coverage',
-      date: 'February 25, 2024'
-    },
-    {
-      id: 3,
-      videoId: '3JZ_D3ELwOQ',
-      title: 'Freshers Welcome Ceremony',
-      date: 'January 15, 2024'
-    },
-    {
-      id: 4,
-      videoId: 'kJQP7kiw5Fk',
-      title: 'Cultural Night Performance',
-      date: 'December 10, 2023'
+    const fetchVideos = async () => {
+      try {
+        const response = await fetch(`${API_URL}/videos`);
+        if (!response.ok) throw new Error('Failed to fetch videos');
+        const data = await response.json();
+        setVideos(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching videos:', err);
+      }
+    };
+
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([fetchPhotos(), fetchVideos()]);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  // Extract YouTube video ID from various URL formats
+  const extractYouTubeId = (url) => {
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /^([a-zA-Z0-9_-]{11})$/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
     }
-  ];
+    return url;
+  };
 
   const openImage = (photo) => {
     setSelectedImage(photo);
@@ -80,6 +69,33 @@ const Gallery = () => {
   const closeImage = () => {
     setSelectedImage(null);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-green-600 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600">Loading gallery...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-red-600">Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 py-16 px-4">
@@ -101,7 +117,7 @@ const Gallery = () => {
                   : 'text-gray-600 hover:text-green-600'
               }`}
             >
-              Photos
+              Photos ({photos.length})
             </button>
             <button
               onClick={() => setActiveTab('videos')}
@@ -111,62 +127,126 @@ const Gallery = () => {
                   : 'text-gray-600 hover:text-green-600'
               }`}
             >
-              Videos
+              Videos ({videos.length})
             </button>
           </div>
         </div>
 
         {/* Photo Gallery */}
         {activeTab === 'photos' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {photos.map((photo) => (
-              <div
-                key={photo.id}
-                className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl"
-                onClick={() => openImage(photo)}
-              >
-                <img
-                  src={photo.url}
-                  alt={photo.title}
-                  className="w-full h-64 object-cover transition-transform group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    <h3 className="font-bold text-lg mb-1">{photo.title}</h3>
-                    <p className="text-sm text-gray-200">{photo.date}</p>
-                  </div>
-                </div>
+          <div>
+            {photos.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-xl text-gray-600">No photos available yet.</p>
               </div>
-            ))}
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {photos.map((photo) => (
+                  <div
+                    key={photo._id}
+                    className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl"
+                    onClick={() => openImage(photo)}
+                  >
+                    <img
+                      src={photo.url}
+                      alt={photo.title || 'CUSAP Event'}
+                      className="w-full h-64 object-cover transition-transform group-hover:scale-110"
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <h3 className="font-bold text-lg mb-1">
+                          {photo.title || 'Untitled Event'}
+                        </h3>
+                        {photo.date && (
+                          <p className="text-sm text-gray-200">
+                            {new Date(photo.date).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+           
+{/* Join With Us Button after About Section */}
+<div className="text-center py-8 bg-white">
+  <button
+    onClick={() => navigate('/addGallery')}
+    className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
+  >
+    Add Photo/Video
+  </button>
+</div>
           </div>
         )}
 
         {/* Video Gallery */}
         {activeTab === 'videos' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {videos.map((video) => (
-              <div
-                key={video.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl"
-              >
-                <div className="relative pb-[56.25%] h-0">
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${video.videoId}`}
-                    title={video.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-lg text-gray-800 mb-2">
-                    {video.title}
-                  </h3>
-                  <p className="text-sm text-gray-600">{video.date}</p>
-                </div>
+          <div>
+            {videos.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-xl text-gray-600">No videos available yet.</p>
               </div>
-            ))}
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                {videos.map((video) => {
+                  const videoId = extractYouTubeId(video.youtubeUrl);
+                  return (
+                    <div
+                      key={video._id}
+                      className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl"
+                    >
+                      <div className="relative pb-[56.25%] h-0">
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full"
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title={video.title || 'CUSAP Video'}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">
+                          {video.title || 'Untitled Video'}
+                        </h3>
+                        {video.date && (
+                          <p className="text-sm text-gray-600">
+                            {new Date(video.date).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </p>
+                        )}
+                        {video.description && (
+                          <p className="text-sm text-gray-600 mt-2">
+                            {video.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {/* Join With Us Button after About Section */}
+<div className="text-center py-8 bg-white">
+  <button
+    onClick={() => navigate('/addGallery')}
+    className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
+  >
+    Add Photo/Video
+  </button>
+</div>
           </div>
         )}
 
@@ -177,7 +257,7 @@ const Gallery = () => {
             onClick={closeImage}
           >
             <button
-              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
               onClick={closeImage}
             >
               <X size={32} />
@@ -185,17 +265,34 @@ const Gallery = () => {
             <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
               <img
                 src={selectedImage.url}
-                alt={selectedImage.title}
+                alt={selectedImage.title || 'CUSAP Event'}
                 className="w-full h-auto rounded-lg shadow-2xl"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Found';
+                }}
               />
               <div className="text-white text-center mt-4">
-                <h3 className="text-2xl font-bold mb-2">{selectedImage.title}</h3>
-                <p className="text-gray-300">{selectedImage.date}</p>
+                <h3 className="text-2xl font-bold mb-2">
+                  {selectedImage.title || 'Untitled Event'}
+                </h3>
+                {selectedImage.date && (
+                  <p className="text-gray-300">
+                    {new Date(selectedImage.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </p>
+                )}
+                {selectedImage.description && (
+                  <p className="text-gray-300 mt-2">{selectedImage.description}</p>
+                )}
               </div>
             </div>
           </div>
         )}
       </div>
+    
     </div>
   );
 };

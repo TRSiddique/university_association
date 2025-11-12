@@ -1,4 +1,4 @@
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -40,22 +40,29 @@ const MembersCard = ({ member, members, setMembers }) => {
 
   return (
     <div className="p-0">
+      {/* REMOVED: Outer Link wrapper */}
       <div className="border-s-gray-500 rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-200 overflow-hidden">
         {/* Layout: vertical on small, horizontal on lg */}
-        <div className="flex flex-col h-100 lg:flex-row lg:h-64">
+        <div className="flex flex-col h-full lg:flex-row lg:h-64"> {/* FIXED: h-100 to h-full */}
           {/* Image */}
-          <figure className="w-full lg:w-1/2 h-40 lg:h-full overflow-hidden border-b lg:border-b-0 lg:border-r border-gray-200 rounded-t-xl lg:rounded-tl-xl lg:rounded-bl-xl">
-            <img
-              src={photo || "https://via.placeholder.com/150"}
-              alt={name}
-              className="p-2 rounded-xl lg:rounded-2xl w-full h-full object-cover"
-            />
-          </figure>
+          <Link to={`/members/${_id}`} className="w-full lg:w-1/2"> {/* ADDED: Link only on image */}
+            <figure className="w-full h-40 lg:h-full overflow-hidden border-b lg:border-b-0 lg:border-r border-gray-200 rounded-t-xl lg:rounded-tl-xl lg:rounded-bl-xl">
+              <img
+                src={photo || "https://via.placeholder.com/150"}
+                alt={name}
+                className="p-2 rounded-xl lg:rounded-2xl w-full h-full object-cover hover:scale-105 transition-transform"
+              />
+            </figure>
+          </Link>
 
           {/* Info */}
           <div className="p-4 flex-1 flex flex-col justify-between">
-            <div className="flex flex-col ">
-              <h3 className="text-lg text-black font-bold mb-1">{name}</h3>
+            <div className="flex flex-col">
+              <Link to={`/members/${_id}`}> {/* ADDED: Link on name for better UX */}
+                <h3 className="text-lg text-black font-bold mb-1 hover:text-green-600 transition-colors">
+                  {name}
+                </h3>
+              </Link>
               <p className="text-sm font-bold text-gray-600 mb-1">
                 Session: {session}
               </p>
@@ -70,7 +77,10 @@ const MembersCard = ({ member, members, setMembers }) => {
             {/* Action Buttons */}
             <div className="flex justify-end items-center space-x-4 mt-4 lg:mt-0">
               <button
-                onClick={() => handleDelete(_id)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event bubbling
+                  handleDelete(_id);
+                }}
                 className="bg-red-100 text-red-600 p-2 rounded-full hover:bg-red-500 hover:text-white transition-all shadow-md"
                 title="Delete Member"
               >
@@ -85,13 +95,13 @@ const MembersCard = ({ member, members, setMembers }) => {
                 <FaEdit size={18} />
               </Link>
 
-              <Link
+              {/* <Link
                 to={`/members/${_id}`}
                 className="bg-green-100 text-green-600 p-2 rounded-full hover:bg-green-500 hover:text-white transition-all shadow-md"
                 title="View Details"
               >
                 <FaEye size={18} />
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

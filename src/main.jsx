@@ -8,12 +8,14 @@ import MemberDetails from "./components/MemberDetails";
 import Members from "./components/Members";
 import NotFound from "./components/NotFound";
 import UpdatedMember from "./components/UpdatedMember";
+import AdminGallery from "./Gallery/AdminGallery.jsx";
 import Gallery from "./Gallery/Gallery.jsx";
 import Home from "./Home/Home";
 import "./index.css";
 import AddNews from "./News/AddNews";
 import News from "./News/News";
 import NewsDetail from "./News/NewsDetail";
+import Publication from './Publication/Publication';
 
 const router = createBrowserRouter([
   {
@@ -31,16 +33,13 @@ const router = createBrowserRouter([
       {
         path: "/members",
         element: <Members></Members>,
-        loader: () =>
-          fetch("https://university-association-backend-1.onrender.com/member"),
+        loader: () => fetch("https://university-association-backend-1.onrender.com/member")
       },
       {
         path: "/members/:id",
         element: <MemberDetails></MemberDetails>,
         loader: async ({ params }) => {
-          const res = await fetch(
-            `https://university-association-backend-1.onrender.com/member/${params.id}`
-          );
+          const res = await fetch(`https://university-association-backend-1.onrender.com/member/${params.id}`);
           return res.json();
         },
       },
@@ -48,9 +47,7 @@ const router = createBrowserRouter([
         path: "updateMember/:id",
         element: <UpdatedMember></UpdatedMember>,
         loader: async ({ params }) => {
-          const res = await fetch(
-            `https://university-association-backend-1.onrender.com/member/${params.id}`
-          );
+          const res = await fetch(`https://university-association-backend-1.onrender.com/member/${params.id}`);
           return res.json();
         },
       },
@@ -63,18 +60,27 @@ const router = createBrowserRouter([
         element: <NewsDetail></NewsDetail>,
       },
       {
-        path:"/addnews" ,
-        element:<AddNews></AddNews>
-
+        path: "/addnews",
+        element: <AddNews></AddNews>,
       },
       {
-        path:"/committee",
-        element:<Committee></Committee>
+        path: "/committee",
+        element: <Committee></Committee>,
       },
       {
-    path: "/gallery",
-    element: <Gallery></Gallery>,
-},
+        path: "/gallery",
+        element: <Gallery></Gallery>,
+      },
+      {
+        path: "/addGallery",
+        element: <AdminGallery></AdminGallery>,
+      },
+      
+        {
+    path: "/publications",
+    element: <Publication></Publication>,
+}
+      ,
       {
         path: "*",
         element: <NotFound></NotFound>,
