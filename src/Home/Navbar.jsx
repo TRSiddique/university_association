@@ -1,11 +1,12 @@
-import { Menu, X } from "lucide-react"; // modern icons
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // ADD THIS IMPORT
 import logo from "../assets/logo.png";
-
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout, isAdmin } = useAuth(); // ADD THIS
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -13,31 +14,32 @@ const Navbar = () => {
     { path: "/news", label: "News" },
     { path: "/committee", label: "Committee" },
     { path: "/gallery", label: "Gallery" },
-    { path: "/publications", label: "Publications" },
+    { path: "/Resources", label: "Resources" },
   ];
 
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false); // Close mobile menu on logout
+  };
+
   return (
-  <nav className="bg-gradient-to-r from-indigo-500 via-blue-600 to-sky-500 shadow-lg sticky top-0 z-50">
-
-
-
-
+    <nav className="bg-gradient-to-r from-indigo-500 via-blue-600 to-sky-500 shadow-lg sticky top-0 z-50">
       <div className="w-[90%] mx-auto flex justify-between items-center py-4">
-      <Link
-    to="/"
-    className="flex items-center gap-2 hover:scale-105 transition-transform"
-  >
-    <img src={logo} alt="CUSAP Logo" className="w-10 h-10" />
-    <div className="flex flex-col">
-      <p className="text-2xl font-bold text-white drop-shadow-md">CUSAP</p>
-      <p className="text-xs text-white drop-shadow-md">
-        Chittagong University Students Association of Pekua
-      </p>
-    </div>
-  </Link>
+        <Link
+          to="/"
+          className="flex items-center gap-2 hover:scale-105 transition-transform"
+        >
+          <img src={logo} alt="CUSAP Logo" className="w-10 h-10" />
+          <div className="flex flex-col">
+            <p className="text-2xl font-bold text-white drop-shadow-md">CUSAP</p>
+            <p className="text-xs text-white drop-shadow-md">
+              Chittagong University Students Association of Pekua
+            </p>
+          </div>
+        </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6 text-white font-medium">
+        <div className="hidden md:flex items-center space-x-6 text-white font-medium">
           {navLinks.map((link) => (
             <NavLink
               key={link.path}
@@ -51,6 +53,28 @@ const Navbar = () => {
               {link.label}
             </NavLink>
           ))}
+          
+          {/* ADD ADMIN SECTION FOR DESKTOP */}
+          {isAdmin() ? (
+            <div className="flex items-center gap-3 ml-4 pl-4 border-l border-white/30">
+              <span className="text-sm bg-green-600 px-2 py-1 rounded-md font-semibold">
+                👋 Admin
+              </span>
+              <button 
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <NavLink
+              to="/admin-login"
+              className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors font-semibold"
+            >
+              Admin Login
+            </NavLink>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -79,9 +103,34 @@ const Navbar = () => {
               {link.label}
             </NavLink>
           ))}
+          
+          {/* ADD ADMIN SECTION FOR MOBILE */}
+          <div className="border-t border-gray-300 mt-2 pt-2">
+            {isAdmin() ? (
+              <div className="px-6 py-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-green-800 font-semibold">👋 Admin Mode</span>
+                  <button 
+                    onClick={handleLogout}
+                    className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm text-white transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+                <p className="text-xs text-gray-600">You can delete members</p>
+              </div>
+            ) : (
+              <NavLink
+                to="/admin-login"
+                onClick={() => setIsOpen(false)}
+                className="block px-6 py-3 bg-green-600 text-white hover:bg-green-700 font-semibold"
+              >
+                Admin Login
+              </NavLink>
+            )}
+          </div>
         </div>
       )}
-      
     </nav>
   );
 };

@@ -1,4 +1,4 @@
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -76,7 +76,7 @@ const MembersCard = ({ member, members, setMembers }) => {
 
             {/* Action Buttons */}
             <div className="flex justify-end items-center space-x-4 mt-4 lg:mt-0">
-              <button
+              {/* <button
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent event bubbling
                   handleDelete(_id);
@@ -85,7 +85,7 @@ const MembersCard = ({ member, members, setMembers }) => {
                 title="Delete Member"
               >
                 <FaTrash size={18} />
-              </button>
+              </button> */}
 
               <Link
                 to={`/updateMember/${_id}`}

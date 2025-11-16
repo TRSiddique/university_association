@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // ADD THIS IMPORT
 
 const News = () => {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { isAdmin } = useAuth(); // ADD THIS
 
     // Fetch news from database
     useEffect(() => {
@@ -81,8 +83,6 @@ const News = () => {
                     </p>
                 </div>
 
-               
-
                 {/* News Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     {news.map((item) => (
@@ -97,6 +97,12 @@ const News = () => {
                                     alt={item.headline}
                                     className="w-full h-48 object-cover"
                                 />
+                                {/* Admin badge for news items */}
+                                {isAdmin() && (
+                                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">
+                                        ADMIN
+                                    </div>
+                                )}
                             </div>
                             
                             <div className="p-6">
@@ -121,20 +127,24 @@ const News = () => {
                         </Link>
                     ))}
                 </div>
- {/* Action Bar - Only Add News Button */}
-                <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-                    <div className="flex justify-end">
-                        <Link
-                            to="/addnews"
-                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-2"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span>Add News</span>
-                        </Link>
+
+                {/* Action Bar - Only Add News Button for Admin */}
+                {isAdmin() && (
+                    <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+                        <div className="flex justify-end">
+                            <Link
+                                to="/addnews"
+                                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-2"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Add News</span>
+                            </Link>
+                        </div>
                     </div>
-                </div>
+                )}
+
                 {/* Empty State */}
                 {news.length === 0 && (
                     <div className="text-center py-12">
@@ -143,15 +153,19 @@ const News = () => {
                         </svg>
                         <h3 className="text-xl font-semibold text-gray-600 mb-2">No news available</h3>
                         <p className="text-gray-500 mb-4">Be the first to add some news!</p>
-                        <Link
-                            to="/addnews"
-                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium inline-flex items-center space-x-2"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span>Add First News</span>
-                        </Link>
+                        
+                        {/* Show Add News button in empty state only for admin */}
+                        {isAdmin() && (
+                            <Link
+                                to="/addnews"
+                                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium inline-flex items-center space-x-2"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Add First News</span>
+                            </Link>
+                        )}
                     </div>
                 )}
             </div>

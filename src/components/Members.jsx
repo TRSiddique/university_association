@@ -1,13 +1,21 @@
-import React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { FaFilter, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
 import { useLoaderData, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useAuth } from '../context/AuthContext'; // ADD THIS IMPORT
 import MembersCard from './MembersCard';
-import { FaPlus, FaFilter, FaSearch } from 'react-icons/fa';
-import { useState, useEffect } from 'react'; // ========== ADD: useEffect import ==========
+
 
 const Members = () => {
   const loadedMembers = useLoaderData();
   const navigate = useNavigate();
-  const [members, setMembers] = useState(loadedMembers);
+  const { isAdmin } = useAuth(); // ADD THIS
+  
+  // Ensure members is always an array
+  const [members, setMembers] = useState(() => {
+    return Array.isArray(loadedMembers) ? loadedMembers : [];
+  });
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({
     blood: '',
@@ -16,46 +24,81 @@ const Members = () => {
     session: ''
   });
   const [showFilters, setShowFilters] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // ========== ADD: Loading state ==========
+  const [isLoading, setIsLoading] = useState(true);
 
-  // ========== ADD: useEffect to handle loading state ==========
+  // ADD DELETE FUNCTION HERE
+  const handleDelete = (_id) => {
+     console.log(_id);
+     Swal.fire({
+       title: "Are you sure?",
+       text: "You won't be able to delete this!",
+       icon: "warning",
+       showCancelButton: true,
+       confirmButtonColor: "#3085d6",
+       cancelButtonColor: "#d33",
+       confirmButtonText: "Yes, delete it!",
+     }).then((result) => {
+       if (result.isConfirmed) {
+         console.log("delete confirm");
+         fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
+           method: "DELETE",
+         })
+           .then((res) => res.json())
+           .then((data) => {
+             console.log(data);
+             if (data.deletedCount > 0) {
+               Swal.fire({
+                 title: "Deleted!",
+                 text: "Your file has been deleted.",
+                 icon: "success",
+               });
+               const remaining = members.filter((mem) => mem._id !== _id);
+               setMembers(remaining);
+             }
+           });
+       }
+     });
+   };
+
+  // Faster loading - remove artificial delay
   useEffect(() => {
-    // Simulate loading delay to show loading state
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000); // 1 second loading delay
-
-    return () => clearTimeout(timer);
+    // Set loading to false immediately since data is already loaded by router
+    setIsLoading(false);
   }, []);
 
-  // Get unique values for filter dropdowns
-  const bloodGroups = [...new Set(loadedMembers.map(member => member.blood).filter(Boolean))];
-  const unions = [...new Set(loadedMembers.map(member => member.union).filter(Boolean))];
-  const departments = [...new Set(loadedMembers.map(member => member.department).filter(Boolean))];
-  const sessions = [...new Set(loadedMembers.map(member => member.session).filter(Boolean))];
+  // Memoize unique values for better performance
+  const { bloodGroups, unions, departments, sessions } = useMemo(() => {
+    const safeMembers = Array.isArray(members) ? members : [];
+    return {
+      bloodGroups: [...new Set(safeMembers.map(member => member.blood).filter(Boolean))].sort(),
+      unions: [...new Set(safeMembers.map(member => member.union).filter(Boolean))].sort(),
+      departments: [...new Set(safeMembers.map(member => member.department).filter(Boolean))].sort(),
+      sessions: [...new Set(safeMembers.map(member => member.session).filter(Boolean))].sort()
+    };
+  }, [members]);
 
-  // Filter members based on search term and filters
-  const filteredMembers = members.filter(member => {
-    // Search term filter (search in name, studentId, mobile)
-    const matchesSearch = searchTerm === '' || 
-      member.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.studentId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.mobile?.includes(searchTerm);
+  // Memoize filtered members for better performance
+  const filteredMembers = useMemo(() => {
+    const safeMembers = Array.isArray(members) ? members : [];
+    
+    return safeMembers.filter(member => {
+      if (!member) return false;
+      
+      // Search term filter
+      const matchesSearch = searchTerm === '' || 
+        (member.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         member.studentId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         member.mobile?.includes(searchTerm));
 
-    // Blood group filter
-    const matchesBlood = filters.blood === '' || member.blood === filters.blood;
-    
-    // Union filter
-    const matchesUnion = filters.union === '' || member.union === filters.union;
-    
-    // Department filter
-    const matchesDepartment = filters.department === '' || member.department === filters.department;
-    
-    // Session filter
-    const matchesSession = filters.session === '' || member.session === filters.session;
+      // Individual filters
+      const matchesBlood = !filters.blood || member.blood === filters.blood;
+      const matchesUnion = !filters.union || member.union === filters.union;
+      const matchesDepartment = !filters.department || member.department === filters.department;
+      const matchesSession = !filters.session || member.session === filters.session;
 
-    return matchesSearch && matchesBlood && matchesUnion && matchesDepartment && matchesSession;
-  });
+      return matchesSearch && matchesBlood && matchesUnion && matchesDepartment && matchesSession;
+    });
+  }, [members, searchTerm, filters]);
 
   const handleFilterChange = (filterType, value) => {
     setFilters(prev => ({
@@ -74,31 +117,25 @@ const Members = () => {
     setSearchTerm('');
   };
 
-  const hasActiveFilters = filters.blood || filters.union || filters.department || filters.session || searchTerm;
+  const hasActiveFilters = useMemo(() => {
+    return Object.values(filters).some(value => value !== '') || searchTerm !== '';
+  }, [filters, searchTerm]);
 
-  // ========== ADD: Loading Component ==========
+  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 lg:p-6">
         <div className="text-center">
-          {/* Loading Spinner */}
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          
-          {/* Loading Text */}
           <h2 className="text-xl font-semibold text-gray-700 mb-2">Loading Members</h2>
           <p className="text-gray-500">Please wait while we fetch the member data...</p>
-          
-          {/* Optional: Loading Progress Bar */}
-          <div className="w-64 h-2 bg-gray-200 rounded-full mt-4 mx-auto overflow-hidden">
-            <div className="h-full bg-blue-600 rounded-full animate-pulse"></div>
-          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-4 lg:p-6">
+    <div className="min-h-screen bg-gray-50 p-4 lg:p-6">
       {/* Header with Search and Filter */}
       <div className="mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
@@ -106,7 +143,7 @@ const Members = () => {
             All Members List ({filteredMembers.length})
             {hasActiveFilters && (
               <span className="text-sm text-gray-600 ml-2">
-                (Filtered from {loadedMembers.length})
+                (Filtered from {members.length})
               </span>
             )}
           </h1>
@@ -119,7 +156,7 @@ const Members = () => {
                 placeholder="Search by name, ID, or mobile..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input input-bordered w-full lg:w-64 pl-10"
+                className="w-full lg:w-64 px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <FaSearch className="absolute left-3 top-3 text-gray-400" />
             </div>
@@ -127,32 +164,44 @@ const Members = () => {
             {/* Filter Toggle Button */}
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`btn ${showFilters ? 'btn-primary' : 'btn-outline'}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
+                showFilters 
+                  ? 'bg-blue-600 text-white border-blue-600' 
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+              }`}
             >
-              <FaFilter className="mr-2" />
+              <FaFilter />
               Filter
               {hasActiveFilters && (
-                <span className="ml-2 bg-primary text-primary-content rounded-full w-5 h-5 text-xs flex items-center justify-center">
+                <span className="bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
                   {Object.values(filters).filter(Boolean).length + (searchTerm ? 1 : 0)}
                 </span>
               )}
             </button>
+
+            {/* ADD ADMIN DELETE BUTTON IN HEADER */}
+            {isAdmin() && (
+              <div className="flex items-center gap-2 px-3 bg-red-50 border border-red-200 rounded-lg">
+                <FaTrash className="text-red-600" />
+                <span className="text-red-700 text-sm font-medium">Admin Mode</span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Filter Panel */}
         {showFilters && (
-          <div className="bg-base-200 p-4 rounded-lg mb-4">
+          <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4 shadow-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Blood Group Filter */}
               <div>
-                <label className="label">
-                  <span className="label-text font-semibold">Blood Group</span>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Blood Group
                 </label>
                 <select
                   value={filters.blood}
                   onChange={(e) => handleFilterChange('blood', e.target.value)}
-                  className="select select-bordered w-full"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">All Blood Groups</option>
                   {bloodGroups.map(blood => (
@@ -163,13 +212,13 @@ const Members = () => {
 
               {/* Union Filter */}
               <div>
-                <label className="label">
-                  <span className="label-text font-semibold">Union</span>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Union
                 </label>
                 <select
                   value={filters.union}
                   onChange={(e) => handleFilterChange('union', e.target.value)}
-                  className="select select-bordered w-full"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">All Unions</option>
                   {unions.map(union => (
@@ -180,13 +229,13 @@ const Members = () => {
 
               {/* Department Filter */}
               <div>
-                <label className="label">
-                  <span className="label-text font-semibold">Department</span>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Department
                 </label>
                 <select
                   value={filters.department}
                   onChange={(e) => handleFilterChange('department', e.target.value)}
-                  className="select select-bordered w-full"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">All Departments</option>
                   {departments.map(dept => (
@@ -197,13 +246,13 @@ const Members = () => {
 
               {/* Session Filter */}
               <div>
-                <label className="label">
-                  <span className="label-text font-semibold">Session</span>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Session
                 </label>
                 <select
                   value={filters.session}
                   onChange={(e) => handleFilterChange('session', e.target.value)}
-                  className="select select-bordered w-full"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">All Sessions</option>
                   {sessions.map(session => (
@@ -218,7 +267,7 @@ const Members = () => {
               <div className="mt-4 text-center">
                 <button
                   onClick={clearFilters}
-                  className="btn btn-outline btn-sm"
+                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Clear All Filters
                 </button>
@@ -231,33 +280,58 @@ const Members = () => {
         {hasActiveFilters && (
           <div className="flex flex-wrap gap-2 mb-4">
             {searchTerm && (
-              <span className="badge badge-primary gap-2">
+              <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm gap-2">
                 Search: "{searchTerm}"
-                <button onClick={() => setSearchTerm('')}>×</button>
+                <button 
+                  onClick={() => setSearchTerm('')}
+                  className="hover:text-blue-600"
+                >
+                  ×
+                </button>
               </span>
             )}
             {filters.blood && (
-              <span className="badge badge-secondary gap-2">
+              <span className="inline-flex items-center px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm gap-2">
                 Blood: {filters.blood}
-                <button onClick={() => handleFilterChange('blood', '')}>×</button>
+                <button 
+                  onClick={() => handleFilterChange('blood', '')}
+                  className="hover:text-red-600"
+                >
+                  ×
+                </button>
               </span>
             )}
             {filters.union && (
-              <span className="badge badge-accent gap-2">
+              <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm gap-2">
                 Union: {filters.union}
-                <button onClick={() => handleFilterChange('union', '')}>×</button>
+                <button 
+                  onClick={() => handleFilterChange('union', '')}
+                  className="hover:text-green-600"
+                >
+                  ×
+                </button>
               </span>
             )}
             {filters.department && (
-              <span className="badge badge-info gap-2">
+              <span className="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm gap-2">
                 Department: {filters.department}
-                <button onClick={() => handleFilterChange('department', '')}>×</button>
+                <button 
+                  onClick={() => handleFilterChange('department', '')}
+                  className="hover:text-purple-600"
+                >
+                  ×
+                </button>
               </span>
             )}
             {filters.session && (
-              <span className="badge badge-success gap-2">
+              <span className="inline-flex items-center px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm gap-2">
                 Session: {filters.session}
-                <button onClick={() => handleFilterChange('session', '')}>×</button>
+                <button 
+                  onClick={() => handleFilterChange('session', '')}
+                  className="hover:text-yellow-600"
+                >
+                  ×
+                </button>
               </span>
             )}
           </div>
@@ -278,7 +352,7 @@ const Members = () => {
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="btn btn-primary"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Clear All Filters
             </button>
@@ -287,12 +361,23 @@ const Members = () => {
       ) : (
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
           {filteredMembers.map(member => (
-            <MembersCard
-              key={member._id}
-              members={members}
-              setMembers={setMembers}
-              member={member}
-            />
+            <div key={member._id} className="relative">
+              {/* ADD DELETE BUTTON FOR EACH MEMBER CARD */}
+              {isAdmin() && (
+                <button 
+                  onClick={() => handleDelete(member._id)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 transition-colors z-10"
+                  title="Delete Member"
+                >
+                  <FaTrash size={12} />
+                </button>
+              )}
+              <MembersCard
+                members={members}
+                setMembers={setMembers}
+                member={member}
+              />
+            </div>
           ))}
         </div>
       )}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../context/AuthContext'; // ADD THIS IMPORT
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -12,7 +12,10 @@ const Home = () => {
     type: "comment",
   });
   const [activeTab, setActiveTab] = useState("about");
+  const [feedbackLoading, setFeedbackLoading] = useState(false); // ADD THIS
   const navigate = useNavigate();
+  const { isAdmin } = useAuth(); // ADD THIS
+
   // Sample slides data
   const slides = [
     {
@@ -96,6 +99,28 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [slides.length]);
 
+  // Fetch all feedback when admin tab is active
+  useEffect(() => {
+    if (activeTab === "admin-feedback" && isAdmin()) {
+      fetchAllFeedback();
+    }
+  }, [activeTab, isAdmin]);
+
+  const fetchAllFeedback = async () => {
+    try {
+      setFeedbackLoading(true);
+      const response = await fetch('https://university-association-backend-1.onrender.com/comment');
+      if (response.ok) {
+        const data = await response.json();
+        setComments(data);
+      }
+    } catch (error) {
+      console.error('Error fetching feedback:', error);
+    } finally {
+      setFeedbackLoading(false);
+    }
+  };
+
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
@@ -149,6 +174,27 @@ const Home = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  // Function to delete feedback (admin only)
+  const handleDeleteFeedback = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this feedback?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://university-association-backend-1.onrender.com/comment/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        setComments(comments.filter(comment => comment._id !== id));
+        alert('Feedback deleted successfully!');
+      }
+    } catch (error) {
+      console.error('Error deleting feedback:', error);
+      alert('Error deleting feedback!');
+    }
   };
 
   return (
@@ -259,7 +305,7 @@ const Home = () => {
           <div className="max-w-4xl mx-auto">
             <div className="bg-gray-50 rounded-lg p-6 shadow-sm">
               <p className="text-lg text-gray-700 text-justify leading-relaxed mb-6">
-                Chittagong University Students’ Association of Pekua (CUSAP) is
+                Chittagong University Students' Association of Pekua (CUSAP) is
                 a student-led organization formed by the students of Pekua
                 studying at the University of Chittagong. The association works
                 to create unity among students, provide academic and social
@@ -482,10 +528,10 @@ const Home = () => {
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               {/* Tabs */}
               <div className="border-b border-gray-200">
-                <div className="flex">
+                <div className="flex overflow-x-auto">
                   <button
                     onClick={() => setActiveTab("about")}
-                    className={`flex-1 py-4 px-6 text-center font-medium ${
+                    className={`flex-1 py-4 px-6 text-center font-medium whitespace-nowrap ${
                       activeTab === "about"
                         ? "text-blue-600 border-b-2 border-blue-600"
                         : "text-gray-600 hover:text-gray-800"
@@ -495,7 +541,7 @@ const Home = () => {
                   </button>
                   <button
                     onClick={() => setActiveTab("form")}
-                    className={`flex-1 py-4 px-6 text-center font-medium ${
+                    className={`flex-1 py-4 px-6 text-center font-medium whitespace-nowrap ${
                       activeTab === "form"
                         ? "text-blue-600 border-b-2 border-blue-600"
                         : "text-gray-600 hover:text-gray-800"
@@ -503,16 +549,19 @@ const Home = () => {
                   >
                     Submit Feedback
                   </button>
-                  {/* <button
-                    onClick={() => setActiveTab("comments")}
-                    className={`flex-1 py-4 px-6 text-center font-medium ${
-                      activeTab === "comments"
-                        ? "text-blue-600 border-b-2 border-blue-600"
-                        : "text-gray-600 hover:text-gray-800"
-                    }`}
-                  >
-                    Recent Submissions
-                  </button> */}
+                  {/* Admin Feedback Tab - Only show for admins */}
+                  {isAdmin() && (
+                    <button
+                      onClick={() => setActiveTab("admin-feedback")}
+                      className={`flex-1 py-4 px-6 text-center font-medium whitespace-nowrap ${
+                        activeTab === "admin-feedback"
+                          ? "text-blue-600 border-b-2 border-blue-600"
+                          : "text-gray-600 hover:text-gray-800"
+                      }`}
+                    >
+                      All Feedback ({comments.length})
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -581,25 +630,6 @@ const Home = () => {
                     </div>
 
                     <div>
-                      {/* <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Feedback Type *
-                      </label> */}
-                      {/* <select
-                        name="type"
-                        value={newComment.type}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      >
-                        <option value="comment">General Comment</option>
-                        <option value="suggestion">Suggestion</option>
-                        <option value="objection">Objection</option>
-                        <option value="complaint">Complaint</option>
-                        <option value="appreciation">Appreciation</option>
-                      </select> */}
-                    </div>
-
-                    <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Your Message *
                       </label>
@@ -622,76 +652,99 @@ const Home = () => {
                     </button>
                   </form>
                 )}
-                {/* <CommentsList></CommentsList> */}
-                {/* {activeTab === "comments" && (
-                  // <div>
-                  //   <h3 className="text-xl font-semibold mb-4">
-                  //     Recent Feedback Submissions
-                  //   </h3>
-                  //   {comments.length === 0 ? (
-                  //     <div className="text-center py-8 text-gray-500">
-                  //       <svg
-                  //         className="w-16 h-16 mx-auto text-gray-300 mb-4"
-                  //         fill="none"
-                  //         stroke="currentColor"
-                  //         viewBox="0 0 24 24"
-                  //       >
-                  //         <path
-                  //           strokeLinecap="round"
-                  //           strokeLinejoin="round"
-                  //           strokeWidth={1}
-                  //           d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                  //         />
-                  //       </svg>
-                  //       <p>
-                  //         No feedback submissions yet. Be the first to share
-                  //         your thoughts!
-                  //       </p>
-                  //     </div>
-                  //   ) : (
-                  //     <div className="space-y-4">
-                  //       {comments.map((comment) => (
-                  //         <div
-                  //           key={comment.id}
-                  //           className="border border-gray-200 rounded-lg p-4"
-                  //         >
-                  //           <div className="flex justify-between items-start mb-2">
-                  //             <div>
-                  //               <span className="font-semibold text-gray-800">
-                  //                 {comment.name}
-                  //               </span>
-                  //               <span
-                  //                 className={`ml-2 px-2 py-1 text-xs rounded-full ${
-                  //                   comment.type === "objection"
-                  //                     ? "bg-red-100 text-red-800"
-                  //                     : comment.type === "suggestion"
-                  //                     ? "bg-blue-100 text-blue-800"
-                  //                     : comment.type === "complaint"
-                  //                     ? "bg-orange-100 text-orange-800"
-                  //                     : "bg-green-100 text-green-800"
-                  //                 }`}
-                  //               >
-                  //                 {comment.type.charAt(0).toUpperCase() +
-                  //                   comment.type.slice(1)}
-                  //               </span>
-                  //             </div>
-                  //             <span className="text-sm text-gray-500">
-                  //               {comment.date}
-                  //             </span>
-                  //           </div>
-                  //           <p className="text-gray-700">{comment.comment}</p>
-                  //           <div className="mt-2 text-sm text-gray-500">
-                  //             Status:{" "}
-                  //             <span className="font-medium text-yellow-600">
-                  //               Under Review
-                  //             </span>
-                  //           </div>
-                  //         </div>
-                  //       ))}
-                  //     </div>
-                  //   )}
-                  // </div>
-                )} */}
+
+                {/* Admin Feedback Tab Content */}
+                {activeTab === "admin-feedback" && isAdmin() && (
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-xl font-semibold">All Feedback Submissions</h3>
+                      <button
+                        onClick={fetchAllFeedback}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Refresh
+                      </button>
+                    </div>
+
+                    {feedbackLoading ? (
+                      <div className="text-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                        <p className="text-gray-600 mt-2">Loading feedback...</p>
+                      </div>
+                    ) : comments.length === 0 ? (
+                      <div className="text-center py-8 text-gray-500">
+                        <svg
+                          className="w-16 h-16 mx-auto text-gray-300 mb-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1}
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                          />
+                        </svg>
+                        <p>No feedback submissions yet.</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4 max-h-96 overflow-y-auto">
+                        {comments.map((comment) => (
+                          <div
+                            key={comment._id}
+                            className="border border-gray-200 rounded-lg p-4 relative"
+                          >
+                            {/* Delete button for admin */}
+                            <button
+                              onClick={() => handleDeleteFeedback(comment._id)}
+                              className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded hover:bg-red-600 transition-colors"
+                              title="Delete Feedback"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+
+                            <div className="flex justify-between items-start mb-2">
+                              <div>
+                                <span className="font-semibold text-gray-800">
+                                  {comment.name}
+                                </span>
+                                {comment.mobile && (
+                                  <span className="ml-2 text-sm text-gray-500">
+                                    📞 {comment.mobile}
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-sm text-gray-500">
+                                {comment.date}
+                              </span>
+                            </div>
+                            <p className="text-gray-700 mb-2">{comment.comment}</p>
+                            <div className="flex justify-between items-center text-sm text-gray-500">
+                              <span>
+                                Type: <span className="font-medium capitalize">{comment.type}</span>
+                              </span>
+                              <span className={`px-2 py-1 rounded-full text-xs ${
+                                comment.status === 'pending' 
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : comment.status === 'resolved'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}>
+                                {comment.status || 'pending'}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -148,13 +148,10 @@ const Gallery = () => {
                     onClick={() => openImage(photo)}
                   >
                     <img
-                      src={photo.url}
-                      alt={photo.title || 'CUSAP Event'}
-                      className="w-full h-64 object-cover transition-transform group-hover:scale-110"
-                      onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
-                      }}
-                    />
+  src={photo.url} // This will be ImageBB URL like: https://i.ibb.co/abc123/image.jpg
+  alt={photo.title || 'CUSAP Event'}
+  className="w-full h-64 object-cover transition-transform group-hover:scale-110"
+/>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                       <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                         <h3 className="font-bold text-lg mb-1">
