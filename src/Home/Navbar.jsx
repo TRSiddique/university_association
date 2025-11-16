@@ -1,12 +1,12 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // ADD THIS IMPORT
+import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout, isAdmin } = useAuth(); // ADD THIS
+  const { user, logout, isAdmin } = useAuth();
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -19,7 +19,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    setIsOpen(false); // Close mobile menu on logout
+    setIsOpen(false);
   };
 
   return (
@@ -54,7 +54,21 @@ const Navbar = () => {
             </NavLink>
           ))}
           
-          {/* ADD ADMIN SECTION FOR DESKTOP */}
+          {/* ========== ADDED: Forms Dashboard Link for Admin ========== */}
+          {isAdmin() && (
+            <NavLink
+              to="/admin/forms"
+              className={({ isActive }) =>
+                `hover:text-green-900 transition-colors ${
+                  isActive ? "underline underline-offset-4" : ""
+                }`
+              }
+            >
+              Forms Dashboard
+            </NavLink>
+          )}
+          
+          {/* Admin Section */}
           {isAdmin() ? (
             <div className="flex items-center gap-3 ml-4 pl-4 border-l border-white/30">
               <span className="text-sm bg-green-600 px-2 py-1 rounded-md font-semibold">
@@ -104,7 +118,22 @@ const Navbar = () => {
             </NavLink>
           ))}
           
-          {/* ADD ADMIN SECTION FOR MOBILE */}
+          {/* ========== ADDED: Forms Dashboard Link for Mobile Admin ========== */}
+          {isAdmin() && (
+            <NavLink
+              to="/admin/forms"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block px-6 py-3 text-gray-800 hover:bg-lime-300 hover:text-green-800 ${
+                  isActive ? "bg-lime-300 font-semibold" : ""
+                }`
+              }
+            >
+              📋 Forms Dashboard
+            </NavLink>
+          )}
+          
+          {/* Admin Section for Mobile */}
           <div className="border-t border-gray-300 mt-2 pt-2">
             {isAdmin() ? (
               <div className="px-6 py-3">
@@ -117,7 +146,7 @@ const Navbar = () => {
                     Logout
                   </button>
                 </div>
-                <p className="text-xs text-gray-600">You can delete members</p>
+                <p className="text-xs text-gray-600">You can manage forms and members</p>
               </div>
             ) : (
               <NavLink

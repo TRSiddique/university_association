@@ -4,10 +4,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import Committee from "./Committee/Committee.jsx";
 import AddMember from "./components/AddMember";
+import AdminLogin from "./components/AdminLogin";
 import MemberDetails from "./components/MemberDetails";
 import Members from "./components/Members";
 import NotFound from "./components/NotFound";
 import UpdatedMember from "./components/UpdatedMember";
+import { AuthProvider } from "./context/AuthContext.jsx";
 import AdminGallery from "./Gallery/AdminGallery.jsx";
 import Gallery from "./Gallery/Gallery.jsx";
 import Home from "./Home/Home";
@@ -17,8 +19,11 @@ import News from "./News/News";
 import NewsDetail from "./News/NewsDetail";
 import Publication from "./Publication/Publication";
 
-import AdminLogin from "./components/AdminLogin";
-import { AuthProvider } from "./context/AuthContext.jsx";
+// Import Form Components
+import AdminFormsDashboard from './components/AdminFormsDashboard';
+import FormBuilder from "./components/FormBuilder";
+import PublicForm from "./components/PublicForm";
+import ResponseViewer from "./components/ResponseViewer";
 
 const router = createBrowserRouter([
   {
@@ -39,13 +44,10 @@ const router = createBrowserRouter([
         loader: async () => {
           try {
             console.log("Fetching members...");
-
-            // Add timeout to prevent hanging
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
 
             const response = await fetch("https://university-association-backend-1.onrender.com/member", {
-              // FIXED: Removed double slash
               signal: controller.signal,
             });
 
@@ -57,12 +59,9 @@ const router = createBrowserRouter([
 
             const data = await response.json();
             console.log("Members loaded:", data.length);
-
-            // Ensure we always return an array
             return Array.isArray(data) ? data : [];
           } catch (error) {
             console.error("Failed to load members:", error);
-            // Return empty array instead of crashing
             return [];
           }
         },
@@ -107,7 +106,6 @@ const router = createBrowserRouter([
         path: "/addGallery",
         element: <AdminGallery></AdminGallery>,
       },
-
       {
         path: "/Resources",
         element: <Publication></Publication>,
@@ -116,6 +114,30 @@ const router = createBrowserRouter([
         path: "/admin-login",
         element: <AdminLogin></AdminLogin>,
       },
+
+      // ====== FORM ROUTES ======
+      // Admin: View all forms
+     // WITH this:
+{
+  path: "/admin/forms",
+  element: <AdminFormsDashboard></AdminFormsDashboard>,
+},
+      // Admin: Create new form
+      {
+        path: "/admin/forms/create",
+        element: <FormBuilder></FormBuilder>,
+      },
+      // Admin: View responses for a specific form
+      {
+        path: "/admin/forms/:id/responses",
+        element: <ResponseViewer></ResponseViewer>,
+      },
+      // Public: Fill out a form
+      {
+        path: "/forms/:id",
+        element: <PublicForm></PublicForm>,
+      },
+
       {
         path: "*",
         element: <NotFound></NotFound>,
@@ -128,6 +150,6 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
-   </AuthProvider>
+    </AuthProvider>
   </StrictMode>
 );
