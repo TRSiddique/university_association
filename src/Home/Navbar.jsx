@@ -123,7 +123,7 @@ const Navbar = () => {
               }`
             }
           >
-            {isAdmin() ? "📊 Forms Dashboard" : "📝 Forms"}
+            {isAdmin() ? "📊 Forms Dashboard" : " Forms"}
             <span 
               className={`absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-400 transition-all duration-300 group-hover:w-full ${
                 isActivePath("/forms") ? "w-full" : ""
@@ -159,7 +159,7 @@ const Navbar = () => {
                   </div>
                   
                   <Link
-                    to="/admin/dashboard"
+                    to="/"
                     className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
                     onClick={() => setIsDropdownOpen(false)}
                   >
@@ -279,12 +279,12 @@ const Navbar = () => {
               <div className={`w-2 h-2 rounded-full ${
                 isActivePath("/forms") ? "bg-amber-400" : "bg-amber-300/50 group-hover:bg-amber-300"
               }`}></div>
-              {isAdmin() ? "📊 Forms Dashboard" : "📝 Forms"}
+              {isAdmin() ? "📊 Forms Dashboard" : " Forms"}
             </NavLink>
           </div>
 
           {/* Admin Section - Sticky Bottom */}
-          <div className="sticky bottom-0 left-0 right-0 p-6 border-t border-blue-700/50 bg-slate-800/95 backdrop-blur-lg">
+          <div className=" bottom-0 left-0 right-0 p-4 border-t border-blue-700/50">
             {isAdmin() ? (
               <div className="space-y-3">
                 <div className="flex items-center gap-3 p-3 bg-emerald-600/20 rounded-xl border border-emerald-500/30">
@@ -298,7 +298,7 @@ const Navbar = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Link
-                    to="/admin/dashboard"
+                    to="/"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-sm font-medium transition-colors"
                   >
@@ -318,9 +318,9 @@ const Navbar = () => {
               <NavLink
                 to="/admin-login"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 px-4 py-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300"
+                className="flex items-center justify-center gap-1 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 px-1 text-xs py-3 border border-red-600 w-34 rounded-xl text-white font-semibold shadow-lg transition-all duration-300"
               >
-                <User size={18} />
+                <User size={14} />
                 Admin Login
               </NavLink>
             )}
