@@ -54,8 +54,8 @@ const Navbar = () => {
             </NavLink>
           ))}
           
-          {/* ========== ADDED: Forms Dashboard Link for Admin ========== */}
-          {isAdmin() && (
+          {/* ========== UPDATED: Conditional Forms Link ========== */}
+          {isAdmin() ? (
             <NavLink
               to="/admin/forms"
               className={({ isActive }) =>
@@ -65,6 +65,17 @@ const Navbar = () => {
               }
             >
               Forms Dashboard
+            </NavLink>
+          ) : (
+            <NavLink
+              to="/forms"
+              className={({ isActive }) =>
+                `hover:text-green-900 transition-colors ${
+                  isActive ? "underline underline-offset-4" : ""
+                }`
+              }
+            >
+              Forms
             </NavLink>
           )}
           
@@ -118,8 +129,8 @@ const Navbar = () => {
             </NavLink>
           ))}
           
-          {/* ========== ADDED: Forms Dashboard Link for Mobile Admin ========== */}
-          {isAdmin() && (
+          {/* ========== UPDATED: Conditional Forms Link for Mobile ========== */}
+          {isAdmin() ? (
             <NavLink
               to="/admin/forms"
               onClick={() => setIsOpen(false)}
@@ -130,6 +141,18 @@ const Navbar = () => {
               }
             >
               📋 Forms Dashboard
+            </NavLink>
+          ) : (
+            <NavLink
+              to="/forms"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block px-6 py-3 text-gray-800 hover:bg-lime-300 hover:text-green-800 ${
+                  isActive ? "bg-lime-300 font-semibold" : ""
+                }`
+              }
+            >
+              📝 Forms
             </NavLink>
           )}
           

@@ -1,4 +1,4 @@
-import { ArrowLeft, Download, Eye } from 'lucide-react';
+import { ArrowLeft, Download, Eye, FileText } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -33,12 +33,10 @@ export default function ResponseViewer() {
   };
 
   const getAnswerForQuestion = (response, questionId) => {
-    // Safety check for response and answers
     if (!response || !response.answers || !Array.isArray(response.answers)) {
       return 'No answer';
     }
     
-    // Safety check for questionId
     if (!questionId) {
       return 'No answer';
     }
@@ -62,19 +60,21 @@ export default function ResponseViewer() {
   const exportToCSV = () => {
     if (!form || responses.length === 0) return;
 
-    const headers = ['Submitted At', ...form.questions.map(q => q.questionText || 'Untitled')];
-    const rows = responses.map(response => {
+    // Add BOM for UTF-8 encoding to support Bangla/Unicode
+    const BOM = '\uFEFF';
+    const headers = ['#', 'Submitted At', ...form.questions.map(q => q.questionText || 'Untitled')];
+    const rows = responses.map((response, idx) => {
       return [
+        responses.length - idx,
         new Date(response.submittedAt).toLocaleString(),
         ...form.questions.map(q => {
           const answer = getAnswerForQuestion(response, q._id);
-          // Escape quotes and commas for CSV
           return answer.replace(/"/g, '""');
         })
       ];
     });
 
-    const csvContent = [
+    const csvContent = BOM + [
       headers.map(h => `"${h}"`).join(','),
       ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
     ].join('\n');
@@ -86,6 +86,94 @@ export default function ResponseViewer() {
     a.download = `${form.title}-responses-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
+  };
+
+  const exportToPDF = () => {
+    if (!form || responses.length === 0) return;
+
+    // Create a printable HTML table
+    const printWindow = window.open('', '', 'width=1200,height=800');
+    
+    const tableRows = responses.map((response, idx) => {
+      const cells = [
+        responses.length - idx,
+        new Date(response.submittedAt).toLocaleString(),
+        ...form.questions.map(q => getAnswerForQuestion(response, q._id))
+      ];
+      
+      return `
+        <tr>
+          ${cells.map(cell => `<td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${cell}</td>`).join('')}
+        </tr>
+      `;
+    }).join('');
+
+    const headers = ['#', 'Submitted At', ...form.questions.map(q => q.questionText || 'Untitled')];
+    
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>${form.title} - Responses</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+          }
+          h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+          }
+          .info {
+            color: #6b7280;
+            margin-bottom: 20px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #1e40af;
+          }
+          tr:nth-child(even) {
+            background-color: #f9fafb;
+          }
+          @media print {
+            body { margin: 10px; }
+            .no-print { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <h1>${form.title}</h1>
+        <div class="info">
+          <p><strong>Total Responses:</strong> ${responses.length}</p>
+          <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+        </div>
+        <button class="no-print" onclick="window.print()" style="background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px;">Print / Save as PDF</button>
+        <button class="no-print" onclick="window.close()" style="background: #6b7280; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px; margin-left: 10px;">Close</button>
+        <table>
+          <thead>
+            <tr>
+              ${headers.map(h => `<th>${h}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
   };
 
   if (loading) {
@@ -114,25 +202,29 @@ export default function ResponseViewer() {
           <ArrowLeft size={20} />
           Back to Forms
         </button>
-        <div className="flex justify-between items-start mb-4">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-800 mb-2">{form.title}</h1>
             <p className="text-gray-600">{responses.length} responses</p>
           </div>
-          <button
-            onClick={exportToCSV}
-            disabled={responses.length === 0}
-            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          >
-            <Download size={18} />
-            Export CSV
-          </button>
-          <button
-            onClick={() => console.log('Form:', form, 'Responses:', responses)}
-            className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-          >
-            Debug Data
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={exportToPDF}
+              disabled={responses.length === 0}
+              className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            >
+              <FileText size={18} />
+              Export PDF
+            </button>
+            <button
+              onClick={exportToCSV}
+              disabled={responses.length === 0}
+              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            >
+              <Download size={18} />
+              Export CSV
+            </button>
+          </div>
         </div>
       </div>
 
@@ -155,7 +247,6 @@ export default function ResponseViewer() {
 
               <div className="space-y-4">
                 {form.questions.map((question, qIdx) => {
-                  // Safety check for question
                   if (!question || !question._id) {
                     return null;
                   }

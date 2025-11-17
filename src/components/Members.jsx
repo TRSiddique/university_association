@@ -1,405 +1,225 @@
-import { useEffect, useMemo, useState } from 'react';
-import { FaFilter, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
-import { useLoaderData, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import { useAuth } from '../context/AuthContext'; // ADD THIS IMPORT
-import MembersCard from './MembersCard';
+// src/components/Members.jsx
+import { Calendar, Droplet, GraduationCap, Search, User } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-
-const Members = () => {
-  const loadedMembers = useLoaderData();
-  const navigate = useNavigate();
-  const { isAdmin } = useAuth(); // ADD THIS
-  
-  // Ensure members is always an array
-  const [members, setMembers] = useState(() => {
-    return Array.isArray(loadedMembers) ? loadedMembers : [];
-  });
-  
+export default function Members() {
+  const [members, setMembers] = useState([]);
+  const [filteredMembers, setFilteredMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({
-    blood: '',
-    union: '',
-    department: '',
-    session: ''
-  });
-  const [showFilters, setShowFilters] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [filterDepartment, setFilterDepartment] = useState('All');
+  const [filterBloodGroup, setFilterBloodGroup] = useState('All');
 
-  // ADD DELETE FUNCTION HERE
-  const handleDelete = (_id) => {
-     console.log(_id);
-     Swal.fire({
-       title: "Are you sure?",
-       text: "You won't be able to delete this!",
-       icon: "warning",
-       showCancelButton: true,
-       confirmButtonColor: "#3085d6",
-       cancelButtonColor: "#d33",
-       confirmButtonText: "Yes, delete it!",
-     }).then((result) => {
-       if (result.isConfirmed) {
-         console.log("delete confirm");
-         fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
-           method: "DELETE",
-         })
-           .then((res) => res.json())
-           .then((data) => {
-             console.log(data);
-             if (data.deletedCount > 0) {
-               Swal.fire({
-                 title: "Deleted!",
-                 text: "Your file has been deleted.",
-                 icon: "success",
-               });
-               const remaining = members.filter((mem) => mem._id !== _id);
-               setMembers(remaining);
-             }
-           });
-       }
-     });
-   };
-
-  // Faster loading - remove artificial delay
   useEffect(() => {
-    // Set loading to false immediately since data is already loaded by router
-    setIsLoading(false);
+    fetchMembers();
   }, []);
 
-  // Memoize unique values for better performance
-  const { bloodGroups, unions, departments, sessions } = useMemo(() => {
-    const safeMembers = Array.isArray(members) ? members : [];
-    return {
-      bloodGroups: [...new Set(safeMembers.map(member => member.blood).filter(Boolean))].sort(),
-      unions: [...new Set(safeMembers.map(member => member.union).filter(Boolean))].sort(),
-      departments: [...new Set(safeMembers.map(member => member.department).filter(Boolean))].sort(),
-      sessions: [...new Set(safeMembers.map(member => member.session).filter(Boolean))].sort()
-    };
-  }, [members]);
+  useEffect(() => {
+    filterMembers();
+  }, [searchTerm, filterDepartment, filterBloodGroup, members]);
 
-  // Memoize filtered members for better performance
-  const filteredMembers = useMemo(() => {
-    const safeMembers = Array.isArray(members) ? members : [];
-    
-    return safeMembers.filter(member => {
-      if (!member) return false;
-      
-      // Search term filter
-      const matchesSearch = searchTerm === '' || 
-        (member.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-         member.studentId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-         member.mobile?.includes(searchTerm));
-
-      // Individual filters
-      const matchesBlood = !filters.blood || member.blood === filters.blood;
-      const matchesUnion = !filters.union || member.union === filters.union;
-      const matchesDepartment = !filters.department || member.department === filters.department;
-      const matchesSession = !filters.session || member.session === filters.session;
-
-      return matchesSearch && matchesBlood && matchesUnion && matchesDepartment && matchesSession;
-    });
-  }, [members, searchTerm, filters]);
-
-  const handleFilterChange = (filterType, value) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterType]: value
-    }));
+  const fetchMembers = async () => {
+    try {
+      const response = await fetch('https://university-association-backend-1.onrender.com/member');
+      const data = await response.json();
+      setMembers(data);
+      setFilteredMembers(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching members:', error);
+      setLoading(false);
+    }
   };
 
-  const clearFilters = () => {
-    setFilters({
-      blood: '',
-      union: '',
-      department: '',
-      session: ''
-    });
-    setSearchTerm('');
+  const filterMembers = () => {
+    let filtered = members;
+
+    // Search by name
+    if (searchTerm) {
+      filtered = filtered.filter(member =>
+        member.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Filter by department
+    if (filterDepartment !== 'All') {
+      filtered = filtered.filter(member => member.department === filterDepartment);
+    }
+
+    // Filter by blood group
+    if (filterBloodGroup !== 'All') {
+      filtered = filtered.filter(member => member.blood === filterBloodGroup);
+    }
+
+    setFilteredMembers(filtered);
   };
 
-  const hasActiveFilters = useMemo(() => {
-    return Object.values(filters).some(value => value !== '') || searchTerm !== '';
-  }, [filters, searchTerm]);
+  // Get unique departments and blood groups
+  const departments = ['All', ...new Set(members.map(m => m.department).filter(Boolean))];
+  const bloodGroups = ['All', ...new Set(members.map(m => m.blood).filter(Boolean))];
 
-  // Loading state
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 lg:p-6">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Loading Members</h2>
-          <p className="text-gray-500">Please wait while we fetch the member data...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl text-gray-600">Loading members...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 lg:p-6">
-      {/* Header with Search and Filter */}
-      <div className="mb-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-            All Members List ({filteredMembers.length})
-            {hasActiveFilters && (
-              <span className="text-sm text-gray-600 ml-2">
-                (Filtered from {members.length})
-              </span>
-            )}
-          </h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">Our Members</h1>
+          <p className="text-lg text-gray-600">Meet the talented members of CUSAP</p>
+          <div className="mt-4 text-2xl font-semibold text-blue-600">
+            {filteredMembers.length} {filteredMembers.length === 1 ? 'Member' : 'Members'}
+          </div>
+        </div>
 
-          <div className="flex gap-2">
-            {/* Search Input */}
-            <div className="relative flex-1 lg:flex-none">
+        {/* Filters */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Search by name, ID, or mobile..."
+                placeholder="Search by name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full lg:w-64 px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <FaSearch className="absolute left-3 top-3 text-gray-400" />
-            </div>
-
-            {/* Filter Toggle Button */}
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
-                showFilters 
-                  ? 'bg-blue-600 text-white border-blue-600' 
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              <FaFilter />
-              Filter
-              {hasActiveFilters && (
-                <span className="bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
-                  {Object.values(filters).filter(Boolean).length + (searchTerm ? 1 : 0)}
-                </span>
-              )}
-            </button>
-
-            {/* ADD ADMIN DELETE BUTTON IN HEADER */}
-            {isAdmin() && (
-              <div className="flex items-center gap-2 px-3 bg-red-50 border border-red-200 rounded-lg">
-                <FaTrash className="text-red-600" />
-                <span className="text-red-700 text-sm font-medium">Admin Mode</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Filter Panel */}
-        {showFilters && (
-          <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4 shadow-sm">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Blood Group Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Blood Group
-                </label>
-                <select
-                  value={filters.blood}
-                  onChange={(e) => handleFilterChange('blood', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">All Blood Groups</option>
-                  {bloodGroups.map(blood => (
-                    <option key={blood} value={blood}>{blood}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Union Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Union
-                </label>
-                <select
-                  value={filters.union}
-                  onChange={(e) => handleFilterChange('union', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">All Unions</option>
-                  {unions.map(union => (
-                    <option key={union} value={union}>{union}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Department Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Department
-                </label>
-                <select
-                  value={filters.department}
-                  onChange={(e) => handleFilterChange('department', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">All Departments</option>
-                  {departments.map(dept => (
-                    <option key={dept} value={dept}>{dept}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Session Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Session
-                </label>
-                <select
-                  value={filters.session}
-                  onChange={(e) => handleFilterChange('session', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">All Sessions</option>
-                  {sessions.map(session => (
-                    <option key={session} value={session}>{session}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Clear Filters Button */}
-            {hasActiveFilters && (
-              <div className="mt-4 text-center">
-                <button
-                  onClick={clearFilters}
-                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Clear All Filters
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Active Filters Display */}
-        {hasActiveFilters && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {searchTerm && (
-              <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm gap-2">
-                Search: "{searchTerm}"
-                <button 
-                  onClick={() => setSearchTerm('')}
-                  className="hover:text-blue-600"
-                >
-                  ×
-                </button>
-              </span>
-            )}
-            {filters.blood && (
-              <span className="inline-flex items-center px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm gap-2">
-                Blood: {filters.blood}
-                <button 
-                  onClick={() => handleFilterChange('blood', '')}
-                  className="hover:text-red-600"
-                >
-                  ×
-                </button>
-              </span>
-            )}
-            {filters.union && (
-              <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm gap-2">
-                Union: {filters.union}
-                <button 
-                  onClick={() => handleFilterChange('union', '')}
-                  className="hover:text-green-600"
-                >
-                  ×
-                </button>
-              </span>
-            )}
-            {filters.department && (
-              <span className="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm gap-2">
-                Department: {filters.department}
-                <button 
-                  onClick={() => handleFilterChange('department', '')}
-                  className="hover:text-purple-600"
-                >
-                  ×
-                </button>
-              </span>
-            )}
-            {filters.session && (
-              <span className="inline-flex items-center px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm gap-2">
-                Session: {filters.session}
-                <button 
-                  onClick={() => handleFilterChange('session', '')}
-                  className="hover:text-yellow-600"
-                >
-                  ×
-                </button>
-              </span>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Members Grid */}
-      {filteredMembers.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-gray-400 text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">No members found</h3>
-          <p className="text-gray-500 mb-4">
-            {hasActiveFilters 
-              ? "Try adjusting your filters or search term" 
-              : "No members available"
-            }
-          </p>
-          {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Clear All Filters
-            </button>
-          )}
-        </div>
-      ) : (
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
-          {filteredMembers.map(member => (
-            <div key={member._id} className="relative">
-              {/* ADD DELETE BUTTON FOR EACH MEMBER CARD */}
-              {isAdmin() && (
-                <button 
-                  onClick={() => handleDelete(member._id)}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 transition-colors z-10"
-                  title="Delete Member"
-                >
-                  <FaTrash size={12} />
-                </button>
-              )}
-              <MembersCard
-                members={members}
-                setMembers={setMembers}
-                member={member}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-          ))}
-        </div>
-      )}
 
-      {/* Join Button */}
-      <div className="flex justify-center mt-8">
-        <button
-          onClick={() => navigate("/addMember")}
-          className="hidden lg:flex fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-3 rounded-full font-semibold shadow-xl hover:from-indigo-500 hover:to-blue-500 hover:scale-110 transition-all z-50"
-        >
-          Join As a Member
-        </button>
-        <button
-          onClick={() => navigate("/addMember")}
-          className="flex lg:hidden fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all z-50"
-          title="Join As a Member"
-        >
-          <FaPlus size={20} />
-        </button>
+            {/* Department Filter */}
+            <select
+              value={filterDepartment}
+              onChange={(e) => setFilterDepartment(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {departments.map(dept => (
+                <option key={dept} value={dept}>{dept === 'All' ? 'All Departments' : dept}</option>
+              ))}
+            </select>
+
+            {/* Blood Group Filter */}
+            <select
+              value={filterBloodGroup}
+              onChange={(e) => setFilterBloodGroup(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {bloodGroups.map(blood => (
+                <option key={blood} value={blood}>{blood === 'All' ? 'All Blood Groups' : blood}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Members Grid */}
+        {filteredMembers.length === 0 ? (
+          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+            <User size={64} className="text-gray-300 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">No members found</h2>
+            <p className="text-gray-600">Try adjusting your search or filters</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredMembers.map((member) => (
+              <div
+                key={member._id}
+                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+              >
+                {/* Member Photo */}
+                <div className="relative h-48 bg-gradient-to-br from-blue-400 to-indigo-600 overflow-hidden">
+                  {member.photo ? (
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <User size={64} className="text-white opacity-50" />
+                    </div>
+                  )}
+                  {/* Blood Group Badge */}
+                  {member.blood && (
+                    <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                      {member.blood}
+                    </div>
+                  )}
+                </div>
+
+                {/* Member Info */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
+                    {member.name}
+                  </h3>
+
+                  <div className="space-y-3">
+                    {/* Department */}
+                    {member.department && (
+                      <div className="flex items-center gap-3 text-gray-700">
+                        <div className="bg-blue-100 p-2 rounded-lg">
+                          <GraduationCap size={18} className="text-blue-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500">Department</p>
+                          <p className="font-semibold">{member.department}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Blood Group */}
+                    {member.blood && (
+                      <div className="flex items-center gap-3 text-gray-700">
+                        <div className="bg-red-100 p-2 rounded-lg">
+                          <Droplet size={18} className="text-red-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500">Blood Group</p>
+                          <p className="font-semibold">{member.blood}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Session */}
+                    {member.session && (
+                      <div className="flex items-center gap-3 text-gray-700">
+                        <div className="bg-green-100 p-2 rounded-lg">
+                          <Calendar size={18} className="text-green-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500">Session</p>
+                          <p className="font-semibold">{member.session}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Student ID */}
+                    {member.studentId && (
+                      <div className="flex items-center gap-3 text-gray-700">
+                        <div className="bg-purple-100 p-2 rounded-lg">
+                          <User size={18} className="text-purple-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500">Student ID</p>
+                          <p className="font-semibold">{member.studentId}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Hover Effect Border */}
+                <div className="h-1 bg-gradient-to-r from-blue-500 to-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
-};
-
-export default Members;
+}

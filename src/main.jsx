@@ -6,10 +6,10 @@ import Committee from "./Committee/Committee.jsx";
 import AddMember from "./components/AddMember";
 import AdminLogin from "./components/AdminLogin";
 import MemberDetails from "./components/MemberDetails";
-import Members from "./components/Members";
 import NotFound from "./components/NotFound";
 import UpdatedMember from "./components/UpdatedMember";
 import { AuthProvider } from "./context/AuthContext.jsx";
+// import Members from "./context/Members.jsx";
 import AdminGallery from "./Gallery/AdminGallery.jsx";
 import Gallery from "./Gallery/Gallery.jsx";
 import Home from "./Home/Home";
@@ -22,7 +22,9 @@ import Publication from "./Publication/Publication";
 // Import Form Components
 import AdminFormsDashboard from './components/AdminFormsDashboard';
 import FormBuilder from "./components/FormBuilder";
+import Members from "./components/Members.jsx";
 import PublicForm from "./components/PublicForm";
+import PublicFormsList from "./components/PublicFormsList.jsx";
 import ResponseViewer from "./components/ResponseViewer";
 
 const router = createBrowserRouter([
@@ -137,6 +139,10 @@ const router = createBrowserRouter([
         path: "/forms/:id",
         element: <PublicForm></PublicForm>,
       },
+      {
+  path: "/forms",
+  element: <PublicFormsList></PublicFormsList>
+},
 
       {
         path: "*",
