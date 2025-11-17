@@ -1,6 +1,11 @@
 // src/components/Members.jsx
-import { Calendar, Droplet, GraduationCap, Search, User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Calendar, Droplet, GraduationCap, Search, User, Edit, Trash2, MapPin, Filter, X, ChevronDown } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import Swal from 'sweetalert2';
+import { useAuth } from '../context/AuthContext';
+import { FaFilter, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
 
 export default function Members() {
   const [members, setMembers] = useState([]);
@@ -9,6 +14,13 @@ export default function Members() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDepartment, setFilterDepartment] = useState('All');
   const [filterBloodGroup, setFilterBloodGroup] = useState('All');
+  const [filterSession, setFilterSession] = useState('All');
+  const [filterUnion, setFilterUnion] = useState('All');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [activeFiltersCount, setActiveFiltersCount] = useState(0);
+  
+  const navigate = useNavigate();
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     fetchMembers();
@@ -16,7 +28,18 @@ export default function Members() {
 
   useEffect(() => {
     filterMembers();
-  }, [searchTerm, filterDepartment, filterBloodGroup, members]);
+  }, [searchTerm, filterDepartment, filterBloodGroup, filterSession, filterUnion, members]);
+
+  useEffect(() => {
+    // Calculate active filters count
+    let count = 0;
+    if (searchTerm) count++;
+    if (filterDepartment !== 'All') count++;
+    if (filterBloodGroup !== 'All') count++;
+    if (filterSession !== 'All') count++;
+    if (filterUnion !== 'All') count++;
+    setActiveFiltersCount(count);
+  }, [searchTerm, filterDepartment, filterBloodGroup, filterSession, filterUnion]);
 
   const fetchMembers = async () => {
     try {
@@ -31,13 +54,52 @@ export default function Members() {
     }
   };
 
+  const handleDelete = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.deletedCount > 0) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Member has been deleted.",
+                icon: "success",
+              });
+              const remaining = members.filter((mem) => mem._id !== _id);
+              setMembers(remaining);
+            }
+          })
+          .catch((error) => {
+            console.error('Error deleting member:', error);
+            Swal.fire({
+              title: "Error!",
+              text: "Failed to delete member.",
+              icon: "error",
+            });
+          });
+      }
+    });
+  };
+
   const filterMembers = () => {
     let filtered = members;
 
     // Search by name
     if (searchTerm) {
       filtered = filtered.filter(member =>
-        member.name.toLowerCase().includes(searchTerm.toLowerCase())
+        member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (member.studentId && member.studentId.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -51,12 +113,48 @@ export default function Members() {
       filtered = filtered.filter(member => member.blood === filterBloodGroup);
     }
 
+    // Filter by session
+    if (filterSession !== 'All') {
+      filtered = filtered.filter(member => member.session === filterSession);
+    }
+
+    // Filter by union
+    if (filterUnion !== 'All') {
+      filtered = filtered.filter(member => member.union === filterUnion);
+    }
+
     setFilteredMembers(filtered);
   };
 
-  // Get unique departments and blood groups
+  const handleCardClick = (memberId, e) => {
+    // Don't navigate if clicking on buttons
+    if (e.target.closest('button')) {
+      return;
+    }
+    navigate(`/members/${memberId}`);
+  };
+
+  const clearAllFilters = () => {
+    setSearchTerm('');
+    setFilterDepartment('All');
+    setFilterBloodGroup('All');
+    setFilterSession('All');
+    setFilterUnion('All');
+  };
+
+  const hasActiveFilters = () => {
+    return searchTerm !== '' || 
+           filterDepartment !== 'All' || 
+           filterBloodGroup !== 'All' || 
+           filterSession !== 'All' || 
+           filterUnion !== 'All';
+  };
+
+  // Get unique values for filters
   const departments = ['All', ...new Set(members.map(m => m.department).filter(Boolean))];
   const bloodGroups = ['All', ...new Set(members.map(m => m.blood).filter(Boolean))];
+  const sessions = ['All', ...new Set(members.map(m => m.session).filter(Boolean))];
+  const unions = ['All', ...new Set(members.map(m => m.union).filter(Boolean))];
 
   if (loading) {
     return (
@@ -67,72 +165,237 @@ export default function Members() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">Our Members</h1>
-          <p className="text-lg text-gray-600">Meet the talented members of CUSAP</p>
-          <div className="mt-4 text-2xl font-semibold text-blue-600">
+        <div className="text-center mb-2 sm:mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900  sm:mb-2">Our Members</h1>
+          <p className="text-base sm:text-lg text-gray-600">Meet the members of CUSAP</p>
+          <div className="mt-2 sm:mt-2 text-xl sm:text-2xl font-semibold text-blue-600">
             {filteredMembers.length} {filteredMembers.length === 1 ? 'Member' : 'Members'}
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Search */}
-            <div className="relative">
+        {/* Search and Filter Section */}
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-2 mb-6 sm:mb-2">
+          {/* Top Bar - Search and Filter Toggle */}
+          <div className="flex flex-row sm:flex-row gap-4 mb-2">
+            {/* Search Bar */}
+            <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Search by name..."
+                placeholder="Search by name or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
               />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X size={16} />
+                </button>
+              )}
             </div>
 
-            {/* Department Filter */}
-            <select
-              value={filterDepartment}
-              onChange={(e) => setFilterDepartment(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {departments.map(dept => (
-                <option key={dept} value={dept}>{dept === 'All' ? 'All Departments' : dept}</option>
-              ))}
-            </select>
+            {/* Filter Controls */}
+            <div className="flex gap-3">
+              {/* Mobile Filter Toggle */}
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className="flex items-center gap-2 bg-blue-500 text-white px-4 sm:px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors relative lg:hidden"
+              >
+                <Filter size={18} />
+                <span>Filters</span>
+                {activeFiltersCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </button>
 
-            {/* Blood Group Filter */}
-            <select
-              value={filterBloodGroup}
-              onChange={(e) => setFilterBloodGroup(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {bloodGroups.map(blood => (
-                <option key={blood} value={blood}>{blood === 'All' ? 'All Blood Groups' : blood}</option>
-              ))}
-            </select>
+              {/* Clear Filters Button */}
+              {hasActiveFilters() && (
+                <button
+                  onClick={clearAllFilters}
+                  className="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 sm:px-6 py-3 rounded-xl hover:bg-gray-200 transition-colors border border-gray-200"
+                >
+                  <X size={18} />
+                  <span className="hidden sm:inline">Clear</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Filter Options - Responsive Grid */}
+          <div className={`${isFilterOpen ? 'block' : 'hidden'} lg:block transition-all duration-300`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              {/* Department Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                  <GraduationCap size={16} />
+                  Department
+                </label>
+                <div className="relative">
+                  <select
+                    value={filterDepartment}
+                    onChange={(e) => setFilterDepartment(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                  >
+                    {departments.map(dept => (
+                      <option key={dept} value={dept}>
+                        {dept === 'All' ? 'All Departments' : dept}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                </div>
+              </div>
+
+              {/* Blood Group Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                  <Droplet size={16} />
+                  Blood Group
+                </label>
+                <div className="relative">
+                  <select
+                    value={filterBloodGroup}
+                    onChange={(e) => setFilterBloodGroup(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                  >
+                    {bloodGroups.map(blood => (
+                      <option key={blood} value={blood}>
+                        {blood === 'All' ? 'All Blood Groups' : blood}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                </div>
+              </div>
+
+              {/* Session Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                  <Calendar size={16} />
+                  Session
+                </label>
+                <div className="relative">
+                  <select
+                    value={filterSession}
+                    onChange={(e) => setFilterSession(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                  >
+                    {sessions.map(session => (
+                      <option key={session} value={session}>
+                        {session === 'All' ? 'All Sessions' : session}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                </div>
+              </div>
+
+              {/* Union Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                  <MapPin size={16} />
+                  Union
+                </label>
+                <div className="relative">
+                  <select
+                    value={filterUnion}
+                    onChange={(e) => setFilterUnion(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                  >
+                    {unions.map(union => (
+                      <option key={union} value={union}>
+                        {union === 'All' ? 'All Unions' : union}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                </div>
+              </div>
+            </div>
+
+            {/* Active Filters Badges - Mobile */}
+            {hasActiveFilters() && (
+              <div className="mt-4 lg:hidden">
+                <div className="flex flex-wrap gap-2">
+                  {searchTerm && (
+                    <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                      Search: "{searchTerm}"
+                      <button onClick={() => setSearchTerm('')} className="hover:text-blue-900">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  )}
+                  {filterDepartment !== 'All' && (
+                    <span className="inline-flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                      Dept: {filterDepartment}
+                      <button onClick={() => setFilterDepartment('All')} className="hover:text-green-900">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  )}
+                  {filterBloodGroup !== 'All' && (
+                    <span className="inline-flex items-center gap-1 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
+                      Blood: {filterBloodGroup}
+                      <button onClick={() => setFilterBloodGroup('All')} className="hover:text-red-900">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  )}
+                  {filterSession !== 'All' && (
+                    <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+                      Session: {filterSession}
+                      <button onClick={() => setFilterSession('All')} className="hover:text-purple-900">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  )}
+                  {filterUnion !== 'All' && (
+                    <span className="inline-flex items-center gap-1 bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">
+                      Union: {filterUnion}
+                      <button onClick={() => setFilterUnion('All')} className="hover:text-orange-900">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Members Grid */}
         {filteredMembers.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <div className="bg-white rounded-xl shadow-lg p-8 sm:p-12 text-center">
             <User size={64} className="text-gray-300 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">No members found</h2>
-            <p className="text-gray-600">Try adjusting your search or filters</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">No members found</h2>
+            <p className="text-gray-600 mb-4">Try adjusting your search or filters</p>
+            {hasActiveFilters() && (
+              <button
+                onClick={clearAllFilters}
+                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Clear All Filters
+              </button>
+            )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredMembers.map((member) => (
               <div
                 key={member._id}
-                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+                onClick={(e) => handleCardClick(member._id, e)}
+                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer flex flex-col h-full"
               >
                 {/* Member Photo */}
-                <div className="relative h-48 bg-gradient-to-br from-blue-400 to-indigo-600 overflow-hidden">
+                <div className="relative h-40 sm:h-64 bg-gradient-to-br from-blue-400 to-indigo-600 overflow-hidden flex-shrink-0">
                   {member.photo ? (
                     <img
                       src={member.photo}
@@ -145,29 +408,29 @@ export default function Members() {
                     </div>
                   )}
                   {/* Blood Group Badge */}
-                  {member.blood && (
-                    <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                  {/* {member.blood && (
+                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
                       {member.blood}
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 {/* Member Info */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
+                <div className="p-4 sm:p-2 flex-1 flex flex-col">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 text-center line-clamp-2">
                     {member.name}
                   </h3>
 
-                  <div className="space-y-3">
+                  <div className="space-y-3 flex-1">
                     {/* Department */}
                     {member.department && (
                       <div className="flex items-center gap-3 text-gray-700">
                         <div className="bg-blue-100 p-2 rounded-lg">
-                          <GraduationCap size={18} className="text-blue-600" />
+                          <GraduationCap size={16} className="text-blue-600" />
                         </div>
-                        <div>
+                        <div className="min-w-0 flex-1">
                           <p className="text-xs text-gray-500">Department</p>
-                          <p className="font-semibold">{member.department}</p>
+                          <p className="font-semibold text-sm truncate">{member.department}</p>
                         </div>
                       </div>
                     )}
@@ -176,11 +439,11 @@ export default function Members() {
                     {member.blood && (
                       <div className="flex items-center gap-3 text-gray-700">
                         <div className="bg-red-100 p-2 rounded-lg">
-                          <Droplet size={18} className="text-red-600" />
+                          <Droplet size={16} className="text-red-600" />
                         </div>
                         <div>
                           <p className="text-xs text-gray-500">Blood Group</p>
-                          <p className="font-semibold">{member.blood}</p>
+                          <p className="font-bold text-sm text-red-600 ">{member.blood}</p>
                         </div>
                       </div>
                     )}
@@ -189,26 +452,53 @@ export default function Members() {
                     {member.session && (
                       <div className="flex items-center gap-3 text-gray-700">
                         <div className="bg-green-100 p-2 rounded-lg">
-                          <Calendar size={18} className="text-green-600" />
+                          <Calendar size={16} className="text-green-600" />
                         </div>
                         <div>
                           <p className="text-xs text-gray-500">Session</p>
-                          <p className="font-semibold">{member.session}</p>
+                          <p className="font-semibold text-sm">{member.session}</p>
                         </div>
                       </div>
                     )}
 
-                    {/* Student ID */}
-                    {member.studentId && (
+                    {/* Union */}
+                    {member.union && (
                       <div className="flex items-center gap-3 text-gray-700">
                         <div className="bg-purple-100 p-2 rounded-lg">
-                          <User size={18} className="text-purple-600" />
+                          <MapPin size={16} className="text-purple-600" />
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500">Student ID</p>
-                          <p className="font-semibold">{member.studentId}</p>
+                          <p className="text-xs text-gray-500">Union</p>
+                          <p className="font-semibold text-sm">{member.union}</p>
                         </div>
                       </div>
+                    )}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/updateMember/${member._id}`);
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                    >
+                      <Edit size={14} />
+                      Update
+                    </button>
+
+                    {isAdmin() && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(member._id);
+                        }}
+                        className="flex-1 flex items-center justify-center gap-2 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors text-sm"
+                      >
+                        <Trash2 size={14} />
+                        Delete
+                      </button>
                     )}
                   </div>
                 </div>
@@ -219,6 +509,24 @@ export default function Members() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Floating Add Member Button */}
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={() => navigate("/addMember")}
+          className="hidden lg:flex fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-3 rounded-full font-semibold shadow-xl hover:from-indigo-500 hover:to-blue-500 hover:scale-110 transition-all z-50 items-center gap-2"
+        >
+          <FaPlus size={16} />
+          Join As Member
+        </button>
+        <button
+          onClick={() => navigate("/addMember")}
+          className="flex lg:hidden fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all z-50"
+          title="Join As a Member"
+        >
+          <FaPlus size={20} />
+        </button>
       </div>
     </div>
   );

@@ -164,82 +164,95 @@ const UpdatedMember = () => {
         {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">নাম</legend>
+            <legend className="fieldset-legend">Name</legend>
             <input
               type="text"
               name="name"
               className="input input-bordered w-full"
-              placeholder="নাম লিখুন"
+              
               defaultValue={name}
               required
             />
           </fieldset>
 
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">সেশন</legend>
+            <legend className="fieldset-legend">Session</legend>
             <input
               type="text"
               name="session"
               className="input input-bordered w-full"
-              placeholder="সেশন লিখুন (যেমন: ২০১৯-২০)"
+        
               defaultValue={session}
               required
             />
           </fieldset>
 
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">ডিপার্টমেন্ট</legend>
+            <legend className="fieldset-legend">Department</legend>
             <input
               type="text"
               name="department"
               className="input input-bordered w-full"
-              placeholder="ডিপার্টমেন্টের নাম লিখুন"
+            
               defaultValue={department}
               required
             />
           </fieldset>
 
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">রক্তের গ্রুপ</legend>
-            <input
-              type="text"
-              name="blood"
-              className="input input-bordered w-full"
-              placeholder="যেমন: A+, O-, B+"
-              defaultValue={blood}
-            />
+            <legend className="fieldset-legend">Blood Group</legend>
+            <select
+    name="blood"
+    className="select select-bordered w-full"
+  >
+    <option value="">Select Blood Group</option>
+    <option value="A+">A+</option>
+    <option value="A-">A-</option>
+    <option value="B+">B+</option>
+    <option value="B-">B-</option>
+    <option value="AB+">AB+</option>
+    <option value="AB-">AB-</option>
+    <option value="O+">O+</option>
+    <option value="O-">O-</option>
+  </select>
           </fieldset>
 
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">মোবাইল</legend>
+            <legend className="fieldset-legend">Mobile</legend>
             <input
               type="text"
               name="mobile"
               className="input input-bordered w-full"
-              placeholder="মোবাইল নাম্বার লিখুন"
+             
               defaultValue={mobile}
               required
             />
           </fieldset>
 
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">ইউনিয়ন</legend>
-            <input
-              type="text"
-              name="union"
-              className="input input-bordered w-full"
-              placeholder="ইউনিয়নের নাম লিখুন"
-              defaultValue={union}
-            />
+            <legend className="fieldset-legend">Union</legend>
+             <select
+    name="union"
+    className="select select-bordered w-full"
+  >
+    <option value="">Select Your Union</option>
+    <option value="Toitong">Toitong</option>
+    <option value="Pekua">Pekua</option>
+    <option value="Shilkali">Shilkhali</option>
+    <option value="Mognama">Mognama</option>
+    <option value="Barobakia">Barobakia</option>
+    <option value="Rajakhali">Rajakhali</option>
+    <option value="Ujantia">Ujantia</option>
+  </select>
           </fieldset>
 
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">স্টুডেন্ট আইডি</legend>
+            <legend className="fieldset-legend">Student Id</legend>
             <input
               type="text"
               name="studentId"
               className="input input-bordered w-full"
-              placeholder="স্টুডেন্ট আইডি লিখুন"
+             
               defaultValue={studentId}
               required
             />
@@ -247,7 +260,7 @@ const UpdatedMember = () => {
 
           {/* Updated Photo Field - File Input */}
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">ছবি</legend>
+            <legend className="fieldset-legend">Photo</legend>
             
             {/* Current Photo Preview */}
             {currentPhoto && (
