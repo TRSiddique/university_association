@@ -19,7 +19,7 @@ const AdminGallery = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [imagePreview, setImagePreview] = useState(null);
 
-  const API_URL = 'http://localhost:4000';
+  const API_URL = 'https://university-association-backend-1.onrender.com';
 
   // Handle photo form input
   const handlePhotoChange = (e) => {
