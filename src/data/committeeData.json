@@ -3,113 +3,113 @@
     "academicYear": "2024-2025",
     "members": [
       {
-        "id": 1,
-        "name": "Mohammad Abdullah",
-        "position": "President",
-        "department": "Computer Science",
-        "session": "2020-21",
-        "mobile": "017XXXXXXXX",
-        "image": "/images/committee/president.jpg",
-        "priority": 1
-      },
-      {
-        "id": 2,
-        "name": "Fatima Begum",
-        "position": "Vice President",
-        "department": "Economics",
-        "session": "2020-21",
-        "mobile": "018XXXXXXXX",
-        "image": "/images/committee/vice-president.jpg",
-        "priority": 2
-      },
-      {
-        "id": 3,
-        "name": "Rahim Khan",
-        "position": "General Secretary",
-        "department": "Physics",
-        "session": "2021-22",
-        "mobile": "019XXXXXXXX",
-        "image": "/images/committee/secretary.jpg",
-        "priority": 3
-      },
-      {
-        "id": 4,
-        "name": "Ayesha Siddiqua",
-        "position": "Joint Secretary",
-        "department": "Chemistry",
-        "session": "2021-22",
-        "mobile": "017XXXXXXXX",
-        "image": "/images/committee/joint-secretary.jpg",
-        "priority": 4
-      },
-      {
-        "id": 5,
-        "name": "Kamal Hossain",
-        "position": "Treasurer",
-        "department": "Mathematics",
-        "session": "2020-21",
-        "mobile": "018XXXXXXXX",
-        "image": "/images/committee/treasurer.jpg",
-        "priority": 5
-      },
-      {
-        "id": 6,
-        "name": "Sabrina Akter",
-        "position": "Cultural Secretary",
-        "department": "English",
-        "session": "2022-23",
-        "mobile": "019XXXXXXXX",
-        "image": "/images/committee/cultural.jpg",
-        "priority": 6
-      },
-      {
-        "id": 7,
-        "name": "Imran Hasan",
-        "position": "Sports Secretary",
-        "department": "Physical Education",
-        "session": "2021-22",
-        "mobile": "017XXXXXXXX",
-        "image": "/images/committee/sports.jpg",
-        "priority": 7
-      },
-      {
-        "id": 8,
-        "name": "Nusrat Jahan",
-        "position": "Women's Affairs Secretary",
-        "department": "Sociology",
-        "session": "2022-23",
-        "mobile": "018XXXXXXXX",
-        "image": "/images/committee/womens-affairs.jpg",
-        "priority": 8
-      },
-      {
-        "id": 9,
-        "name": "Sohel Rana",
-        "position": "Publicity Secretary",
-        "department": "Mass Communication",
-        "session": "2021-22",
-        "mobile": "019XXXXXXXX",
-        "image": "/images/committee/publicity.jpg",
-        "priority": 9
-      },
-      {
-        "id": 10,
-        "name": "Tania Ahmed",
-        "position": "Academic Secretary",
-        "department": "Biology",
-        "session": "2020-21",
-        "mobile": "017XXXXXXXX",
-        "image": "/images/committee/academic.jpg",
-        "priority": 10
-      },
-      {
+  "id": 1,
+  "name": "মোহাম্মদ দেলোয়ার হোসাইন",
+  "position": "সভাপতি",
+  "department": "শিক্ষা ও গবেষণা ইনস্টিটিউট", 
+  "session": "২০২০-২১",
+  "mobile": "০১৬০২৮৪১১৪৭",
+  "image": "/images/committee/president.jpg",
+  "priority": 1
+},
+{
+  "id": 2,
+  "name": "আতিকুর রহমান",
+  "position": "সহ-সভাপতি",
+  "department": "ফাইন্যান্স",
+  "session": "২০২০-২১",
+  "mobile": "০১৮৪৬৮৭৭৬১৬",
+  "image": "/images/committee/vice_president.jpg",
+  "priority": 2
+},
+{
+  "id": 3,
+  "name": "মোহাম্মদ কাইছার",
+  "position": "সাধারণ সম্পাদক",
+  "department": "ইসলামিক স্টাডিজ",
+  "session": "২০২০-২১",
+  "mobile": "০১৮৫৩৭৪৪১৯৭",
+  "image": "/images/committee/general_secretary.jpg",
+  "priority": 3
+},
+{
+  "id": 4,
+  "name": "জান্নাতুন নাঈমা মনি", 
+  "position": "সিনিয়র যুগ্ম সাধারণ সম্পাদক",
+  "department": "নৃ-বিজ্ঞান",
+  "session": "২০২০-২১", 
+  "mobile": "",
+  "image": "/images/committee/senior_joint_secretary.jpg",
+  "priority": 4
+},
+{
+  "id": 5,
+  "name": "তাসফিকুর রহমান ছিদ্দিকী",
+  "position": "যুগ্ম সাধারণ সম্পাদক",
+  "department": "কম্পিউটার সায়েন্স",
+  "session": "২০২০-২১",
+  "mobile": "০১৬০১৪৫০৮২১",
+  "image": "/images/committee/joint_secretary.jpg",
+  "priority": 5
+},
+{
+  "id": 6,
+  "name": "মোহাম্মদ শাওন",
+  "position": "সাংগঠনিক সম্পাদক",
+  "department": "",
+  "session": "২০২২-২৩",
+  "mobile": "",
+  "image": "/images/committee/organizing_secretary.jpg",
+  "priority": 6
+},
+{
+  "id": 7,
+  "name": "হাবিবুর রহমান",
+  "position": "অর্থ সম্পাদক",
+  "department": "",
+  "session": "",
+  "mobile": "",
+  "image": "/images/committee/finance_secretary.jpg",
+  "priority": 7
+},
+{
+  "id": 8,
+  "name": "ফরহাদুল ইসলাম",
+  "position": "দপ্তর সম্পাদক",
+  "department": "",
+  "session": "",
+  "mobile": "",
+  "image": "/images/committee/office_secretary.jpg",
+  "priority": 8
+},
+{
+  "id": 9,
+  "name": "হৃদয় হাসান মানিক", 
+  "position": "প্রচার সম্পাদক",
+  "department": "",
+  "session": "",
+  "mobile": "",
+  "image": "/images/committee/publicity_secretary.jpg",
+  "priority": 9
+},
+{
+  "id": 10,
+  "name": "তাসনিম জান্নাত নয়ন",
+  "position": "ছাত্রী বিষয়ক সম্পাদক",
+  "department": "",
+  "session": "",
+  "mobile": "",
+  "image": "/images/committee/women_affairs_secretary.jpg",
+  "priority": 10
+},
+{
   "id": 11,
-  "name": "Rafiq Hossain",
-  "position": "Cultural Secretary",
-  "department": "English",
-  "session": "2021-22",
-  "mobile": "018XXXXXXXX",
-  "image": "/images/committee/cultural.jpg",
+  "name": "ফারজানা নাসরিন",
+  "position": "ছাত্রী বিষয়ক সম্পাদক",
+  "department": "",
+  "session": "",
+  "mobile": "",
+  "image": "/images/committee/law_secretary.jpg",
   "priority": 11
 },
 {
@@ -306,34 +306,12 @@
   },
   "previousCommittees": [
     {
-      "academicYear": "2023-2024",
-      "president": "Abdul Karim",
-      "generalSecretary": "Moriom Begum",
+      "academicYear": "২০২৪-২০২৫",
+      "president": "আল নাহিয়ান ইসাত",
+      "generalSecretary": "মোহাম্মদ মিসবাহ উদ্দিন ",
       "totalMembers": 35
-    },
-    {
-      "academicYear": "2022-2023",
-      "president": "Rafiq Islam",
-      "generalSecretary": "Shamima Akter",
-      "totalMembers": 32
-    },
-    {
-      "academicYear": "2021-2022",
-      "president": "Salam Khan",
-      "generalSecretary": "Jhorna Begum",
-      "totalMembers": 30
-    },
-    {
-      "academicYear": "2020-2021",
-      "president": "Farid Ahmed",
-      "generalSecretary": "Nasrin Sultana",
-      "totalMembers": 28
-    },
-    {
-      "academicYear": "2019-2020",
-      "president": "Jahangir Alam",
-      "generalSecretary": "Rokeya Khatun",
-      "totalMembers": 25
     }
+   
+   
   ]
 }

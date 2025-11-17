@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // ADD THIS IMPORT
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // ADD THIS IMPORT
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -20,23 +20,20 @@ const Home = () => {
   const slides = [
     {
       id: 1,
-      image:
-        "https://i.ibb.co.com/LzhmhYmk/472098526-122182541246054973-4624950372467519375-n.jpg",
+      image: "/images/welcome-cusap.jpg",
       title: "Welcome to CUSAP",
       description: "Chittagong University Students Association of Pekua",
     },
     {
       id: 2,
-      image:
-        "https://i.ibb.co.com/zhvyD0xk/471780972-122182121474054973-4391574690028891321-n.jpg",
+      image: "/images/student-development.jpg",
       title: "Student Development",
       description:
         "Empowering students through various programs and initiatives",
     },
     {
       id: 3,
-      image:
-        "https://i.ibb.co.com/35GpxcCV/496307778-122198842970054973-5902264986160171843-n.jpg",
+      image: "/images/community-engagement.jpg",
       title: "Community Engagement",
       description:
         "Building strong connections within the university community",
@@ -47,46 +44,46 @@ const Home = () => {
   const committeeMembers = [
     {
       id: 1,
-      name: "Delowar Hossain",
-      position: "President",
+      name: "দেলোয়ার হোসাইন",
+      position: "সভাপতি",
       image: "https://i.ibb.co.com/SDB94qxS/delowar.jpg",
       speech:
-        "As President, I warmly welcome all members and well-wishers of CUSAP. Together, we aim to create a strong platform for unity, leadership, and service among the students of Pekua at the University of Chittagong.",
+        "আমি চুসাপের সকল সদস্য এবং শুভাকাঙ্ক্ষীদের আন্তরিকভাবে স্বাগত জানাই। আমরা একসাথে চট্টগ্রাম বিশ্ববিদ্যালয়ের পেকুয়া ছাত্রছাত্রীদের মধ্যে ঐক্য, নেতৃত্ব এবং সেবার একটি শক্তিশালী প্ল্যাটফর্ম গড়ে তুলতে আগ্রহী।.",
     },
     {
       id: 2,
-      name: "Mohammad Kaisar",
-      position: "General Secretary",
+      name: "মোহাম্মদ কাইসার ",
+      position: "সাধারণ সম্পাদক",
       image: "https://i.ibb.co.com/1YKfnS6N/kaisar.png",
       speech:
-        "As General Secretary, I believe in teamwork and dedication. Our mission is to strengthen the bond among students and organize impactful programs for academic and personal growth.",
+        "আমি দলের কাজ এবং নিষ্ঠায় বিশ্বাস করি। আমাদের লক্ষ্য হলো শিক্ষার্থীদের মধ্যে বন্ধুত্বের সম্পর্ক শক্তিশালী করা এবং একাডেমিক ও ব্যক্তিগত উন্নতির জন্য কার্যকরী কর্মসূচি আয়োজন করা।",
     },
   ];
 
-  // Sample events
+  // উদাহরণ ইভেন্ট
   const upcomingEvents = [
     {
       id: 1,
-      title: "Publish Full Panel of CUSAP",
-      date: "2025-11-11",
-      time: "2:00 PM - 4:00 PM",
-      location: "Facebook Page",
+      title: "CUSAP-এর পূর্ণ প্যানেল প্রকাশ",
+      date: "2025-11-09",
+      time: "২:০০ PM - ৪:০০ PM",
+      location: "ফেসবুক পেজ",
       link: "www.facebook.com/profile.php?id=61551649208728",
     },
     {
       id: 2,
-      title: "Publish CUSAP plan of comittee",
-      date: "2025-11-20",
-      time: "10:00 AM - 12:00 PM",
-      location: "Committee Room A",
+      title: "CUSAP কমিটির পরিকল্পনা প্রকাশ",
+      date: "2025-11-19",
+      time: "১০:০০ AM - ১২:০০ PM",
+      location: "কমিটি রুম A",
       link: "www.facebook.com/profile.php?id=61551649208728",
     },
     {
       id: 3,
-      title: "Publish CUSAP Website",
-      date: "2025-12-02",
-      time: "3:00 PM - 5:00 PM",
-      location: "Student Center",
+      title: "CUSAP ওয়েবসাইট প্রকাশ",
+      date: "2025-11-20",
+      time: "৩:০০ PM - ৫:০০ PM",
+      location: "স্টুডেন্ট সেন্টার",
       link: "www.facebook.com/profile.php?id=61551649208728",
     },
   ];
@@ -109,13 +106,13 @@ const Home = () => {
   const fetchAllFeedback = async () => {
     try {
       setFeedbackLoading(true);
-      const response = await fetch('https://university-association-backend-1.onrender.com/comment');
+      const response = await fetch("https://university-association-backend-1.onrender.com/comment");
       if (response.ok) {
         const data = await response.json();
         setComments(data);
       }
     } catch (error) {
-      console.error('Error fetching feedback:', error);
+      console.error("Error fetching feedback:", error);
     } finally {
       setFeedbackLoading(false);
     }
@@ -178,22 +175,22 @@ const Home = () => {
 
   // Function to delete feedback (admin only)
   const handleDeleteFeedback = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this feedback?')) {
+    if (!window.confirm("Are you sure you want to delete this feedback?")) {
       return;
     }
 
     try {
       const response = await fetch(`https://university-association-backend-1.onrender.com/comment/${id}`, {
-        method: 'DELETE'
+        method: "DELETE",
       });
-      
+
       if (response.ok) {
-        setComments(comments.filter(comment => comment._id !== id));
-        alert('Feedback deleted successfully!');
+        setComments(comments.filter((comment) => comment._id !== id));
+        alert("Feedback deleted successfully!");
       }
     } catch (error) {
-      console.error('Error deleting feedback:', error);
-      alert('Error deleting feedback!');
+      console.error("Error deleting feedback:", error);
+      alert("Error deleting feedback!");
     }
   };
 
@@ -293,35 +290,34 @@ const Home = () => {
         </div>
       </section>
       {/* About Section */}
-      <section id="about" className="py-16 bg-white">
+      <section id="about" className="py-8 bg-white">
         <div className="container mx-auto px-2 lg:px-4">
+          {/* Section Title */}
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              About CUSAP
+              আমাদের সম্পর্কে (CUSAP)
             </h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+            <div className="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-50 rounded-lg p-6 shadow-sm">
+            <div className="bg-gray-50 rounded-xl p-8 shadow-md border border-gray-100">
               <p className="text-lg text-gray-700 text-justify leading-relaxed mb-6">
-                Chittagong University Students' Association of Pekua (CUSAP) is
-                a student-led organization formed by the students of Pekua
-                studying at the University of Chittagong. The association works
-                to create unity among students, provide academic and social
-                support, and strengthen the bond between university life and
-                community service.
-                <br></br>
-                CUSAP regularly organizes various initiatives such as
-                educational seminars, cultural programs, social welfare
-                activities, and guidance sessions for university admission
-                seekers from Pekua. Through teamwork, leadership, and
-                dedication, CUSAP aims to build a strong, cooperative network of
-                students who contribute positively to both campus life and
-                society.
+                চট্টগ্রাম বিশ্ববিদ্যালয়ে অধ্যয়নরত পেকুয়ার শিক্ষার্থীদের উদ্যোগে
+                গঠিত চিটাগাং ইউনিভার্সিটি স্টুডেন্টস অ্যাসোসিয়েশন অব পেকুয়া
+                (CUSAP) একটি ছাত্রনেতৃত্বাধীন সংগঠন, যা শিক্ষার্থীদের মধ্যে
+                সৌহার্দ্য, সহযোগিতা ও একাডেমিক সহায়তা বাড়াতে কাজ করে।
+                <br />
+                CUSAP নিয়মিত শিক্ষা-সেমিনার, সাংস্কৃতিক অনুষ্ঠান, সামাজিক
+                কল্যাণমূলক কার্যক্রম এবং ভর্তিচ্ছু শিক্ষার্থীদের পরামর্শ সেশন
+                আয়োজন করে। নেতৃত্ব ও দলীয়চেতনার মাধ্যমে সংগঠনটি একটি শক্তিশালী ও
+                ইতিবাচক শিক্ষার্থী নেটওয়ার্ক গড়ে তুলতে প্রতিশ্রুতিবদ্ধ।
               </p>
-              <div className="grid md:grid-cols-3 gap-8 mt-8">
-                <div className="text-center">
+
+              {/* Features Grid */}
+              <div className="grid md:grid-cols-3 gap-8 mt-10">
+                {/* 1. Student Welfare */}
+                <div className="text-center p-4 hover:shadow-md rounded-lg transition">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg
                       className="w-8 h-8 text-blue-600"
@@ -337,15 +333,17 @@ const Home = () => {
                       />
                     </svg>
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    Student Welfare
+                  <h3 className="font-semibold text-gray-800 mb-2 text-lg">
+                    শিক্ষার্থী কল্যাণ
                   </h3>
-                  <p className="text-sm text-gray-600">
-                    Supports students of Pekua studying at the University of
-                    Chittagong through guidance and cooperation.
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    পেকুয়ার শিক্ষার্থীদের একাডেমিক ও ব্যক্তিগত সহায়তা প্রদানের
+                    মাধ্যমে সহমর্মিতা ও সহযোগিতার পরিবেশ তৈরি করে।
                   </p>
                 </div>
-                <div className="text-center">
+
+                {/* 2. Community Building */}
+                <div className="text-center p-4 hover:shadow-md rounded-lg transition">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg
                       className="w-8 h-8 text-green-600"
@@ -361,15 +359,17 @@ const Home = () => {
                       />
                     </svg>
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    Community Building
+                  <h3 className="font-semibold text-gray-800 mb-2 text-lg">
+                    কমিউনিটি গঠন
                   </h3>
-                  <p className="text-sm text-gray-600">
-                    Strengthens the bond among members to create a united and
-                    active student network.
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    সদস্যদের মাঝে শক্তিশালী বন্ধন তৈরি করে একটি ঐক্যবদ্ধ ও
+                    সক্রিয় শিক্ষার্থী সমাজ গড়ে তোলে।
                   </p>
                 </div>
-                <div className="text-center">
+
+                {/* 3. Social Engagement */}
+                <div className="text-center p-4 hover:shadow-md rounded-lg transition">
                   <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg
                       className="w-8 h-8 text-purple-600"
@@ -385,12 +385,12 @@ const Home = () => {
                       />
                     </svg>
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    Social Engagement
+                  <h3 className="font-semibold text-gray-800 mb-2 text-lg">
+                    সামাজিক সম্পৃক্ততা
                   </h3>
-                  <p className="text-sm text-gray-600">
-                    Organizes educational, cultural, and welfare activities for
-                    positive social impact.
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    শিক্ষা, সংস্কৃতি এবং কল্যাণমূলক কার্যক্রম আয়োজনের মাধ্যমে
+                    সমাজে ইতিবাচক প্রভাব সৃষ্টি করে।
                   </p>
                 </div>
               </div>
@@ -398,28 +398,26 @@ const Home = () => {
           </div>
         </div>
       </section>
-{/* Join With Us Button after About Section */}
-<div className="text-center py-8 bg-white">
-  <button
-    onClick={() => navigate('/addMember')}
-    className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
-  >
-    Join With CUSAP
-  </button>
-</div>
+
+      {/* Join With Us Button after About Section */}
+      <div className="text-center  bg-white">
+        <button
+          onClick={() => navigate("/addMember")}
+          className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
+        >
+          চুসাপের সদস্য হোন
+        </button>
+      </div>
       {/* Committee Members Section */}
       <section id="committee" className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 ">
           {/* Section Header */}
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Our Committee
+              কার্যকরী সদস্যবৃন্দ
             </h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              Meet the leading faces of CUSAP working to build a stronger
-              university community.
-            </p>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto"></p>
           </div>
 
           {/* Members */}
@@ -440,7 +438,7 @@ const Home = () => {
                 <p className="text-blue-600 font-medium mb-4">
                   {member.position}
                 </p>
-                <p className="text-gray-700 text-justify leading-relaxed">
+                <p className="text-gray-700 leading-relaxed text-justify bg-gray-50 p-4 rounded-xl border-l-4 border-purple-500">
                   {member.speech}
                 </p>
               </div>
@@ -448,21 +446,21 @@ const Home = () => {
           </div>
         </div>
       </section>
-{/* See Executive Committee Button after Committee Section */}
-<div className="text-center py-8 bg-gray-50">
-  <button
-    onClick={() => navigate('/committee')}
-    className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
-  >
-    See Executive Committee
-  </button>
-</div>
+      {/* See Executive Committee Button after Committee Section */}
+      <div className="text-center py-8 bg-gray-50">
+        <button
+          onClick={() => navigate("/committee")}
+          className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
+        >
+          সকল সদস্যদের তালিকা দেখুন
+        </button>
+      </div>
       {/* Events Section */}
       <section id="events" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Upcoming Events
+              আসন্ন কার্যক্রম
             </h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
           </div>
@@ -515,12 +513,12 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Share Your Feedback
+              আপনার মতামত দিন
             </h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              We value your input. Share your comments, suggestions, or concerns
-              with the committee.
+              আমরা আপনার মতামতকে গুরুত্ব দেই। কমিটির সঙ্গে আপনার মন্তব্য,
+              পরামর্শ বা উদ্বেগগুলো শেয়ার করুন।
             </p>
           </div>
 
@@ -537,7 +535,7 @@ const Home = () => {
                         : "text-gray-600 hover:text-gray-800"
                     }`}
                   >
-                    About Feedback
+                    মতামত সম্পর্কে
                   </button>
                   <button
                     onClick={() => setActiveTab("form")}
@@ -547,7 +545,7 @@ const Home = () => {
                         : "text-gray-600 hover:text-gray-800"
                     }`}
                   >
-                    Submit Feedback
+                    মতামত জমা দিন
                   </button>
                   {/* Admin Feedback Tab - Only show for admins */}
                   {isAdmin() && (
@@ -559,7 +557,7 @@ const Home = () => {
                           : "text-gray-600 hover:text-gray-800"
                       }`}
                     >
-                      All Feedback ({comments.length})
+                      সকল মতামত ({comments.length})
                     </button>
                   )}
                 </div>
@@ -570,27 +568,31 @@ const Home = () => {
                 {activeTab === "about" && (
                   <div>
                     <h3 className="text-xl font-semibold mb-4">
-                      Feedback Guidelines
+                      মতামত নির্দেশিকা
                     </h3>
                     <div className="space-y-4 text-gray-700">
                       <p>
-                        The CUSAP committee welcomes constructive feedback from
-                        students, faculty, and staff to help us improve our
-                        services and initiatives.
+                        CUSAP কমিটি শিক্ষার্থী, শিক্ষক ও কর্মীদের গঠনমূলক
+                        মতামতকে স্বাগত জানাই, যাতে আমরা আমাদের সেবা ও উদ্যোগগুলো
+                        আরও উন্নত করতে পারি।
                       </p>
                       <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
                         <p className="font-medium text-yellow-800">
-                          Please Note:
+                          দয়া করে লক্ষ্য করুন:
                         </p>
                         <ul className="list-disc list-inside mt-2 text-yellow-700 space-y-1">
-                          <li>All submissions are reviewed by the committee</li>
-                          <li>We aim to respond within 3-5 working days</li>
                           <li>
-                            Please provide specific and actionable feedback
+                            সমস্ত মতামত কমিটি দ্বারা পর্যালোচনা করা হয় 
                           </li>
                           <li>
-                            Respectful and professional language is required
+                            আমরা ৩-৫ কার্যদিবসের মধ্যে প্রতিক্রিয়া দেওয়ার
+                            চেষ্টা করি
                           </li>
+                          <li>
+                            দয়া করে সুনির্দিষ্ট এবং কার্যকর মতামত প্রদান
+                            করুন 
+                          </li>
+                          <li>সম্মানজনক এবং পেশাদার ভাষার ব্যবহার অপরিহার্য</li>
                         </ul>
                       </div>
                     </div>
@@ -602,7 +604,7 @@ const Home = () => {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Full Name *
+                          পূর্ণনাম *
                         </label>
                         <input
                           type="text"
@@ -611,12 +613,12 @@ const Home = () => {
                           onChange={handleInputChange}
                           required
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Enter your full name"
+                          placeholder="আপনার নাম লিখুন"
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Phone Number
+                          মোবাইল নম্বর 
                         </label>
                         <input
                           type="mobile"
@@ -624,23 +626,23 @@ const Home = () => {
                           value={newComment.mobile}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Enter your phone Number"
+                          placeholder="আপনার মোবাইল নম্বর দিন"
                         />
                       </div>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Your Message *
+                       আপনার মতামত *
                       </label>
                       <textarea
                         name="comment"
                         value={newComment.comment}
                         onChange={handleInputChange}
                         required
-                        rows={6}
+                        rows={6} 
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Please share your feedback, comments, or concerns..."
+                        placeholder="আপনার ফিডব্যাক, মন্তব্য বা উদ্বেগ শেয়ার করুন…"
                       ></textarea>
                     </div>
 
@@ -648,7 +650,7 @@ const Home = () => {
                       type="submit"
                       className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
                     >
-                      Submit Feedback
+                      মতামত জমা দিন
                     </button>
                   </form>
                 )}
@@ -657,22 +659,36 @@ const Home = () => {
                 {activeTab === "admin-feedback" && isAdmin() && (
                   <div>
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-xl font-semibold">All Feedback Submissions</h3>
+                      <h3 className="text-xl font-semibold">
+                        সকল মতামত 
+                      </h3>
                       <button
                         onClick={fetchAllFeedback}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center gap-2"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                          />
                         </svg>
-                        Refresh
+                        রিফ্রেশ 
                       </button>
                     </div>
 
                     {feedbackLoading ? (
                       <div className="text-center py-8">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                        <p className="text-gray-600 mt-2">Loading feedback...</p>
+                        <p className="text-gray-600 mt-2">
+                          Loading feedback...
+                        </p>
                       </div>
                     ) : comments.length === 0 ? (
                       <div className="text-center py-8 text-gray-500">
@@ -704,8 +720,18 @@ const Home = () => {
                               className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded hover:bg-red-600 transition-colors"
                               title="Delete Feedback"
                             >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
                               </svg>
                             </button>
 
@@ -724,19 +750,26 @@ const Home = () => {
                                 {comment.date}
                               </span>
                             </div>
-                            <p className="text-gray-700 mb-2">{comment.comment}</p>
+                            <p className="text-gray-700 mb-2">
+                              {comment.comment}
+                            </p>
                             <div className="flex justify-between items-center text-sm text-gray-500">
                               <span>
-                                Type: <span className="font-medium capitalize">{comment.type}</span>
+                                Type:{" "}
+                                <span className="font-medium capitalize">
+                                  {comment.type}
+                                </span>
                               </span>
-                              <span className={`px-2 py-1 rounded-full text-xs ${
-                                comment.status === 'pending' 
-                                  ? 'bg-yellow-100 text-yellow-800'
-                                  : comment.status === 'resolved'
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-blue-100 text-blue-800'
-                              }`}>
-                                {comment.status || 'pending'}
+                              <span
+                                className={`px-2 py-1 rounded-full text-xs ${
+                                  comment.status === "pending"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : comment.status === "resolved"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-blue-100 text-blue-800"
+                                }`}
+                              >
+                                {comment.status || "pending"}
                               </span>
                             </div>
                           </div>

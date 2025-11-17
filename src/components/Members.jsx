@@ -1,11 +1,11 @@
 // src/components/Members.jsx
-import { Calendar, Droplet, GraduationCap, Search, User, Edit, Trash2, MapPin, Filter, X, ChevronDown } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { Calendar, ChevronDown, Droplet, Edit, Filter, GraduationCap, MapPin, Search, Trash2, User, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FaPlus } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { useAuth } from '../context/AuthContext';
-import { FaFilter, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
 
 export default function Members() {
   const [members, setMembers] = useState([]);
@@ -56,13 +56,13 @@ export default function Members() {
 
   const handleDelete = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
+      title: "আপনি কি শিওর?",
+      text: "আপনি এটি পুনরায় ফিরিয়ে আনতে পারবেন না!",
+      icon: "warning", 
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "হ্যাঁ ,ডিলিট করব!",
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
@@ -73,7 +73,7 @@ export default function Members() {
             if (data.deletedCount > 0) {
               Swal.fire({
                 title: "Deleted!",
-                text: "Member has been deleted.",
+                text: "ডিলিট করা হয়েছে",
                 icon: "success",
               });
               const remaining = members.filter((mem) => mem._id !== _id);
