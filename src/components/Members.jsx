@@ -169,11 +169,11 @@ export default function Members() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-2 sm:mb-4">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900  sm:mb-2">Our Members</h1>
-          <p className="text-base sm:text-lg text-gray-600">Meet the members of CUSAP</p>
-          <div className="mt-2 sm:mt-2 text-xl sm:text-2xl font-semibold text-blue-600">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900  sm:mb-2">আমাদের সদস্যবৃন্দ </h1>
+          <p className="text-base sm:text-lg text-gray-600">চুসাপের সদস্যদের পরিচিতি </p>
+          {/* <div className="mt-2 sm:mt-2 text-xl sm:text-2xl font-semibold text-blue-600">
             {filteredMembers.length} {filteredMembers.length === 1 ? 'Member' : 'Members'}
-          </div>
+          </div> */}
         </div>
 
         {/* Search and Filter Section */}
@@ -185,10 +185,10 @@ export default function Members() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Search by name or ID..."
+                placeholder="নাম বা আইডি লিখে সার্চ করুন..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+                className="w-full text-gray-700 pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
               />
               {searchTerm && (
                 <button
@@ -236,17 +236,17 @@ export default function Members() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
                   <GraduationCap size={16} />
-                  Department
+                  ডিপার্টমেন্ট
                 </label>
                 <div className="relative">
                   <select
                     value={filterDepartment}
                     onChange={(e) => setFilterDepartment(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                    className="w-full text-gray-700 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
                   >
                     {departments.map(dept => (
                       <option key={dept} value={dept}>
-                        {dept === 'All' ? 'All Departments' : dept}
+                        {dept === 'All' ? 'সব বিভাগ ' : dept}
                       </option>
                     ))}
                   </select>
@@ -258,17 +258,17 @@ export default function Members() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
                   <Droplet size={16} />
-                  Blood Group
+                  রক্তের গ্রুপ
                 </label>
                 <div className="relative">
                   <select
                     value={filterBloodGroup}
                     onChange={(e) => setFilterBloodGroup(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                    className="w-full text-gray-700 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
                   >
                     {bloodGroups.map(blood => (
                       <option key={blood} value={blood}>
-                        {blood === 'All' ? 'All Blood Groups' : blood}
+                        {blood === 'All' ? 'সব রক্তের গ্রুপ' : blood}
                       </option>
                     ))}
                   </select>
@@ -280,17 +280,17 @@ export default function Members() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
                   <Calendar size={16} />
-                  Session
+                  সেশন
                 </label>
                 <div className="relative">
                   <select
                     value={filterSession}
                     onChange={(e) => setFilterSession(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                    className="w-full text-gray-700 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
                   >
                     {sessions.map(session => (
                       <option key={session} value={session}>
-                        {session === 'All' ? 'All Sessions' : session}
+                        {session === 'All' ? 'সব সেশন' : session}
                       </option>
                     ))}
                   </select>
@@ -302,17 +302,17 @@ export default function Members() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
                   <MapPin size={16} />
-                  Union
+                  ইউনিয়ন
                 </label>
                 <div className="relative">
                   <select
                     value={filterUnion}
                     onChange={(e) => setFilterUnion(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
+                    className="w-full text-gray-700 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-gray-50 hover:bg-white transition-colors duration-200"
                   >
                     {unions.map(union => (
                       <option key={union} value={union}>
-                        {union === 'All' ? 'All Unions' : union}
+                        {union === 'All' ? 'সব ইউনিয়ন' : union}
                       </option>
                     ))}
                   </select>
@@ -429,7 +429,7 @@ export default function Members() {
                           <GraduationCap size={16} className="text-blue-600" />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs text-gray-500">Department</p>
+                          <p className="text-xs text-gray-500">ডিপার্ট্মেন্ট</p>
                           <p className="font-semibold text-sm truncate">{member.department}</p>
                         </div>
                       </div>
@@ -442,7 +442,7 @@ export default function Members() {
                           <Droplet size={16} className="text-red-600" />
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500">Blood Group</p>
+                          <p className="text-xs text-gray-500">রক্তের গ্রুপ</p>
                           <p className="font-bold text-sm text-red-600 ">{member.blood}</p>
                         </div>
                       </div>
@@ -455,7 +455,7 @@ export default function Members() {
                           <Calendar size={16} className="text-green-600" />
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500">Session</p>
+                          <p className="text-xs text-gray-500">সেশন</p>
                           <p className="font-semibold text-sm">{member.session}</p>
                         </div>
                       </div>
@@ -468,7 +468,7 @@ export default function Members() {
                           <MapPin size={16} className="text-purple-600" />
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500">Union</p>
+                          <p className="text-xs text-gray-500">ইউনিয়ন</p>
                           <p className="font-semibold text-sm">{member.union}</p>
                         </div>
                       </div>
@@ -476,13 +476,13 @@ export default function Members() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="mt-4 pt-4 border-t border-gray-100 flex gap-2">
+                  <div className="mt-4 pt-4 border-t border-gray-200 flex justify-center items-center gap-2 lg:gap-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/updateMember/${member._id}`);
                       }}
-                      className="flex-1 flex items-center justify-center gap-2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                      className="flex-1 flex items-center justify-center gap-1 lg:gap-2 bg-blue-500 text-white py-2 px-1 rounded-lg hover:bg-blue-600 transition-colors text-sm"
                     >
                       <Edit size={14} />
                       Update
@@ -494,7 +494,7 @@ export default function Members() {
                           e.stopPropagation();
                           handleDelete(member._id);
                         }}
-                        className="flex-1 flex items-center justify-center gap-2 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-colors text-sm"
+                        className="flex-1 flex items-center justify-center gap-1 lg:gap-2 bg-red-500 text-white py-2 px-1 rounded-lg hover:bg-red-600 transition-colors text-sm"
                       >
                         <Trash2 size={14} />
                         Delete
@@ -516,9 +516,9 @@ export default function Members() {
         <button
           onClick={() => navigate("/addMember")}
           className="hidden lg:flex fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-3 rounded-full font-semibold shadow-xl hover:from-indigo-500 hover:to-blue-500 hover:scale-110 transition-all z-50 items-center gap-2"
-        >
+        > নতুন সদস্য হিসেবে যুক্ত হোন
           <FaPlus size={16} />
-          Join As Member
+          
         </button>
         <button
           onClick={() => navigate("/addMember")}

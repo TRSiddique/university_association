@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // ADD THIS IMPORT
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { useAuth } from '../context/AuthContext';
+import NewsCard from '../News/NewsCard'; // কম্পোনেন্ট ইম্পোর্ট করুন
 
 const News = () => {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const { isAdmin } = useAuth(); // ADD THIS
+    const { isAdmin } = useAuth();
+    const navigate = useNavigate(); // useNavigate হুক যোগ করুন
 
-    // Fetch news from database
     useEffect(() => {
         fetchNews();
     }, []);
@@ -35,6 +37,53 @@ const News = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    // Delete news function
+    const handleDeleteNews = async (newsId, headline) => {
+        const result = await Swal.fire({
+            title: 'আপনি কি নিশ্চিত?',
+            text: `"${headline}" সংবাদটি ডিলিট করতে চান?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'হ্যাঁ, ডিলিট করুন!',
+            cancelButtonText: 'বাতিল করুন'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`https://university-association-backend-1.onrender.com/news/${newsId}`, {
+                    method: 'DELETE',
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    Swal.fire(
+                        'ডিলিটেড!',
+                        'সংবাদটি সফলভাবে ডিলিট করা হয়েছে।',
+                        'success'
+                    );
+                    setNews(news.filter(item => item._id !== newsId));
+                } else {
+                    throw new Error(data.message || 'Failed to delete news');
+                }
+            } catch (error) {
+                console.error('Error deleting news:', error);
+                Swal.fire(
+                    'ত্রুটি!',
+                    'সংবাদ ডিলিট করতে সমস্যা হয়েছে।',
+                    'error'
+                );
+            }
+        }
+    };
+
+    // Update news function - FIXED
+    const handleEditNews = (newsId) => {
+        navigate(`/edit-news/${newsId}`);
     };
 
     if (loading) {
@@ -77,58 +126,25 @@ const News = () => {
             <div className="container mx-auto px-4">
                 {/* Header Section */}
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-4">CUSAP News & Updates</h1>
+                    <h1 className="text-4xl font-bold text-gray-800 mb-4">CUSAP সংবাদ ও আপডেট</h1>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Stay updated with the latest news, events, and announcements from the Chittagong University Students Association of Pekua
+                        চুসাপের সাম্প্রতিক খবর, কার্যক্রম ও গুরুত্বপূর্ণ আপডেট জানতে এখানে দেখুন।
                     </p>
                 </div>
 
                 {/* News Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     {news.map((item) => (
-                        <Link
+                        <NewsCard 
                             key={item._id}
-                            to={`/news/${item._id}`}
-                            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                        >
-                            <div className="relative">
-                                <img
-                                    src={item.image}
-                                    alt={item.headline}
-                                    className="w-full h-48 object-cover"
-                                />
-                                {/* Admin badge for news items */}
-                                {isAdmin() && (
-                                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">
-                                        ADMIN
-                                    </div>
-                                )}
-                            </div>
-                            
-                            <div className="p-6">
-                                <div className="flex items-center text-sm text-gray-500 mb-2">
-                                    <span>{new Date(item.date).toLocaleDateString()}</span>
-                                </div>
-                                
-                                <h3 className="text-xl font-semibold text-gray-800 mb-3 line-clamp-2">
-                                    {item.headline}
-                                </h3>
-                                
-                                <p className="text-gray-600 mb-4 line-clamp-3">
-                                    {item.shortDescription}
-                                </p>
-                                
-                                <div className="flex justify-end text-sm text-gray-500">
-                                    <span className="text-blue-600 font-medium hover:text-blue-700">
-                                        Read More →
-                                    </span>
-                                </div>
-                            </div>
-                        </Link>
+                            item={item}
+                            onDelete={handleDeleteNews}
+                            onEdit={handleEditNews}
+                        />
                     ))}
                 </div>
 
-                {/* Action Bar - Only Add News Button for Admin */}
+                {/* Add News Button for Admin */}
                 {isAdmin() && (
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
                         <div className="flex justify-end">
@@ -139,7 +155,7 @@ const News = () => {
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                 </svg>
-                                <span>Add News</span>
+                                <span>নতুন সংবাদ যোগ করুন</span>
                             </Link>
                         </div>
                     </div>
@@ -151,10 +167,9 @@ const News = () => {
                         <svg className="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9m0 0v12m0-12a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                         </svg>
-                        <h3 className="text-xl font-semibold text-gray-600 mb-2">No news available</h3>
-                        <p className="text-gray-500 mb-4">Be the first to add some news!</p>
+                        <h3 className="text-xl font-semibold text-gray-600 mb-2">কোন সংবাদ পাওয়া যায়নি</h3>
+                        <p className="text-gray-500 mb-4">প্রথম সংবাদটি যোগ করুন!</p>
                         
-                        {/* Show Add News button in empty state only for admin */}
                         {isAdmin() && (
                             <Link
                                 to="/addnews"
@@ -163,7 +178,7 @@ const News = () => {
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                 </svg>
-                                <span>Add First News</span>
+                                <span>প্রথম সংবাদ যোগ করুন</span>
                             </Link>
                         )}
                     </div>

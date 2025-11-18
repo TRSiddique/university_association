@@ -26,6 +26,7 @@ import Members from "./components/Members.jsx";
 import PublicForm from "./components/PublicForm";
 import PublicFormsList from "./components/PublicFormsList.jsx";
 import ResponseViewer from "./components/ResponseViewer";
+import EditNews from "./News/EditNews.jsx";
 
 const router = createBrowserRouter([
   {
@@ -143,7 +144,10 @@ const router = createBrowserRouter([
   path: "/forms",
   element: <PublicFormsList></PublicFormsList>
 },
-
+{
+  path:"/edit-news/:id" ,
+  element:<EditNews></EditNews>
+},
       {
         path: "*",
         element: <NotFound></NotFound>,

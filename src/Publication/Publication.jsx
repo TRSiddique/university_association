@@ -35,10 +35,10 @@ const Publication = () => {
                 {/* Header */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                        CUSAP Publications
+                       চুসাপ প্রকাশনা
                     </h1>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Access official documents, magazines, and resources of Chittagong University Student Association of Pekua
+                         চুসাপের অফিসিয়াল ডকুমেন্ট, ম্যাগাজিন ও প্রকাশনা এক জায়গায়
                     </p>
                 </div>
 
@@ -54,7 +54,7 @@ const Publication = () => {
                                         : 'text-gray-600 hover:text-blue-600'
                                 }`}
                             >
-                                📜 Constitution
+                                📜গঠনতন্ত্র 
                             </button>
                             <button
                                 onClick={() => setActiveTab('magazines')}
@@ -64,7 +64,7 @@ const Publication = () => {
                                         : 'text-gray-600 hover:text-blue-600'
                                 }`}
                             >
-                                📚 Magazines ({publicationData.magazines.length})
+                                📚 সাময়িকী  ({publicationData.magazines.length})
                             </button>
                             <button
                                 onClick={() => setActiveTab('documents')}
@@ -74,7 +74,7 @@ const Publication = () => {
                                         : 'text-gray-600 hover:text-blue-600'
                                 }`}
                             >
-                                📄 Documents ({publicationData.documents.length})
+                                📄ডকুমেন্ট ({publicationData.documents.length})
                             </button>
                         </div>
                     </div>
@@ -139,7 +139,7 @@ const Publication = () => {
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                 </svg>
-                                                View Constitution
+                                                গঠনতন্ত্র দেখুন 
                                             </button>
                                             <button
                                                 onClick={() => downloadPdf(publicationData.constitution.fileUrl, 'CUSAP-Constitution.pdf')}
@@ -148,7 +148,7 @@ const Publication = () => {
                                                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                                 </svg>
-                                                Download PDF
+                                                ডাউনলোড করুন 
                                             </button>
                                         </div>
                                     </div>

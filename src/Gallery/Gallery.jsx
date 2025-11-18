@@ -102,7 +102,7 @@ const Gallery = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-800 mb-4">Gallery</h1>
+          <h1 className="text-5xl font-bold text-gray-800 mb-4">চুসাপ স্মৃতিগাথা</h1>
           <p className="text-lg text-gray-600">Memories from CUSAP Events</p>
         </div>
 

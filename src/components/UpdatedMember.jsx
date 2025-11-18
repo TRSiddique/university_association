@@ -115,26 +115,26 @@ const UpdatedMember = () => {
 
       if (data.modifiedCount > 0 || data.upsertedCount > 0) {
         Swal.fire({
-          title: 'Updated!',
-          text: 'Member information updated successfully.',
+          title: 'সফল!',
+          text: 'মেম্বার ইনফরমেশন সফলভাবে আপডেট করা হয়েছে।',
           icon: 'success',
         }).then(() => {
           navigate('/members'); // redirect to member list page
         });
       } else {
         Swal.fire({
-          title: 'No Changes!',
-          text: 'No changes were made to the member information.',
+          title: 'কোনো পরিবর্তন নেই!',
+          text: 'মেম্বার ইনফরমেশনে কোনো পরিবর্তন করা হয়নি।',
           icon: 'info',
         });
       }
     } catch (error) {
       console.error('Error:', error);
       Swal.fire({
-        title: 'Error!',
-        text: 'Something went wrong. Please try again.',
+        title: 'ত্রুটি!',
+        text: 'কিছু একটা সমস্যা হয়েছে, আবার চেষ্টা করুন।',
         icon: 'error',
-        confirmButtonText: 'OK',
+        confirmButtonText: 'ঠিক আছে',
       });
     } finally {
       setUploading(false);
@@ -152,120 +152,135 @@ const UpdatedMember = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-base-200 px-3">
+    <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900 px-3 py-8">
       <form
         onSubmit={handleUpdateMember}
-        className="bg-base-100 shadow-xl rounded-2xl p-6 w-full max-w-4xl"
+        className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 w-full max-w-4xl border border-gray-200 dark:border-gray-700"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-success">
-          Update Your Information
-        </h2> 
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-green-600 dark:text-green-400">
+          আপনার তথ্য আপডেট করুন 
+        </h2>
 
         {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Name</legend>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">নাম</span>
+            </label>
             <input
               type="text"
               name="name"
-              className="input input-bordered w-full"
-              
+              className="input input-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               defaultValue={name}
               required
             />
-          </fieldset>
+          </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Session</legend>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">সেশন</span>
+            </label>
             <input
               type="text"
               name="session"
-              className="input input-bordered w-full"
-        
+              className="input input-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               defaultValue={session}
               required
             />
-          </fieldset>
+          </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Department</legend>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">ডিপার্টমেন্ট</span>
+            </label>
             <input
               type="text"
               name="department"
-              className="input input-bordered w-full"
-            
+              className="input input-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               defaultValue={department}
               required
             />
-          </fieldset>
+          </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Blood Group</legend>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">রক্তের গ্রুপ</span>
+            </label>
             <select
-    name="blood"
-    className="select select-bordered w-full"
-  >
-    <option value="">Select Blood Group</option>
-    <option value="A+">A+</option>
-    <option value="A-">A-</option>
-    <option value="B+">B+</option>
-    <option value="B-">B-</option>
-    <option value="AB+">AB+</option>
-    <option value="AB-">AB-</option>
-    <option value="O+">O+</option>
-    <option value="O-">O-</option>
-  </select>
-          </fieldset>
+              name="blood"
+              className="select select-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              defaultValue={blood}
+              required
+            >
+              <option value="">রক্তের গ্রুপ সিলেক্ট করুন</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Mobile</legend>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">মোবাইল নম্বর</span>
+            </label>
             <input
               type="text"
               name="mobile"
-              className="input input-bordered w-full"
-             
+              className="input input-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               defaultValue={mobile}
               required
             />
-          </fieldset>
+          </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Union</legend>
-             <select
-    name="union"
-    className="select select-bordered w-full"
-  >
-    <option value="">Select Your Union</option>
-    <option value="Toitong">Toitong</option>
-    <option value="Pekua">Pekua</option>
-    <option value="Shilkali">Shilkhali</option>
-    <option value="Mognama">Mognama</option>
-    <option value="Barobakia">Barobakia</option>
-    <option value="Rajakhali">Rajakhali</option>
-    <option value="Ujantia">Ujantia</option>
-  </select>
-          </fieldset>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">ইউনিয়ন</span>
+            </label>
+            <select
+              name="union"
+              className="select select-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              defaultValue={union}
+              required
+            >
+              <option value="">ইউনিয়ন সিলেক্ট করুন</option>
+              <option value="Toitong">Toitong</option>
+              <option value="Pekua">Pekua</option>
+              <option value="Shilkali">Shilkhali</option>
+              <option value="Mognama">Mognama</option>
+              <option value="Barobakia">Barobakia</option>
+              <option value="Rajakhali">Rajakhali</option>
+              <option value="Ujantia">Ujantia</option>
+            </select>
+          </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Student Id</legend>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">স্টুডেন্ট আইডি</span>
+            </label>
             <input
               type="text"
               name="studentId"
-              className="input input-bordered w-full"
-             
+              className="input input-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               defaultValue={studentId}
               required
             />
-          </fieldset>
+          </div>
 
-          {/* Updated Photo Field - File Input */}
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Photo</legend>
+          {/* Photo Field */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">ছবি</span>
+            </label>
             
             {/* Current Photo Preview */}
             {currentPhoto && (
               <div className="mb-3">
-                <p className="text-sm font-medium mb-2">Current Photo:</p>
+                <p className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">বর্তমান ছবি:</p>
                 <div className="relative inline-block">
                   <img 
                     src={currentPhoto} 
@@ -289,36 +304,33 @@ const UpdatedMember = () => {
               name="photo"
               accept="image/*"
               onChange={handleFileChange}
-              className="file-input file-input-bordered w-full"
+              className="file-input file-input-bordered w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Supported formats: JPEG, PNG, GIF, WebP (Max 5MB)
             </div>
-
-            {/* New Photo Preview */}
-            {/* {photoFile && (
-              <div className="mt-2">
-                <p className="text-sm text-success font-medium">New Photo Preview:</p>
-                <div className="mt-1">
-                  <img 
-                    src={URL.createObjectURL(photoFile)} 
-                    alt="Preview" 
-                    className="h-20 w-20 object-cover rounded border"
-                  />
-                </div>
-              </div>
-            )} */}
-          </fieldset>
+          </div>
         </div>
 
-        {/* Submit Button */}
+        {/* Submit Button with Enhanced Loading State */}
         <div className="mt-6 text-center">
           <button
             type="submit"
             disabled={uploading}
-            className={`btn btn-success w-full md:w-1/2 ${uploading ? 'loading' : ''}`}
+            className={`btn w-full md:w-1/2 text-white ${
+              uploading 
+                ? 'bg-gray-400 border-gray-400 cursor-not-allowed' 
+                : 'bg-green-600 hover:bg-green-700 border-green-600'
+            }`}
           >
-            {uploading ? 'Updating...' : 'Update Member'}
+            {uploading ? (
+              <div className="flex items-center justify-center gap-2">
+                <span className="loading loading-spinner loading-sm"></span>
+                আপডেট হচ্ছে...
+              </div>
+            ) : (
+              'মেম্বার আপডেট করুন'
+            )}
           </button>
         </div>
       </form>

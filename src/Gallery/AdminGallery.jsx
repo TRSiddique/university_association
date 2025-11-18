@@ -1,7 +1,11 @@
 import { Link2, Trash2, Upload } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const AdminGallery = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('photo');
   const [photoForm, setPhotoForm] = useState({
     title: '',
@@ -93,9 +97,10 @@ const AdminGallery = () => {
       if (fileInput) fileInput.value = '';
       
       // Refresh page after 2 seconds to show new photo
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      // Redirect to gallery after successful upload
+setTimeout(() => {
+      navigate('/gallery');
+    }, 1000);
     } catch (error) {
       setMessage({ type: 'error', text: error.message });
     } finally {
@@ -135,9 +140,10 @@ const AdminGallery = () => {
       setVideoForm({ title: '', description: '', youtubeUrl: '', date: '' });
       
       // Refresh page after 2 seconds to show new video
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+       // Redirect to gallery after successful upload
+setTimeout(() => {
+      navigate('/gallery');
+    }, 1000);
     } catch (error) {
       setMessage({ type: 'error', text: error.message });
     } finally {
@@ -150,7 +156,7 @@ const AdminGallery = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-800 mb-4">Gallery Admin</h1>
+          <h1 className="text-5xl font-bold text-gray-800 mb-4">Gallery for Admin</h1>
           <p className="text-lg text-gray-600">Upload photos and add video links</p>
         </div>
 

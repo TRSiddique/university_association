@@ -13,7 +13,7 @@ const MemberDetails = () => {
     photo, } = member;
 
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md">
+    <div className="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md text-black">
       <h1 className="text-2xl font-bold mb-4">Details of {name} </h1>
 
       <img

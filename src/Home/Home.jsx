@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // ADD THIS IMPORT
-
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [comments, setComments] = useState([]);
@@ -148,7 +148,7 @@ const Home = () => {
         .then((data) => {
           console.log("Saved to DB:", data);
           if (data.insertedId) {
-            alert("Thank you! Your comment has been submitted successfully.");
+            alert("ধন্যবাদ! আপনার মতামত গৃহিত হয়েছে "); 
           }
         })
         .catch((err) => console.error("Error saving comment:", err));
@@ -304,8 +304,8 @@ const Home = () => {
             <div className="bg-gray-50 rounded-xl p-8 shadow-md border border-gray-100">
               <p className="text-lg text-gray-700 text-justify leading-relaxed mb-6">
                 চট্টগ্রাম বিশ্ববিদ্যালয়ে অধ্যয়নরত পেকুয়ার শিক্ষার্থীদের উদ্যোগে
-                গঠিত চিটাগাং ইউনিভার্সিটি স্টুডেন্টস অ্যাসোসিয়েশন অব পেকুয়া
-                (CUSAP) একটি ছাত্রনেতৃত্বাধীন সংগঠন, যা শিক্ষার্থীদের মধ্যে
+                গঠিত <span className="font-bold text-blue-800 "> চিটাগাং ইউনিভার্সিটি স্টুডেন্টস অ্যাসোসিয়েশন অব পেকুয়া
+                (CUSAP) </span>একটি ছাত্রনেতৃত্বাধীন সংগঠন, যা শিক্ষার্থীদের মধ্যে
                 সৌহার্দ্য, সহযোগিতা ও একাডেমিক সহায়তা বাড়াতে কাজ করে।
                 <br />
                 CUSAP নিয়মিত শিক্ষা-সেমিনার, সাংস্কৃতিক অনুষ্ঠান, সামাজিক
@@ -400,14 +400,15 @@ const Home = () => {
       </section>
 
       {/* Join With Us Button after About Section */}
-      <div className="text-center  bg-white">
-        <button
-          onClick={() => navigate("/addMember")}
-          className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
-        >
-          চুসাপের সদস্য হোন
-        </button>
-      </div>
+      <div className="text-center bg-white">
+  <button
+    onClick={() => navigate("/addMember")}
+    className="flex items-center justify-center gap-2 bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium mx-auto"
+  >
+    চুসাপের সদস্য হোন
+    <FaArrowRight />
+  </button>
+</div>
       {/* Committee Members Section */}
       <section id="committee" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 ">
@@ -450,9 +451,10 @@ const Home = () => {
       <div className="text-center py-8 bg-gray-50">
         <button
           onClick={() => navigate("/committee")}
-          className="bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium"
+          className="flex items-center justify-center gap-2 bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium mx-auto"
         >
           সকল সদস্যদের তালিকা দেখুন
+          <FaArrowRight />
         </button>
       </div>
       {/* Events Section */}
@@ -567,7 +569,7 @@ const Home = () => {
               <div className="p-6">
                 {activeTab === "about" && (
                   <div>
-                    <h3 className="text-xl font-semibold mb-4">
+                    <h3 className="text-xl font-semibold mb-4 text-blue-900">
                       মতামত নির্দেশিকা
                     </h3>
                     <div className="space-y-4 text-gray-700">
@@ -578,7 +580,7 @@ const Home = () => {
                       </p>
                       <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
                         <p className="font-medium text-yellow-800">
-                          দয়া করে লক্ষ্য করুন:
+                          লক্ষ্য করুন:
                         </p>
                         <ul className="list-disc list-inside mt-2 text-yellow-700 space-y-1">
                           <li>
@@ -612,7 +614,7 @@ const Home = () => {
                           value={newComment.name}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                           placeholder="আপনার নাম লিখুন"
                         />
                       </div>
@@ -625,7 +627,7 @@ const Home = () => {
                           name="mobile"
                           value={newComment.mobile}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                           placeholder="আপনার মোবাইল নম্বর দিন"
                         />
                       </div>
@@ -641,7 +643,7 @@ const Home = () => {
                         onChange={handleInputChange}
                         required
                         rows={6} 
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                         placeholder="আপনার ফিডব্যাক, মন্তব্য বা উদ্বেগ শেয়ার করুন…"
                       ></textarea>
                     </div>

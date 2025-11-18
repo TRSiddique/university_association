@@ -1,7 +1,7 @@
 {
   "constitution": {
-    "title": "CUSAP Constitution & By-Laws",
-    "description": "The official constitution and governing documents of Chittagong University Student Association of Pekua",
+    "title": "চুসাপ গঠনতন্ত্র  ও আইন",
+    "description": "চট্টগ্রাম বিশ্ববিদ্যালয় পেকুয়া ছাত্র সংগঠন (CUSAP)-এর অফিসিয়াল সংবিধান এবং শাসন নীতিমালা।",
     "fileUrl": "/documents/cusap-constitution.pdf",
     "fileSize": "2.4 MB",
     "lastUpdated": "2024-01-15",
@@ -12,75 +12,25 @@
     {
       "id": 1,
       "title": "CUSAP Annual Magazine 2024",
-      "description": "Comprehensive annual publication featuring member achievements, events, and articles from the academic year 2023-2024",
+      "description": "Comprehensive annual publication featuring member achievements, events, and articles from the academic year 2024-2025",
       "fileUrl": "/documents/cusap-magazine-2024.pdf",
-      "coverImage": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=400&fit=crop",
-      "fileSize": "15.2 MB",
-      "publishDate": "2024-03-01",
-      "pages": 68,
+      "coverImage": "https://i.ibb.co.com/m5mZs9Wz/magazine-cover.png",
+      "fileSize": "1 MB",
+      "publishDate": "2025-10-11",
+      "pages": 30,
       "category": "Annual"
-    },
-    {
-      "id": 2,
-      "title": "CUSAP Freshers' Welcome 2023",
-      "description": "Special edition magazine for freshers' welcome program with orientation guide and campus information",
-      "fileUrl": "/documents/freshers-welcome-2023.pdf",
-      "coverImage": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=300&h=400&fit=crop",
-      "fileSize": "8.7 MB",
-      "publishDate": "2023-09-15",
-      "pages": 42,
-      "category": "Special Edition"
-    },
-    {
-      "id": 3,
-      "title": "Sports Festival 2023",
-      "description": "Commemorative magazine for the annual sports competition with results, photos, and player interviews",
-      "fileUrl": "/documents/sports-festival-2023.pdf",
-      "coverImage": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=300&h=400&fit=crop",
-      "fileSize": "12.1 MB",
-      "publishDate": "2023-11-20",
-      "pages": 56,
-      "category": "Event"
-    },
-    {
-      "id": 4,
-      "title": "Academic Excellence 2023",
-      "description": "Showcasing academic achievements, research papers, and scholarship recipients of CUSAP members",
-      "fileUrl": "/documents/academic-excellence-2023.pdf",
-      "coverImage": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=300&h=400&fit=crop",
-      "fileSize": "6.8 MB",
-      "publishDate": "2023-12-10",
-      "pages": 38,
-      "category": "Academic"
     }
+   
   ],
   "documents": [
     {
       "id": 1,
-      "title": "Membership Application Form",
-      "description": "Official application form for new members to join CUSAP",
-      "fileUrl": "/documents/membership-form.pdf",
-      "fileSize": "0.5 MB",
-      "lastUpdated": "2024-01-10",
-      "type": "Form"
-    },
-    {
-      "id": 2,
-      "title": "Event Participation Guidelines",
-      "description": "Guidelines and rules for participating in CUSAP events and activities",
-      "fileUrl": "/documents/event-guidelines.pdf",
-      "fileSize": "1.2 MB",
-      "lastUpdated": "2023-11-05",
-      "type": "Guideline"
-    },
-    {
-      "id": 3,
-      "title": "Executive Committee Election Rules",
-      "description": "Complete rules and procedures for executive committee elections",
-      "fileUrl": "/documents/election-rules.pdf",
-      "fileSize": "0.8 MB",
-      "lastUpdated": "2023-12-20",
-      "type": "Policy"
+      "title": "২য় কার্যনির্বাহী কমিটির পরিকল্পনা",
+      "description": "২০২৫-২০২৬ শিক্ষাবর্ষের জন্য গঠিত কার্যনির্বাহী কমিটির গৃহিত কাজের পরিকল্পনা সমূহ ",
+      "fileUrl": "/documents/cusap_plan.pdf",
+      "fileSize": "0.3 MB",
+      "lastUpdated": "2025-11-11",
+      "type": "Plan"
     }
   ]
 }
