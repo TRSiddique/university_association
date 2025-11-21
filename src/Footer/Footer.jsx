@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { FaFacebookF, FaYoutube, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -50,7 +50,7 @@ const Footer = () => {
               <FaFacebookF size={20} />
             </a>
             <a href="#" className="hover:text-blue-400 transition-colors">
-              <FaTwitter size={20} />
+              <FaYoutube size={20} />
             </a>
             <a href="#" className="hover:text-pink-500 transition-colors">
               <FaInstagram size={20} />
@@ -71,7 +71,7 @@ const Footer = () => {
             href="https://tasfique.com" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hover:text-green-400 transition-colors font-bold"
+            className="text-green-400 hover:text-yellow-400 transition-colors font-bold"
           >
             Tasfiqur Rahman Siddique
           </a>
@@ -80,7 +80,7 @@ const Footer = () => {
             href="https://websheba.net" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hover:text-green-400 transition-colors font-bold"
+            className="text-green-400 hover:text-yellow-400 transition-colors font-bold"
           >
             WebSheba
           </a>
