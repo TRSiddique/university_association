@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AddMember = () => {
   const navigate = useNavigate();
@@ -11,27 +11,33 @@ const AddMember = () => {
     const file = e.target.files[0];
     if (file) {
       // Validate file type
-      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      const validTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
       if (!validTypes.includes(file.type)) {
         Swal.fire({
-          title: 'Invalid File!',
-          text: 'Please select a valid image file (JPEG, PNG, GIF, WebP).',
-          icon: 'error',
-          confirmButtonText: 'OK',
+          title: "Invalid File!",
+          text: "Please select a valid image file (JPEG, PNG, GIF, WebP).",
+          icon: "error",
+          confirmButtonText: "OK",
         });
-        e.target.value = ''; // Clear the input
+        e.target.value = ""; // Clear the input
         return;
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         Swal.fire({
-          title: 'File Too Large!',
-          text: 'Please select an image smaller than 5MB.',
-          icon: 'error',
-          confirmButtonText: 'OK',
+          title: "File Too Large!",
+          text: "Please select an image smaller than 5MB.",
+          icon: "error",
+          confirmButtonText: "OK",
         });
-        e.target.value = ''; // Clear the input
+        e.target.value = ""; // Clear the input
         return;
       }
 
@@ -41,23 +47,26 @@ const AddMember = () => {
 
   const uploadImageToImgBB = async (file) => {
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append("image", file);
 
     try {
-      const response = await fetch('https://api.imgbb.com/1/upload?key=32006f2a50e2265ea475805d6b074bf3', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        "https://api.imgbb.com/1/upload?key=32006f2a50e2265ea475805d6b074bf3",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
-      
+
       if (data.success) {
         return data.data.url; // Return the image URL
       } else {
-        throw new Error('Image upload failed');
+        throw new Error("Image upload failed");
       }
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
       throw error;
     }
   };
@@ -76,7 +85,7 @@ const AddMember = () => {
     const studentId = form.studentId.value;
 
     try {
-      let photoUrl = '';
+      let photoUrl = "";
 
       // Upload image if a file is selected
       if (photoFile) {
@@ -96,7 +105,7 @@ const AddMember = () => {
 
       console.log(newMember);
 
-      const response = await fetch("http://localhost:4000/member", {
+      const response = await fetch("https://university-association-backend-1.onrender.com/member", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -108,25 +117,25 @@ const AddMember = () => {
 
       if (data.insertedId) {
         Swal.fire({
-          title: 'সফল!',
-          text: 'মেম্বার সফলভাবে অ্যাড করা হয়েছে।',
-          icon: 'success',
-          confirmButtonText: 'ঠিক আছে',
+          title: "সফল!",
+          text: "মেম্বার সফলভাবে অ্যাড করা হয়েছে।",
+          icon: "success",
+          confirmButtonText: "ঠিক আছে",
         }).then(() => {
           form.reset();
           setPhotoFile(null);
-          navigate('/members');
+          navigate("/members");
         });
       } else {
-        throw new Error('Failed to add member');
+        throw new Error("Failed to add member");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       Swal.fire({
-        title: 'ত্রুটি!',
-        text: 'কিছু একটা সমস্যা হয়েছে, আবার চেষ্টা করুন।',
-        icon: 'error',
-        confirmButtonText: 'ঠিক আছে',
+        title: "ত্রুটি!",
+        text: "কিছু একটা সমস্যা হয়েছে, আবার চেষ্টা করুন।",
+        icon: "error",
+        confirmButtonText: "ঠিক আছে",
       });
     } finally {
       setUploading(false);
@@ -140,14 +149,16 @@ const AddMember = () => {
         className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 w-full max-w-4xl border border-gray-200 dark:border-gray-700"
       >
         <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-green-600 dark:text-green-400">
-          আপনি পেকুয়ার চবিয়ান হয়ে থাকলে এখনই যোগ দিন CUSAP এ!
+          
         </h2>
-
+চুসাপ এ যুক্ত হোন!
         {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">নাম</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                নাম
+              </span>
             </label>
             <input
               type="text"
@@ -160,7 +171,9 @@ const AddMember = () => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">সেশন</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                সেশন
+              </span>
             </label>
             <input
               type="text"
@@ -173,7 +186,9 @@ const AddMember = () => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">ডিপার্টমেন্ট/বিভাগ</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                ডিপার্টমেন্ট/বিভাগ
+              </span>
             </label>
             <input
               type="text"
@@ -186,7 +201,9 @@ const AddMember = () => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">রক্তের গ্রুপ</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                রক্তের গ্রুপ
+              </span>
             </label>
             <select
               name="blood"
@@ -207,7 +224,9 @@ const AddMember = () => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">মোবাইল নম্বর</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                মোবাইল নম্বর
+              </span>
             </label>
             <input
               type="text"
@@ -220,7 +239,9 @@ const AddMember = () => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">ইউনিয়ন</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                ইউনিয়ন
+              </span>
             </label>
             <select
               name="union"
@@ -240,7 +261,9 @@ const AddMember = () => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">স্টুডেন্ট আইডি</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                স্টুডেন্ট আইডি
+              </span>
             </label>
             <input
               type="text"
@@ -254,7 +277,9 @@ const AddMember = () => {
           {/* Photo Field */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">ছবি</span>
+              <span className="label-text font-semibold text-gray-700 dark:text-gray-300">
+                ছবি
+              </span>
             </label>
             <input
               type="file"
@@ -268,11 +293,13 @@ const AddMember = () => {
             </div>
             {photoFile && (
               <div className="mt-2">
-                <p className="text-sm text-green-600 dark:text-green-400">Selected: {photoFile.name}</p>
+                <p className="text-sm text-green-600 dark:text-green-400">
+                  Selected: {photoFile.name}
+                </p>
                 <div className="mt-1">
-                  <img 
-                    src={URL.createObjectURL(photoFile)} 
-                    alt="Preview" 
+                  <img
+                    src={URL.createObjectURL(photoFile)}
+                    alt="Preview"
                     className="h-20 w-20 object-cover rounded border"
                   />
                 </div>
@@ -287,9 +314,9 @@ const AddMember = () => {
             type="submit"
             disabled={uploading}
             className={`btn w-full md:w-1/2 text-white ${
-              uploading 
-                ? 'bg-gray-400 border-gray-400 cursor-not-allowed' 
-                : 'bg-green-600 hover:bg-green-700 border-green-600'
+              uploading
+                ? "bg-gray-400 border-gray-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700 border-green-600"
             }`}
           >
             {uploading ? (
@@ -298,7 +325,7 @@ const AddMember = () => {
                 মেম্বার অ্যাড হচ্ছে...
               </div>
             ) : (
-              'মেম্বার অ্যাড করুন'
+              "মেম্বার অ্যাড করুন"
             )}
           </button>
         </div>

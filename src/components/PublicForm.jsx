@@ -16,7 +16,7 @@ export default function PublicForm() {
 
   const fetchForm = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/public/forms/${formId}`);
+      const response = await fetch(`https://university-association-backend-1.onrender.com/api/public/forms/${formId}`);
       const data = await response.json();
       setForm(data);
       setLoading(false);
@@ -63,7 +63,7 @@ export default function PublicForm() {
         answer
       }));
 
-      const response = await fetch(`http://localhost:4000/api/public/forms/${formId}/submit`, {
+      const response = await fetch(`https://university-association-backend-1.onrender.com/api/public/forms/${formId}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers: formattedAnswers })
