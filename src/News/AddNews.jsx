@@ -146,7 +146,7 @@ const AddNews = () => {
             console.log('Saving news with ImageBB URL:', newsData);
 
             // Step 3: Save news to your backend (fixed double slash)
-            const response = await fetch('https://university-association-backend-1.onrender.com/news', {
+            const response = await fetch('http://localhost:4000/news', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

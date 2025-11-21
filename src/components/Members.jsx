@@ -429,7 +429,7 @@ export default function Members() {
                           <GraduationCap size={16} className="text-blue-600" />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs text-gray-500">ডিপার্ট্মেন্ট</p>
+                          <p className="text-xs text-gray-500">ডিপার্টমেন্ট</p>
                           <p className="font-semibold text-sm truncate">{member.department}</p>
                         </div>
                       </div>

@@ -28,7 +28,7 @@ export default function AdminFormsDashboard() {
 
   const fetchFormsAndStats = async () => {
     try {
-      const response = await fetch('https://university-association-backend-1.onrender.com/api/admin/forms');
+      const response = await fetch('http://localhost:4000/api/admin/forms');
       const data = await response.json();
       setForms(data);
       
@@ -39,7 +39,7 @@ export default function AdminFormsDashboard() {
       // Fetch response counts for all forms
       const responseCounts = await Promise.all(
         data.map(form => 
-          fetch(`https://university-association-backend-1.onrender.com/api/admin/forms/${form._id}/responses`)
+          fetch(`http://localhost:4000/api/admin/forms/${form._id}/responses`)
             .then(res => res.json())
             .then(responses => responses.length)
         )
@@ -60,7 +60,7 @@ export default function AdminFormsDashboard() {
     if (!window.confirm('Are you sure you want to delete this form? All responses will be lost.')) return;
 
     try {
-      await fetch(`https://university-association-backend-1.onrender.com/api/admin/forms/${id}`, {
+      await fetch(`http://localhost:4000/api/admin/forms/${id}`, {
         method: 'DELETE',
       });
       setForms(forms.filter(f => f._id !== id));
@@ -73,7 +73,7 @@ export default function AdminFormsDashboard() {
 
   const toggleFormStatus = async (id, currentStatus) => {
     try {
-      const response = await fetch(`https://university-association-backend-1.onrender.com/api/admin/forms/${id}`, {
+      const response = await fetch(`http://localhost:4000/api/admin/forms/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !currentStatus })

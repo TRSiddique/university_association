@@ -1,6 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-
+import { 
+  ArrowLeft, 
+  Phone, 
+  Calendar, 
+  GraduationCap, 
+  MapPin, 
+  IdCard, 
+  Droplet, 
+  User,
+  Mail,
+  Share2
+} from 'lucide-react';
 const NewsDetail = () => {
     const { id } = useParams();
     const [copied, setCopied] = useState(false);
@@ -14,7 +25,7 @@ const NewsDetail = () => {
             try {
                 setLoading(true);
                 // FIXED: Removed double slash from API URL
-                const response = await fetch(`https://university-association-backend-1.onrender.com/news/${id}`);
+                const response = await fetch(`http://localhost:4000/news/${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Failed to fetch news details');
@@ -81,6 +92,23 @@ const NewsDetail = () => {
             </div>
         );
     }
+    const handleShare = async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: `${name} - CHUSAP Member`,
+              text: `Check out ${name}'s profile from CHUSAP`,
+              url: window.location.href,
+            });
+          } catch (error) {
+            console.log('Error sharing:', error);
+          }
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard.writeText(window.location.href);
+          alert('Profile link copied to clipboard!');
+        }
+      };
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -180,6 +208,13 @@ const NewsDetail = () => {
                                             </svg>
                                             <span>{copied ? 'Copied!' : 'Copy Link'}</span>
                                         </button>
+                                        <button
+                                                        onClick={handleShare}
+                                                        className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                                                      >
+                                                        <Share2 size={20} />
+                                                        শেয়ার করুন
+                                                      </button>
                                     </div>
                                 </div>
                             </div>

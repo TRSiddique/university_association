@@ -40,6 +40,7 @@ const NewsCard = ({ item, onDelete, onEdit }) => {
                     >
                         বিস্তারিত পড়ুন →
                     </Link>
+                    
 
                     {isAdmin() && (
                         <div className="flex space-x-2">
@@ -62,6 +63,7 @@ const NewsCard = ({ item, onDelete, onEdit }) => {
                                 </svg>
                                 ডিলিট
                             </button>
+
                         </div>
                     )}
                 </div>
