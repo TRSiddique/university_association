@@ -96,8 +96,6 @@ const NewsDetail = () => {
         if (navigator.share) {
           try {
             await navigator.share({
-              title: `${name} - CHUSAP Member`,
-              text: `Check out ${name}'s profile from CHUSAP`,
               url: window.location.href,
             });
           } catch (error) {

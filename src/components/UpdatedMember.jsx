@@ -247,14 +247,14 @@ const UpdatedMember = () => {
               defaultValue={union}
               required
             >
-              <option value="">ইউনিয়ন সিলেক্ট করুন</option>
-              <option value="Toitong">Toitong</option>
-              <option value="Pekua">Pekua</option>
-              <option value="Shilkali">Shilkhali</option>
-              <option value="Mognama">Mognama</option>
-              <option value="Barobakia">Barobakia</option>
-              <option value="Rajakhali">Rajakhali</option>
-              <option value="Ujantia">Ujantia</option>
+             <option value="">ইউনিয়ন সিলেক্ট করুন</option>
+              <option value="টইটং">টইটং</option> 
+              <option value="পেকুয়া">পেকুয়া</option>
+              <option value="শীলখালী">শীলখালী</option>
+              <option value="মগনামা">মগনামা</option>
+              <option value="বারবাকিয়া">বারবাকিয়া</option>
+              <option value="রাজাখালী">রাজাখালী</option>
+              <option value="উজানটিয়া">উজানটিয়া</option> 
             </select>
           </div>
 

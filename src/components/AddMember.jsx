@@ -148,10 +148,10 @@ const AddMember = () => {
         onSubmit={handleAddMember}
         className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 w-full max-w-4xl border border-gray-200 dark:border-gray-700"
       >
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-green-600 dark:text-green-400">
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-green-600 dark:text-green-400">চুসাপ এ যুক্ত হোন!
           
         </h2>
-চুসাপ এ যুক্ত হোন!
+
         {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
@@ -249,13 +249,13 @@ const AddMember = () => {
               required
             >
               <option value="">ইউনিয়ন সিলেক্ট করুন</option>
-              <option value="Toitong">Toitong</option>
-              <option value="Pekua">Pekua</option>
-              <option value="Shilkali">Shilkhali</option>
-              <option value="Mognama">Mognama</option>
-              <option value="Barobakia">Barobakia</option>
-              <option value="Rajakhali">Rajakhali</option>
-              <option value="Ujantia">Ujantia</option>
+              <option value="টইটং">টইটং</option> 
+              <option value="পেকুয়া">পেকুয়া</option>
+              <option value="শীলখালী">শীলখালী</option>
+              <option value="মগনামা">মগনামা</option>
+              <option value="বারবাকিয়া">বারবাকিয়া</option>
+              <option value="রাজাখালী">রাজাখালী</option>
+              <option value="উজানটিয়া">উজানটিয়া</option>  
             </select>
           </div>
 

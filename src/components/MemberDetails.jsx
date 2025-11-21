@@ -12,6 +12,7 @@ import {
   Mail,
   Share2
 } from 'lucide-react';
+import {  CreditCard } from 'lucide-react';
 const MemberDetails = () => {
   const member = useLoaderData(); 
   const { name,
@@ -27,7 +28,7 @@ const handleShare = async () => {
       try {
         await navigator.share({
           title: `${name} - CHUSAP Member`,
-          text: `Check out ${name}'s profile from CHUSAP`,
+          text: `Check out ${name}'s profile from CUSAP`,
           url: window.location.href,
         });
       } catch (error) {
@@ -49,14 +50,37 @@ const handleShare = async () => {
         className="w-full h-64 object-cover rounded-lg mb-4"
       />
     
-      <p className="mb-1"><strong>নাম:</strong> {name}</p> 
-      <p className="mb-1"><strong>সেশন:</strong> {session}</p>
-      <p className="mb-1"><strong>ডিপার্টমেন্ট:</strong> {department}</p>
-       <p className="mb-1"><strong>মোবাইল:</strong> {mobile}</p> 
-      <p className="mb-1"><strong>ইউনিয়ন:</strong> {union}</p>
-      <p className="mb-1"><strong>স্টুডেন্ট আইডি:</strong> {studentId}</p>
-      <p className="mb-1 font-medium text-red-500"><strong>রক্তের গ্রুপ:</strong> {blood || "N/A"}</p>
-
+     <div className="space-y-3">
+  <div className="flex items-center gap-3">
+    <User className="w-5 h-5 text-blue-600" />
+    <p><strong>নাম:</strong> {name}</p>
+  </div>
+  
+  <div className="flex items-center gap-3">
+    <Calendar className="w-5 h-5 text-blue-600" />
+    <p><strong>সেশন:</strong> {session}</p>
+  </div>
+  
+  <div className="flex items-center gap-3">
+    <GraduationCap className="w-5 h-5 text-blue-600" />
+    <p><strong>ডিপার্টমেন্ট:</strong> {department}</p>
+  </div>
+  
+  <div className="flex items-center gap-3">
+    <MapPin className="w-5 h-5 text-blue-600" />
+    <p><strong>ইউনিয়ন:</strong> {union}</p>
+  </div>
+  
+  <div className="flex items-center gap-3">
+    <CreditCard className="w-5 h-5 text-blue-600" />
+    <p><strong>স্টুডেন্ট আইডি:</strong> {studentId}</p>
+  </div>
+  
+  <div className="flex items-center gap-3">
+    <Droplet className="w-5 h-5 text-red-500" />
+    <p className="font-medium text-red-500"><strong>রক্তের গ্রুপ:</strong> {blood || "N/A"}</p>
+  </div>
+</div>
       <div className="flex flex-row justify-between">
         <Link
         to="/members"

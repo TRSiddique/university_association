@@ -64,8 +64,28 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="mt-10 border-t border-gray-800 pt-4 text-center text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} CUSAP. All rights reserved.
+      <div className="mt-10 border-t border-gray-800 pt-4 text-center">
+        <div className="text-white text-xs ">
+          Website gifted to CUSAP members by {' '}
+          <a 
+            href="https://tasfique.com" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-green-400 transition-colors font-bold"
+          >
+            Tasfiqur Rahman Siddique
+          </a>
+          {' '}from{' '}
+          <a 
+            href="https://websheba.net" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-green-400 transition-colors font-bold"
+          >
+            WebSheba
+          </a>
+        </div>
+        
       </div>
     </footer>
   );
