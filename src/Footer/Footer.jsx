@@ -65,7 +65,7 @@ const Footer = () => {
 
       {/* Bottom Section */}
       <div className="mt-10 border-t border-gray-800 pt-4 text-center">
-        <div className="text-white text-xs ">
+        <div className="text-white text-x bg-blue-950 mx-auto px-4 py-1">
           Website gifted to CUSAP members by {' '}
           <a 
             href="https://tasfique.com" 
