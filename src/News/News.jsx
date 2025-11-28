@@ -18,7 +18,7 @@ const News = () => {
     const fetchNews = async () => {
         try {
             setLoading(true);
-            const response = await fetch('university-association-backend-1.onrender.com/news');
+            const response = await fetch('https://university-association-backend-1.onrender.com/news');
             
             if (!response.ok) {
                 throw new Error('Failed to fetch news');
@@ -54,7 +54,7 @@ const News = () => {
 
         if (result.isConfirmed) {
             try {
-                const response = await fetch(`university-association-backend-1.onrender.com/news/${newsId}`, {
+                const response = await fetch(`https://university-association-backend-1.onrender.com/news/${newsId}`, {
                     method: 'DELETE',
                 });
 

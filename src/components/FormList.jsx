@@ -14,7 +14,7 @@ export default function FormList() {
 
   const fetchForms = async () => {
     try {
-      const response = await fetch('university-association-backend-1.onrender.com/api/admin/forms');
+      const response = await fetch('https://university-association-backend-1.onrender.com/api/admin/forms');
       const data = await response.json();
       setForms(data);
       setLoading(false);
@@ -28,7 +28,7 @@ export default function FormList() {
     if (!window.confirm('Are you sure you want to delete this form?')) return;
 
     try {
-      await fetch(`university-association-backend-1.onrender.com/api/admin/forms/${id}`, {
+      await fetch(`https://university-association-backend-1.onrender.com/api/admin/forms/${id}`, {
         method: 'DELETE',
       });
       setForms(forms.filter(f => f._id !== id));

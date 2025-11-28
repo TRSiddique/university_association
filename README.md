@@ -133,7 +133,7 @@ npm install
 
 Create .env file:
 
-VITE_API_BASE_URL=university-association-backend-1.onrender.com
+VITE_API_BASE_URL=https://university-association-backend-1.onrender.com
 VITE_ADMIN_USERNAME=your-admin-username
 VITE_ADMIN_PASSWORD=your-admin-password
 

@@ -16,8 +16,8 @@ export default function ResponseViewer() {
   const fetchFormAndResponses = async () => {
     try {
       const [formRes, responsesRes] = await Promise.all([
-        fetch(`university-association-backend-1.onrender.com/api/admin/forms/${formId}`),
-        fetch(`university-association-backend-1.onrender.com/api/admin/forms/${formId}/responses`)
+        fetch(`https://university-association-backend-1.onrender.com/api/admin/forms/${formId}`),
+        fetch(`https://university-association-backend-1.onrender.com/api/admin/forms/${formId}/responses`)
       ]);
 
       const formData = await formRes.json();

@@ -15,7 +15,7 @@ export default function PublicFormsList() {
 
   const fetchPublicForms = async () => {
     try {
-      const response = await fetch('university-association-backend-1.onrender.com/api/admin/forms');
+      const response = await fetch('https://university-association-backend-1.onrender.com/api/admin/forms');
       const data = await response.json();
       // Filter only active forms for public view
       const activeForms = data.filter(form => form.isActive);

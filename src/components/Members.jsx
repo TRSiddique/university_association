@@ -47,19 +47,39 @@ export default function Members() {
       setError(null);
       
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-      const response = await fetch('university-association-backend-1.onrender.com/member', {
+      console.log('Fetching from: https://university-association-backend-1.onrender.com/member');
+
+      const response = await fetch('https://university-association-backend-1.onrender.com/member', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         signal: controller.signal,
       });
 
       clearTimeout(timeoutId);
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers.get('content-type'));
+
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Received non-JSON response:', text);
+        throw new Error('Server returned invalid response format');
+      }
+
       const data = await response.json();
+      console.log('Members loaded:', data.length);
       
       if (!Array.isArray(data)) {
         throw new Error('Invalid data format received');
@@ -69,7 +89,15 @@ export default function Members() {
       setFilteredMembers(data);
     } catch (error) {
       console.error('Error fetching members:', error);
-      setError(error.message);
+      
+      if (error.name === 'AbortError') {
+        setError('Request timeout - server took too long to respond');
+      } else if (error.message.includes('Failed to fetch')) {
+        setError('Cannot connect to server. Please check if the server is running on port 4000.');
+      } else {
+        setError(error.message);
+      }
+      
       setMembers([]);
       setFilteredMembers([]);
     } finally {
@@ -88,7 +116,7 @@ export default function Members() {
       confirmButtonText: "হ্যাঁ ,ডিলিট করব!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`university-association-backend-1.onrender.com/member/${_id}`, {
+        fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

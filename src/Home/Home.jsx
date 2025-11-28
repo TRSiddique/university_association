@@ -107,7 +107,7 @@ const sectionRef = useRef(null);
   const fetchAllFeedback = async () => {
     try {
       setFeedbackLoading(true);
-      const response = await fetch("university-association-backend-1.onrender.com/comment");
+      const response = await fetch("https://university-association-backend-1.onrender.com/comment");
       if (response.ok) {
         const data = await response.json();
         setComments(data);
@@ -138,7 +138,7 @@ const sectionRef = useRef(null);
       };
 
       // ✅ Send to database
-      fetch("university-association-backend-1.onrender.com/comment", {
+      fetch("https://university-association-backend-1.onrender.com/comment", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -181,7 +181,7 @@ const sectionRef = useRef(null);
     }
 
     try {
-      const response = await fetch(`university-association-backend-1.onrender.com/comment/${id}`, {
+      const response = await fetch(`https://university-association-backend-1.onrender.com/comment/${id}`, {
         method: "DELETE",
       });
 
