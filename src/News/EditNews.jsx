@@ -33,7 +33,7 @@ const EditNews = () => {
 
     const fetchNewsData = async () => {
         try {
-            const response = await fetch(`https://university-association-backend-1.onrender.com/news/${id}`);
+            const response = await fetch(`university-association-backend-1.onrender.com/news/${id}`);
             const result = await response.json();
             
             if (result.success) {
@@ -65,7 +65,7 @@ const EditNews = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`https://university-association-backend-1.onrender.com/news/${id}`, {
+            const response = await fetch(`university-association-backend-1.onrender.com/news/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

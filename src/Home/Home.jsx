@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef  } from "react";
 import { FaArrowRight } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // ADD THIS IMPORT
@@ -15,7 +15,8 @@ const Home = () => {
   const [feedbackLoading, setFeedbackLoading] = useState(false); // ADD THIS
   const navigate = useNavigate();
   const { isAdmin } = useAuth(); // ADD THIS
-
+const [visibleCards, setVisibleCards] = useState([]);
+const sectionRef = useRef(null);
   // Sample slides data
   const slides = [
     {
@@ -106,7 +107,7 @@ const Home = () => {
   const fetchAllFeedback = async () => {
     try {
       setFeedbackLoading(true);
-      const response = await fetch("https://university-association-backend-1.onrender.com/comment");
+      const response = await fetch("university-association-backend-1.onrender.com/comment");
       if (response.ok) {
         const data = await response.json();
         setComments(data);
@@ -137,7 +138,7 @@ const Home = () => {
       };
 
       // ✅ Send to database
-      fetch("https://university-association-backend-1.onrender.com/comment", {
+      fetch("university-association-backend-1.onrender.com/comment", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -180,7 +181,7 @@ const Home = () => {
     }
 
     try {
-      const response = await fetch(`https://university-association-backend-1.onrender.com/comment/${id}`, {
+      const response = await fetch(`university-association-backend-1.onrender.com/comment/${id}`, {
         method: "DELETE",
       });
 
@@ -193,6 +194,29 @@ const Home = () => {
       alert("Error deleting feedback!");
     }
   };
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            committeeMembers.forEach((_, index) => {
+              setTimeout(() => {
+                setVisibleCards((prev) => [...new Set([...prev, index])]);
+              }, index * 200);
+            });
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -410,43 +434,49 @@ const Home = () => {
   </button>
 </div>
       {/* Committee Members Section */}
-      <section id="committee" className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 ">
-          {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              কার্যকরী সদস্যবৃন্দ
-            </h2>
-            <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto"></p>
-          </div>
-
-          {/* Members */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {committeeMembers.map((member) => (
-              <div
-                key={member.id}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6 text-center"
-              >
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-40 h-40 mx-auto rounded-full object-cover mb-6 border-4 border-blue-500"
-                />
-                <h3 className="text-2xl font-semibold text-gray-800">
-                  {member.name}
-                </h3>
-                <p className="text-blue-600 font-medium mb-4">
-                  {member.position}
-                </p>
-                <p className="text-gray-700 leading-relaxed text-justify bg-gray-50 p-4 rounded-xl border-l-4 border-purple-500">
-                  {member.speech}
-                </p>
-              </div>
-            ))}
-          </div>
+       <section id="committee" className="py-16 bg-gray-50" ref={sectionRef}>
+      <div className="container mx-auto px-4">
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            কার্যকরী সদস্যবৃন্দ
+          </h2>
+          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto"></p>
         </div>
-      </section>
+        
+        {/* Members */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {committeeMembers.map((member, index) => (
+            <div
+              key={member.id}
+              className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-700 p-6 text-center ${
+                visibleCards.includes(index)
+                  ? 'opacity-100 translate-x-0'
+                  : index % 2 === 0
+                  ? 'opacity-0 -translate-x-full'
+                  : 'opacity-0 translate-x-full'
+              }`}
+            >
+              <img
+                src={member.image}
+                alt={member.name}
+                className="w-40 h-40 mx-auto rounded-full object-cover mb-6 border-4 border-blue-500"
+              />
+              <h3 className="text-2xl font-semibold text-gray-800">
+                {member.name}
+              </h3>
+              <p className="text-blue-600 font-medium mb-4">
+                {member.position}
+              </p>
+              <p className="text-gray-700 leading-relaxed text-justify bg-gray-50 p-4 rounded-xl border-l-4 border-purple-500">
+                {member.speech}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
       {/* See Executive Committee Button after Committee Section */}
       <div className="text-center py-8 bg-gray-50">
         <button

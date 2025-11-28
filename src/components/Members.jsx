@@ -49,7 +49,7 @@ export default function Members() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-      const response = await fetch('https://university-association-backend-1.onrender.com/member', {
+      const response = await fetch('university-association-backend-1.onrender.com/member', {
         signal: controller.signal,
       });
 
@@ -88,7 +88,7 @@ export default function Members() {
       confirmButtonText: "হ্যাঁ ,ডিলিট করব!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
+        fetch(`university-association-backend-1.onrender.com/member/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

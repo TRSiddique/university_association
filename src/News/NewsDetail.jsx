@@ -25,7 +25,7 @@ const NewsDetail = () => {
             try {
                 setLoading(true);
                 // FIXED: Removed double slash from API URL
-                const response = await fetch(`https://university-association-backend-1.onrender.com/news/${id}`);
+                const response = await fetch(`university-association-backend-1.onrender.com/news/${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Failed to fetch news details');
