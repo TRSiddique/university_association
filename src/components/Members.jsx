@@ -11,6 +11,7 @@ export default function Members() {
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDepartment, setFilterDepartment] = useState('All');
   const [filterBloodGroup, setFilterBloodGroup] = useState('All');
@@ -31,7 +32,6 @@ export default function Members() {
   }, [searchTerm, filterDepartment, filterBloodGroup, filterSession, filterUnion, members]);
 
   useEffect(() => {
-    // Calculate active filters count
     let count = 0;
     if (searchTerm) count++;
     if (filterDepartment !== 'All') count++;
@@ -43,13 +43,36 @@ export default function Members() {
 
   const fetchMembers = async () => {
     try {
-      const response = await fetch('https://university-association-backend-1.onrender.com/member');
+      setLoading(true);
+      setError(null);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      const response = await fetch('https://university-association-backend-1.onrender.com/member', {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
+      
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid data format received');
+      }
+
       setMembers(data);
       setFilteredMembers(data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching members:', error);
+      setError(error.message);
+      setMembers([]);
+      setFilteredMembers([]);
+    } finally {
       setLoading(false);
     }
   };
@@ -73,7 +96,7 @@ export default function Members() {
             if (data.deletedCount > 0) {
               Swal.fire({
                 title: "Deleted!",
-                text: "ডিলিট করা হয়েছে",
+                text: "ডিলিট করা হয়েছে",
                 icon: "success",
               });
               const remaining = members.filter((mem) => mem._id !== _id);
@@ -95,7 +118,6 @@ export default function Members() {
   const filterMembers = () => {
     let filtered = members;
 
-    // Search by name
     if (searchTerm) {
       filtered = filtered.filter(member =>
         member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -103,22 +125,18 @@ export default function Members() {
       );
     }
 
-    // Filter by department
     if (filterDepartment !== 'All') {
       filtered = filtered.filter(member => member.department === filterDepartment);
     }
 
-    // Filter by blood group
     if (filterBloodGroup !== 'All') {
       filtered = filtered.filter(member => member.blood === filterBloodGroup);
     }
 
-    // Filter by session
     if (filterSession !== 'All') {
       filtered = filtered.filter(member => member.session === filterSession);
     }
 
-    // Filter by union
     if (filterUnion !== 'All') {
       filtered = filtered.filter(member => member.union === filterUnion);
     }
@@ -127,7 +145,6 @@ export default function Members() {
   };
 
   const handleCardClick = (memberId, e) => {
-    // Don't navigate if clicking on buttons
     if (e.target.closest('button')) {
       return;
     }
@@ -150,7 +167,6 @@ export default function Members() {
            filterUnion !== 'All';
   };
 
-  // Get unique values for filters
   const departments = ['All', ...new Set(members.map(m => m.department).filter(Boolean))];
   const bloodGroups = ['All', ...new Set(members.map(m => m.blood).filter(Boolean))];
   const sessions = ['All', ...new Set(members.map(m => m.session).filter(Boolean))];
@@ -158,8 +174,27 @@ export default function Members() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mb-4"></div>
         <div className="text-xl text-gray-600">Loading members...</div>
+        <div className="text-sm text-gray-500 mt-2">Please wait...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
+          <h2 className="text-xl font-bold text-red-700 mb-2">Error Loading Members</h2>
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={fetchMembers}
+            className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -171,9 +206,6 @@ export default function Members() {
         <div className="text-center mb-2 sm:mb-4">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900  sm:mb-2">আমাদের সদস্যবৃন্দ </h1>
           <p className="text-base sm:text-lg text-gray-600">চুসাপের সদস্যদের পরিচিতি </p>
-          {/* <div className="mt-2 sm:mt-2 text-xl sm:text-2xl font-semibold text-blue-600">
-            {filteredMembers.length} {filteredMembers.length === 1 ? 'Member' : 'Members'}
-          </div> */}
         </div>
 
         {/* Search and Filter Section */}
@@ -302,7 +334,7 @@ export default function Members() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
                   <MapPin size={16} />
-                  ইউনিয়ন
+                  ইউনিয়ন
                 </label>
                 <div className="relative">
                   <select
@@ -312,7 +344,7 @@ export default function Members() {
                   >
                     {unions.map(union => (
                       <option key={union} value={union}>
-                        {union === 'All' ? 'সব ইউনিয়ন' : union}
+                        {union === 'All' ? 'সব ইউনিয়ন' : union}
                       </option>
                     ))}
                   </select>
@@ -401,18 +433,13 @@ export default function Members() {
                       src={member.photo}
                       alt={member.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <User size={64} className="text-white opacity-50" />
                     </div>
                   )}
-                  {/* Blood Group Badge */}
-                  {/* {member.blood && (
-                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
-                      {member.blood}
-                    </div>
-                  )} */}
                 </div>
 
                 {/* Member Info */}
@@ -468,7 +495,7 @@ export default function Members() {
                           <MapPin size={16} className="text-purple-600" />
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500">ইউনিয়ন</p>
+                          <p className="text-xs text-gray-500">ইউনিয়ন</p>
                           <p className="font-semibold text-sm">{member.union}</p>
                         </div>
                       </div>
@@ -518,7 +545,6 @@ export default function Members() {
           className="hidden lg:flex fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-3 rounded-full font-semibold shadow-xl hover:from-indigo-500 hover:to-blue-500 hover:scale-110 transition-all z-50 items-center gap-2"
         > নতুন সদস্য হিসেবে যুক্ত হোন
           <FaPlus size={16} />
-          
         </button>
         <button
           onClick={() => navigate("/addMember")}
