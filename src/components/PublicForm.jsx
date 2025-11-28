@@ -118,7 +118,7 @@ export default function PublicForm() {
         return (
           <div className="space-y-2">
             {question.options.map((option, idx) => (
-              <label key={idx} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer">
+              <label key={idx} className="flex items-center text-gray-800 gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer">
                 <input
                   type="radio"
                   name={question._id}

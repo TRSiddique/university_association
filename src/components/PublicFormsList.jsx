@@ -132,12 +132,12 @@ export default function PublicFormsList() {
 
         {/* Info Box */}
         <div className="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-3xl mx-auto">
-          <h3 className="font-semibold text-blue-900 mb-2">📝 How to fill a form:</h3>
+          <h3 className="font-semibold text-blue-900 mb-2">📝 কিভাবে ফর্ম পূরণ করেন:</h3>
           <ol className="list-decimal list-inside space-y-1 text-blue-800">
-            <li>Click on any form card above</li>
-            <li>Read the form carefully and answer all required questions</li>
-            <li>Click the Submit button when you're done</li>
-            <li>You'll see a confirmation message once submitted</li>
+           <li>ওপরে যেকোনো ফর্ম কার্ডে ক্লিক করুন</li> 
+           <li>ফর্মটি বারবার পড়ুন এবং সকল আবশ্যক প্রশ্নের উত্তর দিন</li>
+            <li>শেষ হলে সাবমিট বাটনে ক্লিক করুন</li> 
+            <li>সাবমিট করার পর আপনি একটি নিশ্চিতকরণ বার্তা দেখতে পাবেন</li>
           </ol>
         </div>
       </div>

@@ -68,7 +68,7 @@ const Footer = () => {
         <div className="text-white text-x bg-blue-950 mx-auto px-4 py-1">
           Website gifted to CUSAP members by {' '}
           <a 
-            href="https://tasfique.com" 
+            href="https://tasfique.netlify.app/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-green-400 hover:text-yellow-400 transition-colors font-bold"
@@ -77,7 +77,7 @@ const Footer = () => {
           </a>
           {' '}from{' '}
           <a 
-            href="https://websheba.net" 
+            href="https://webshebaa.netlify.app/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-green-400 hover:text-yellow-400 transition-colors font-bold"

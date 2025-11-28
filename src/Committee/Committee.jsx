@@ -114,19 +114,19 @@ const Committee = () => {
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Member
+                        নাম 
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Position
+                        পদবি
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Department
+                        বিভাগ 
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Session
+                        সেশন 
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Contact
+                        মোবাইল 
                       </th>
                     </tr>
                   </thead>
@@ -222,7 +222,7 @@ const Committee = () => {
 
                   {/* Line 2: Department and Session */}
                   <div className="text-xs text-gray-600 mb-1">
-                    {member.department} • Session: {member.session}
+                  বিভাগ:  {member.department} •সেশন: {member.session}
                   </div>
 
                   {/* Line 3: Contact */}

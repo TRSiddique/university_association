@@ -328,7 +328,7 @@ const sectionRef = useRef(null);
             <div className="bg-gray-50 rounded-xl p-8 shadow-md border border-gray-100">
               <p className="text-lg text-gray-700 text-justify leading-relaxed mb-6">
                 চট্টগ্রাম বিশ্ববিদ্যালয়ে অধ্যয়নরত পেকুয়ার শিক্ষার্থীদের উদ্যোগে
-                গঠিত <span className="font-bold text-blue-800 "> চিটাগাং ইউনিভার্সিটি স্টুডেন্টস অ্যাসোসিয়েশন অব পেকুয়া
+                গঠিত <span className="font-bold text-blue-900 "> চিটাগাং ইউনিভার্সিটি স্টুডেন্টস অ্যাসোসিয়েশন অব পেকুয়া
                 (CUSAP) </span>একটি ছাত্রনেতৃত্বাধীন সংগঠন, যা শিক্ষার্থীদের মধ্যে
                 সৌহার্দ্য, সহযোগিতা ও একাডেমিক সহায়তা বাড়াতে কাজ করে।
                 <br />
@@ -357,7 +357,7 @@ const sectionRef = useRef(null);
                       />
                     </svg>
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2 text-lg">
+                  <h3 className="font-semibold text-blue-900 mb-2 text-lg">
                     শিক্ষার্থী কল্যাণ
                   </h3>
                   <p className="text-sm text-gray-600 leading-relaxed">
@@ -383,7 +383,7 @@ const sectionRef = useRef(null);
                       />
                     </svg>
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2 text-lg">
+                  <h3 className="font-semibold text-blue-900 mb-2 text-lg">
                     কমিউনিটি গঠন
                   </h3>
                   <p className="text-sm text-gray-600 leading-relaxed">
@@ -409,7 +409,7 @@ const sectionRef = useRef(null);
                       />
                     </svg>
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2 text-lg">
+                  <h3 className="font-semibold text-blue-900 mb-2 text-lg">
                     সামাজিক সম্পৃক্ততা
                   </h3>
                   <p className="text-sm text-gray-600 leading-relaxed">
@@ -427,7 +427,7 @@ const sectionRef = useRef(null);
       <div className="text-center bg-white">
   <button
     onClick={() => navigate("/addMember")}
-    className="flex items-center justify-center gap-2 bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium mx-auto"
+    className="flex items-center justify-center gap-2 bg-blue-900 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium mx-auto"
   >
     চুসাপের সদস্য হোন
     <FaArrowRight />
@@ -438,7 +438,7 @@ const sectionRef = useRef(null);
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+          <h2 className="text-3xl font-bold text-blue-900 mb-4">
             কার্যকরী সদস্যবৃন্দ
           </h2>
           <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
@@ -481,9 +481,9 @@ const sectionRef = useRef(null);
       <div className="text-center py-8 bg-gray-50">
         <button
           onClick={() => navigate("/committee")}
-          className="flex items-center justify-center gap-2 bg-blue-500 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium mx-auto"
+          className="flex items-center justify-center gap-2 bg-blue-900 text-white px-8 py-3 rounded-full shadow-xl hover:bg-blue-600 hover:scale-110 transition-all font-medium mx-auto"
         >
-          সকল সদস্যদের তালিকা দেখুন
+          কার্যকরী সদস্যদের তালিকা দেখুন
           <FaArrowRight />
         </button>
       </div>
@@ -491,7 +491,7 @@ const sectionRef = useRef(null);
       <section id="events" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            <h2 className="text-3xl font-bold text-blue-900 mb-4">
               আসন্ন কার্যক্রম
             </h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
@@ -544,7 +544,7 @@ const sectionRef = useRef(null);
       <section id="feedback" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            <h2 className="text-3xl font-bold text-blue-900 mb-4">
               আপনার মতামত দিন
             </h2>
             <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
