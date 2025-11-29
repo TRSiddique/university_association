@@ -107,7 +107,7 @@ const sectionRef = useRef(null);
   const fetchAllFeedback = async () => {
     try {
       setFeedbackLoading(true);
-      const response = await fetch("https://university-association-backend-1.onrender.com/comment");
+      const response = await fetch("http://localhost:4000/comment");
       if (response.ok) {
         const data = await response.json();
         setComments(data);
@@ -138,7 +138,7 @@ const sectionRef = useRef(null);
       };
 
       // ✅ Send to database
-      fetch("https://university-association-backend-1.onrender.com/comment", {
+      fetch("http://localhost:4000/comment", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -147,11 +147,15 @@ const sectionRef = useRef(null);
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("Saved to DB:", data);
-          if (data.insertedId) {
-            alert("ধন্যবাদ! আপনার মতামত গৃহিত হয়েছে "); 
-          }
-        })
+  console.log("Saved to DB:", data);
+  if (data.insertedId) {
+    alert("ধন্যবাদ! আপনার মতামত গৃহিত হয়েছে ");
+    // Refetch all feedback if admin tab is active
+    if (activeTab === "admin-feedback" && isAdmin()) {
+      fetchAllFeedback();
+    }
+  }
+})
         .catch((err) => console.error("Error saving comment:", err));
 
       // Reset UI instantly (optional)
@@ -181,7 +185,7 @@ const sectionRef = useRef(null);
     }
 
     try {
-      const response = await fetch(`https://university-association-backend-1.onrender.com/comment/${id}`, {
+      const response = await fetch(`http://localhost:4000/comment/${id}`, {
         method: "DELETE",
       });
 

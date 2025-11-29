@@ -77,7 +77,7 @@ const Committee = () => {
                     কমিটির সদস্যবৃন্দ
                   </h3>
                   <p className="text-gray-600 text-sm">
-                    মোট ৩৯ সদস্য
+                    মোট ৩৫ সদস্য
                     {searchTerm && ` • ${filteredMembers.length} found`}
                   </p>
                 </div>
