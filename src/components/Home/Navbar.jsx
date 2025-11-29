@@ -1,8 +1,8 @@
 import { Menu, X, ChevronDown, User, LogOut, Settings } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import logo from "../assets/logo.png";
+import { useAuth } from "../../context/AuthContext";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -159,7 +159,7 @@ const Navbar = () => {
                   </div>
                   
                   <Link
-                    to="/"
+                    to="/admin/forms"
                     className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
                     onClick={() => setIsDropdownOpen(false)}
                   >
@@ -298,7 +298,7 @@ const Navbar = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Link
-                    to="/"
+                    to="/admin/forms"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-sm font-medium transition-colors"
                   >

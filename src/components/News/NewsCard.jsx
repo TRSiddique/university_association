@@ -1,6 +1,6 @@
 // components/NewsCard.jsx
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const NewsCard = ({ item, onDelete, onEdit }) => {
     const { isAdmin } = useAuth();

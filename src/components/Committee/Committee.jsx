@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import committeeData from "../data/committeeData.json";
+import committeeData from "../../data/committeeData.json";
 
 const Committee = () => {
   const [activeTab, setActiveTab] = useState("current");

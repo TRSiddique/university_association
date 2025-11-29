@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import publicationData from '../data/publicationData.json';
+import publicationData from '../../data/publicationData.json';
 
 const Publication = () => {
     const [activeTab, setActiveTab] = useState('constitution');

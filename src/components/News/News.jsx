@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import NewsCard from '../News/NewsCard'; // কম্পোনেন্ট ইম্পোর্ট করুন
 
 const News = () => {
@@ -18,7 +18,7 @@ const News = () => {
     const fetchNews = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:4000/news');
+            const response = await fetch('https://university-association-backend-1.onrender.com/news');
             
             if (!response.ok) {
                 throw new Error('Failed to fetch news');
@@ -54,7 +54,7 @@ const News = () => {
 
         if (result.isConfirmed) {
             try {
-                const response = await fetch(`http://localhost:4000/news/${newsId}`, {
+                const response = await fetch(`https://university-association-backend-1.onrender.com/news/${newsId}`, {
                     method: 'DELETE',
                 });
 

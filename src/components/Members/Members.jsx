@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FaPlus } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Members() {
   const [members, setMembers] = useState([]);
@@ -49,9 +49,9 @@ export default function Members() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-      console.log('Fetching from: http://localhost:4000/member');
+      console.log('Fetching from: https://university-association-backend-1.onrender.com/member');
 
-      const response = await fetch('http://localhost:4000/member', {
+      const response = await fetch('https://university-association-backend-1.onrender.com/member', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ export default function Members() {
       confirmButtonText: "হ্যাঁ ,ডিলিট করব!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:4000/member/${_id}`, {
+        fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
