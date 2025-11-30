@@ -47,7 +47,7 @@ export default function Members() {
       setError(null);
       
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
 
       console.log('Fetching from: https://university-association-backend-1.onrender.com/member');
 
@@ -91,11 +91,11 @@ export default function Members() {
       console.error('Error fetching members:', error);
       
       if (error.name === 'AbortError') {
-        setError('Request timeout - server took too long to respond');
+        setError('ডাটা লোড হতে দেরী হচ্ছে , অনুগ্রহ করে আবার চেষ্টা করুন।');
       } else if (error.message.includes('Failed to fetch')) {
         setError('Cannot connect to server. Please check if the server is running on port 4000.');
       } else {
-        setError(error.message);
+        setError(error.message); 
       }
       
       setMembers([]);
