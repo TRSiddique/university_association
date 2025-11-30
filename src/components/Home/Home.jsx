@@ -107,7 +107,7 @@ const sectionRef = useRef(null);
   const fetchAllFeedback = async () => {
     try {
       setFeedbackLoading(true);
-      const response = await fetch("https://university-association-backend-1.onrender.com/comment");
+      const response = await fetch("http://localhost:4000/comment");
       if (response.ok) {
         const data = await response.json();
         setComments(data);
@@ -138,7 +138,7 @@ const sectionRef = useRef(null);
       };
 
       // ✅ Send to database
-      fetch("https://university-association-backend-1.onrender.com/comment", {
+      fetch("http://localhost:4000/comment", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -185,7 +185,7 @@ const sectionRef = useRef(null);
     }
 
     try {
-      const response = await fetch(`https://university-association-backend-1.onrender.com/comment/${id}`, {
+      const response = await fetch(`http://localhost:4000/comment/${id}`, {
         method: "DELETE",
       });
 
@@ -223,7 +223,7 @@ const sectionRef = useRef(null);
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden w-full max-w-full">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4">
@@ -234,7 +234,7 @@ const sectionRef = useRef(null);
       </header>
 
       {/* Hero Slider Section */}
-      <section className="relative h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] overflow-hidden">
+<section className="relative h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] overflow-hidden w-full">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -243,12 +243,12 @@ const sectionRef = useRef(null);
             }`}
           >
             {/* Background Image */}
-            <div
-              className="w-full h-full bg-cover bg-center bg-no-repeat relative"
-              style={{
-                backgroundImage: `url(${slide.image})`,
-              }}
-            >
+           <div
+  className="w-full h-full bg-cover bg-center bg-no-repeat relative max-w-full"
+  style={{
+    backgroundImage: `url(${slide.image})`,
+  }}
+>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-white px-4 sm:px-6 max-w-4xl mx-auto">
                   <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 text-white drop-shadow-lg">

@@ -11,7 +11,7 @@ const Gallery = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const API_URL = 'https://university-association-backend-1.onrender.com'; // Your backend URL
+  const API_URL = 'http://localhost:4000'; // Your backend URL
 
   // Fetch photos from backend
   useEffect(() => {
