@@ -50,7 +50,7 @@ const UpdatedMember = () => {
     formData.append('photo', file);
 
     try {
-      const response = await fetch('http://localhost:4000/upload', {
+      const response = await fetch('https://university-association-backend-1.onrender.com/upload', {
         method: 'POST',
         body: formData,
       });
@@ -102,7 +102,7 @@ const UpdatedMember = () => {
 
       console.log('Updated member data:', updatedMember);
 
-      const response = await fetch(`http://localhost:4000/member/${_id}`, {
+      const response = await fetch(`https://university-association-backend-1.onrender.com/member/${_id}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
