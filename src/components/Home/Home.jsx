@@ -66,26 +66,26 @@ const sectionRef = useRef(null);
     {
       id: 1,
       title: "CUSAP-এর পূর্ণ প্যানেল প্রকাশ",
-      date: "2025-11-09",
+      date: "2025-11-24",
       time: "২:০০ PM - ৪:০০ PM",
       location: "ফেসবুক পেজ",
-      link: "www.facebook.com/profile.php?id=61551649208728",
+      link: "https://www.facebook.com/share/p/1DCT4bURWP/",
     },
     {
       id: 2,
       title: "CUSAP কমিটির পরিকল্পনা প্রকাশ",
-      date: "2025-11-19",
+      date: "2025-12-05",
       time: "১০:০০ AM - ১২:০০ PM",
-      location: "কমিটি রুম A",
-      link: "www.facebook.com/profile.php?id=61551649208728",
+      location: " ফেসবুক পেজ",
+      link: "https://www.facebook.com/cusap23",
     },
     {
       id: 3,
       title: "CUSAP ওয়েবসাইট প্রকাশ",
-      date: "2025-11-20",
+      date: "2025-12-20",
       time: "৩:০০ PM - ৫:০০ PM",
       location: "স্টুডেন্ট সেন্টার",
-      link: "www.facebook.com/profile.php?id=61551649208728",
+      link: "https://www.facebook.com/cusap23",
     },
   ];
 

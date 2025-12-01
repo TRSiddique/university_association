@@ -55,7 +55,7 @@ const Footer = () => {
             <a href="#" className="hover:text-pink-500 transition-colors">
               <FaInstagram size={20} />
             </a>
-            <a href="#" className="hover:text-blue-700 transition-colors">
+            <a href="https://www.linkedin.com/company/cusap/" className="hover:text-blue-700 transition-colors">
               <FaLinkedinIn size={20} />
             </a>
           </div>
