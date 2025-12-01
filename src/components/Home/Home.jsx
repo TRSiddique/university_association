@@ -69,7 +69,7 @@ const sectionRef = useRef(null);
       date: "2025-11-24",
       time: "২:০০ PM - ৪:০০ PM",
       location: "ফেসবুক পেজ",
-      link: "https://www.facebook.com/share/p/1DCT4bURWP/",
+      link: "www.facebook.com/share/p/1DCT4bURWP/",
     },
     {
       id: 2,
@@ -77,7 +77,7 @@ const sectionRef = useRef(null);
       date: "2025-12-05",
       time: "১০:০০ AM - ১২:০০ PM",
       location: " ফেসবুক পেজ",
-      link: "https://www.facebook.com/cusap23",
+      link: "www.facebook.com/cusap23",
     },
     {
       id: 3,
@@ -85,7 +85,7 @@ const sectionRef = useRef(null);
       date: "2025-12-20",
       time: "৩:০০ PM - ৫:০০ PM",
       location: "স্টুডেন্ট সেন্টার",
-      link: "https://www.facebook.com/cusap23",
+      link: "www.facebook.com/cusap23",
     },
   ];
 
